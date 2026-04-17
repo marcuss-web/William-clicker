@@ -1,38 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TEST</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>JS TEST</title>
 </head>
 <body>
-    <h1>Supabase Test</h1>
-    <input type="text" id="name" placeholder="Navn">
-    <input type="password" id="pass" placeholder="Password">
-    <button id="testBtn">TEST OPRET</button>
-    <div id="result"></div>
+    <h1>JavaScript Test</h1>
+    <button id="testBtn">KLIK MIG</button>
+    <div id="result">Intet endnu</div>
 
     <script>
-        const SUPABASE_URL = 'https://twuwlostiswxtivutyvd.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_Fhc4uhNVDEbR-4zQlD_mGg_irCRpGC9';
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        
-        document.getElementById('testBtn').addEventListener('click', async () => {
-            const name = document.getElementById('name').value;
-            const pass = document.getElementById('pass').value;
-            
-            document.getElementById('result').innerHTML = 'Prøver...';
-            
-            const { data, error } = await supabase
-                .from('users')
-                .insert([{ name: name, password: pass, avatar: '🦊' }])
-                .select();
-            
-            if (error) {
-                document.getElementById('result').innerHTML = 'FEJL: ' + error.message;
-            } else {
-                document.getElementById('result').innerHTML = 'SUCCES! Oprettet: ' + JSON.stringify(data);
-            }
+        document.getElementById('testBtn').addEventListener('click', function() {
+            document.getElementById('result').innerHTML = 'KNAPPEN VIRKER! ' + new Date();
         });
+        
+        // Test om script kører
+        document.getElementById('result').innerHTML = 'Script loaded!';
     </script>
 </body>
 </html>
