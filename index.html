@@ -1,270 +1,38 @@
 <!DOCTYPE html>
-<html lang="da">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>William Clicker</title>
+    <title>TEST</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: linear-gradient(180deg, #1a1008, #0d0805);
-            min-height: 100vh;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .login-box {
-            background: #2a1f0e;
-            border: 3px solid #ffd700;
-            border-radius: 20px;
-            padding: 30px;
-            width: 350px;
-            text-align: center;
-        }
-        .login-title {
-            color: #ffd700;
-            font-size: 28px;
-            margin-bottom: 20px;
-        }
-        .login-input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background: #1a0f08;
-            border: 2px solid #8B6914;
-            border-radius: 10px;
-            color: #ffd700;
-            font-size: 16px;
-        }
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: #8B6914;
-            border: none;
-            border-radius: 10px;
-            color: #ffd700;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        .game-container {
-            display: none;
-            padding: 20px;
-            color: white;
-            text-align: center;
-        }
-        .score {
-            font-size: 48px;
-            color: #ffd700;
-            margin: 20px 0;
-        }
-        .click-btn {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            border: 5px solid #ffd700;
-            cursor: pointer;
-            object-fit: cover;
-        }
-        .error-msg {
-            color: #ff4444;
-            margin-top: 10px;
-        }
-        .logout-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: #3d2b12;
-            border: none;
-            border-radius: 10px;
-            color: #ffd700;
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
+    <h1>Supabase Test</h1>
+    <input type="text" id="name" placeholder="Navn">
+    <input type="password" id="pass" placeholder="Password">
+    <button id="testBtn">TEST OPRET</button>
+    <div id="result"></div>
 
-<!-- LOGIN -->
-<div id="loginOverlay" class="login-box">
-    <div class="login-title" id="loginTitle">🔐 LOGIN</div>
-    <input type="text" id="loginName" class="login-input" placeholder="Brugernavn">
-    <input type="password" id="loginPassword" class="login-input" placeholder="Password">
-    <button class="login-btn" id="loginBtn">Login</button>
-    <button class="login-btn" id="registerBtn" style="display: none; background: #5a4310;">Opret konto</button>
-    <div id="errorMsg" class="error-msg"></div>
-    <div style="color: #c8a86e; margin-top: 15px; cursor: pointer;" id="switchMode">Opret ny konto →</div>
-</div>
-
-<!-- SPIL -->
-<div id="gameContainer" class="game-container">
-    <div class="score">
-        <span id="scoreDisplay">0</span> point
-    </div>
-    <div>
-        <img id="williamImg" class="click-btn" src="" alt="William">
-    </div>
-    <div style="margin: 20px; color: #c8a86e;">
-        Klik på William! | <span id="totalClicks">0</span> klik
-    </div>
-    <button class="logout-btn" id="logoutBtn">Log ud</button>
-</div>
-
-<script>
-    // SUPABASE CONFIG
-    const SUPABASE_URL = 'https://twuwlostiswxtivutyvd.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_Fhc4uhNVDEbR-4zQlD_mGg_irCRpGC9';
-    
-    console.log('Starter Supabase...');
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    console.log('Supabase klar!');
-
-    // Billede
-    const WILLIAM_IMG = "https://media-prod.aula.dk/profile-pictures/9096069_400x400.jpg";
-    document.getElementById('williamImg').src = WILLIAM_IMG;
-
-    let currentUser = null;
-    let points = 0;
-    let clicks = 0;
-
-    // DOM
-    const loginOverlay = document.getElementById('loginOverlay');
-    const gameContainer = document.getElementById('gameContainer');
-    const scoreDisplay = document.getElementById('scoreDisplay');
-    const totalClicksSpan = document.getElementById('totalClicks');
-    const errorMsg = document.getElementById('errorMsg');
-
-    // Vis fejl
-    function showError(msg) {
-        errorMsg.textContent = msg;
-        setTimeout(() => errorMsg.textContent = '', 3000);
-    }
-
-    // Switch mode
-    let isLogin = true;
-    document.getElementById('switchMode').addEventListener('click', () => {
-        isLogin = !isLogin;
-        document.getElementById('loginTitle').textContent = isLogin ? '🔐 LOGIN' : '📝 OPRET KONTO';
-        document.getElementById('loginBtn').style.display = isLogin ? 'block' : 'none';
-        document.getElementById('registerBtn').style.display = isLogin ? 'none' : 'block';
-        document.getElementById('switchMode').textContent = isLogin ? 'Opret ny konto →' : '← Tilbage til login';
-    });
-
-    // Login
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-        const name = document.getElementById('loginName').value.trim();
-        const password = document.getElementById('loginPassword').value;
+    <script>
+        const SUPABASE_URL = 'https://twuwlostiswxtivutyvd.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_Fhc4uhNVDEbR-4zQlD_mGg_irCRpGC9';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         
-        if (!name || !password) {
-            showError('Udfyld alle felter!');
-            return;
-        }
-        
-        console.log('Logger ind:', name);
-        
-        const { data, error } = await supabase
-            .from('users')
-            .select('*')
-            .eq('name', name)
-            .eq('password', password)
-            .single();
-        
-        if (error) {
-            console.error('Login fejl:', error);
-            showError('Forkert brugernavn eller password!');
-        } else if (data) {
-            console.log('Login succes:', data);
-            currentUser = data;
-            loginOverlay.style.display = 'none';
-            gameContainer.style.display = 'block';
-            loadGame();
-        }
-    });
-
-    // Register
-    document.getElementById('registerBtn').addEventListener('click', async () => {
-        const name = document.getElementById('loginName').value.trim();
-        const password = document.getElementById('loginPassword').value;
-        
-        if (!name || !password) {
-            showError('Udfyld alle felter!');
-            return;
-        }
-        
-        console.log('Opretter:', name);
-        
-        const { data, error } = await supabase
-            .from('users')
-            .insert([{ name, password, avatar: '🦊' }])
-            .select()
-            .single();
-        
-        if (error) {
-            console.error('Register fejl:', error);
-            if (error.code === '23505') {
-                showError('Brugernavn er allerede taget!');
+        document.getElementById('testBtn').addEventListener('click', async () => {
+            const name = document.getElementById('name').value;
+            const pass = document.getElementById('pass').value;
+            
+            document.getElementById('result').innerHTML = 'Prøver...';
+            
+            const { data, error } = await supabase
+                .from('users')
+                .insert([{ name: name, password: pass, avatar: '🦊' }])
+                .select();
+            
+            if (error) {
+                document.getElementById('result').innerHTML = 'FEJL: ' + error.message;
             } else {
-                showError('Fejl: ' + error.message);
+                document.getElementById('result').innerHTML = 'SUCCES! Oprettet: ' + JSON.stringify(data);
             }
-        } else {
-            console.log('Register succes:', data);
-            currentUser = data;
-            loginOverlay.style.display = 'none';
-            gameContainer.style.display = 'block';
-            loadGame();
-        }
-    });
-
-    // Load game
-    async function loadGame() {
-        const { data } = await supabase
-            .from('game_saves')
-            .select('*')
-            .eq('user_id', currentUser.id)
-            .single();
-        
-        if (data) {
-            points = data.points || 0;
-            clicks = data.totalClicks || 0;
-        }
-        updateUI();
-    }
-
-    // Save game
-    async function saveGame() {
-        if (!currentUser) return;
-        
-        await supabase
-            .from('game_saves')
-            .upsert({ 
-                user_id: currentUser.id, 
-                points: points, 
-                totalClicks: clicks,
-                updated_at: new Date()
-            });
-    }
-
-    // Klik
-    document.getElementById('williamImg').addEventListener('click', () => {
-        points++;
-        clicks++;
-        updateUI();
-        saveGame();
-    });
-
-    function updateUI() {
-        scoreDisplay.textContent = points;
-        totalClicksSpan.textContent = clicks;
-    }
-
-    // Logout
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-        saveGame();
-        location.reload();
-    });
-
-    setInterval(saveGame, 5000);
-</script>
+        });
+    </script>
 </body>
 </html>
