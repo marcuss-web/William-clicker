@@ -54,15 +54,12 @@
             display: none;
             padding: 20px;
             color: white;
+            text-align: center;
         }
         .score {
             font-size: 48px;
             color: #ffd700;
-            text-align: center;
-        }
-        .click-area {
-            text-align: center;
-            margin: 30px 0;
+            margin: 20px 0;
         }
         .click-btn {
             width: 200px;
@@ -75,7 +72,15 @@
         .error-msg {
             color: #ff4444;
             margin-top: 10px;
-            display: none;
+        }
+        .logout-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #3d2b12;
+            border: none;
+            border-radius: 10px;
+            color: #ffd700;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -83,7 +88,7 @@
 
 <!-- LOGIN -->
 <div id="loginOverlay" class="login-box">
-    <div class="login-title">🔐 WILLIAM CLICKER</div>
+    <div class="login-title" id="loginTitle">🔐 LOGIN</div>
     <input type="text" id="loginName" class="login-input" placeholder="Brugernavn">
     <input type="password" id="loginPassword" class="login-input" placeholder="Password">
     <button class="login-btn" id="loginBtn">Login</button>
@@ -97,13 +102,13 @@
     <div class="score">
         <span id="scoreDisplay">0</span> point
     </div>
-    <div class="click-area">
+    <div>
         <img id="williamImg" class="click-btn" src="" alt="William">
     </div>
-    <div style="text-align: center; color: #c8a86e;">
+    <div style="margin: 20px; color: #c8a86e;">
         Klik på William! | <span id="totalClicks">0</span> klik
     </div>
-    <button id="logoutBtn" style="margin-top: 20px; padding: 10px 20px; background: #3d2b12; border: none; border-radius: 10px; color: #ffd700; cursor: pointer;">Log ud</button>
+    <button class="logout-btn" id="logoutBtn">Log ud</button>
 </div>
 
 <script>
@@ -116,7 +121,7 @@
     console.log('Supabase klar!');
 
     // Billede
-    const WILLIAM_IMG = "https://media-prod.aula.dk/profile-pictures/9096069_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%229096069_400x400.jpg%22&Expires=1776420000&Signature=TF7pfeatPbsvW3fSlx-Jov9rjHTRrN8sexeWjceM9B8ohSJAdUhYwbDtBZkrpyjshvcwfytLWuhSSZx6b22oR6Yh7yQBskgT3D1FFjr4Ntpk1XgMHbAuhuZHgNhezs0DKkpoVxsTA9x57wdx1TXEvc-XxpHD2jle28HG8GXdKQf4HUlDqp0tv5ywb4zueF0dVceLHrjS3Ds7Nhwp8nFC~Ini5B32K-FANcw6kusGCwaBhuG9ob2HK05Qj1Fio7knRC1DHyWppcOqNELvNdZpo17D7ymcBApQKVqElk6xwPf2l8Q5H26L3BnXTSxPiBgy2VIBiUvN6~S~0KH5oo1dxw__&Key-Pair-Id=APKAILBPECUQMHIBROXQ";
+    const WILLIAM_IMG = "https://media-prod.aula.dk/profile-pictures/9096069_400x400.jpg";
     document.getElementById('williamImg').src = WILLIAM_IMG;
 
     let currentUser = null;
@@ -130,23 +135,21 @@
     const totalClicksSpan = document.getElementById('totalClicks');
     const errorMsg = document.getElementById('errorMsg');
 
+    // Vis fejl
+    function showError(msg) {
+        errorMsg.textContent = msg;
+        setTimeout(() => errorMsg.textContent = '', 3000);
+    }
+
     // Switch mode
     let isLogin = true;
     document.getElementById('switchMode').addEventListener('click', () => {
         isLogin = !isLogin;
-        document.querySelector('.login-title').textContent = isLogin ? '🔐 LOGIN' : '📝 OPRET KONTO';
+        document.getElementById('loginTitle').textContent = isLogin ? '🔐 LOGIN' : '📝 OPRET KONTO';
         document.getElementById('loginBtn').style.display = isLogin ? 'block' : 'none';
         document.getElementById('registerBtn').style.display = isLogin ? 'none' : 'block';
         document.getElementById('switchMode').textContent = isLogin ? 'Opret ny konto →' : '← Tilbage til login';
-        errorMsg.style.display = 'none';
     });
-
-    // Vis fejl
-    function showError(msg) {
-        errorMsg.textContent = msg;
-        errorMsg.style.display = 'block';
-        setTimeout(() => errorMsg.style.display = 'none', 3000);
-    }
 
     // Login
     document.getElementById('loginBtn').addEventListener('click', async () => {
@@ -202,7 +205,7 @@
             if (error.code === '23505') {
                 showError('Brugernavn er allerede taget!');
             } else {
-                showError('Kunne ikke oprette konto: ' + error.message);
+                showError('Fejl: ' + error.message);
             }
         } else {
             console.log('Register succes:', data);
@@ -236,7 +239,7 @@
             .from('game_saves')
             .upsert({ 
                 user_id: currentUser.id, 
-                points, 
+                points: points, 
                 totalClicks: clicks,
                 updated_at: new Date()
             });
@@ -261,7 +264,6 @@
         location.reload();
     });
 
-    // Auto-save hvert 5. sekund
     setInterval(saveGame, 5000);
 </script>
 </body>
