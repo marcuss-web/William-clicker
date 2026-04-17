@@ -1,20 +1,1590 @@
 <!DOCTYPE html>
-<html>
+<html lang="da">
 <head>
-    <title>JS TEST</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>William Clicker ⚡ Aksel · Carl Kal · Johannes · Pizza Saleh</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(180deg, #1a1008 0%, #0d0805 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Quicksand', 'Poppins', system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .login-box {
+            background: linear-gradient(135deg, #2a1f0e, #1a1208);
+            border: 3px solid #ffd700;
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 40px black;
+        }
+
+        .login-title {
+            color: #ffd700;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 0 #5a4310;
+        }
+
+        .login-input {
+            width: 100%;
+            background: #1a0f08;
+            border: 2px solid #8B6914;
+            border-radius: 15px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            color: #ffd700;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .login-input::placeholder {
+            color: #8B6914;
+        }
+
+        .login-btn {
+            width: 100%;
+            background: #8B6914;
+            border: none;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 15px;
+            color: #ffd700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #5a4310;
+            margin-bottom: 10px;
+            transition: all 0.1s;
+        }
+
+        .login-btn:hover {
+            background: #a07818;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #5a4310;
+        }
+
+        .login-switch {
+            text-align: center;
+            color: #c8a86e;
+            margin-top: 15px;
+            cursor: pointer;
+        }
+
+        .login-switch:hover {
+            color: #ffd700;
+        }
+
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .avatar-option {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid #8B6914;
+            cursor: pointer;
+            background: #2c2e3e;
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .avatar-option:hover {
+            border-color: #ffd700;
+            transform: scale(1.1);
+        }
+
+        .avatar-option.selected {
+            border-color: #ffd700;
+            box-shadow: 0 0 15px #ffd700;
+        }
+
+        .profile-bar {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(26, 15, 8, 0.9);
+            border: 2px solid #8B6914;
+            border-radius: 50px;
+            padding: 8px 15px;
+            z-index: 100;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            background: #2c2e3e;
+        }
+
+        .profile-name {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #3d2b12;
+            border: 1px solid #8B6914;
+            color: #c8a86e;
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.7rem;
+        }
+
+        .golden-william {
+            position: fixed;
+            cursor: pointer;
+            z-index: 1000;
+            animation: goldenFloat 0.5s ease-in-out infinite alternate;
+            filter: drop-shadow(0 0 30px #ffd700);
+        }
+
+        @keyframes goldenFloat {
+            from { transform: translateY(0); }
+            to { transform: translateY(-15px); }
+        }
+
+        .golden-william-img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid #ffd700;
+            object-fit: cover;
+        }
+
+        .powerup-bar {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            justify-content: center;
+        }
+
+        .powerup-btn {
+            background: linear-gradient(135deg, #2a1f0e, #1a1208);
+            border: 2px solid #8B6914;
+            border-radius: 15px;
+            padding: 10px 15px;
+            color: #ffd700;
+            cursor: pointer;
+            font-size: 0.8rem;
+            text-align: center;
+            transition: all 0.1s;
+            flex: 1;
+        }
+
+        .powerup-btn:hover {
+            border-color: #ffd700;
+            background: linear-gradient(135deg, #3a2a14, #2a1a0e);
+        }
+
+        .powerup-btn.active {
+            border-color: #00ff00;
+            box-shadow: 0 0 15px #00ff0066;
+        }
+
+        .achievements-panel {
+            margin-top: 15px;
+            background: rgba(26, 15, 8, 0.8);
+            border: 2px solid #8B6914;
+            border-radius: 15px;
+            padding: 15px;
+        }
+
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-bottom: 1px solid #6b4c1a;
+            color: #c8a86e;
+        }
+
+        .achievement-item.unlocked {
+            color: #ffd700;
+        }
+
+        .achievement-icon {
+            font-size: 1.5rem;
+            min-width: 35px;
+            text-align: center;
+        }
+
+        .prestige-btn {
+            background: linear-gradient(135deg, #4a004a, #2a002a);
+            border: 2px solid #ff00ff;
+            color: #ffccff;
+            padding: 12px;
+            border-radius: 30px;
+            font-weight: bold;
+            margin-top: 15px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.1s;
+        }
+
+        .prestige-btn:hover {
+            background: linear-gradient(135deg, #6a006a, #4a004a);
+            box-shadow: 0 0 20px #ff00ff66;
+        }
+
+        .game-container {
+            display: flex;
+            max-width: 1400px;
+            width: 100%;
+            min-height: 100vh;
+            padding: 20px;
+            padding-top: 80px;
+            gap: 20px;
+        }
+
+        .left-section {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 20px;
+            background: rgba(20, 12, 8, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            border: 2px solid #8B6914;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .stats-bar {
+            background: #1a0f08;
+            border: 3px solid #6b4c1a;
+            border-radius: 15px;
+            padding: 15px 25px;
+            margin-bottom: 30px;
+            width: 100%;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 5px 0 #3d2b12;
+        }
+
+        .score-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 3px 3px 0 #6b4c1a, 0 0 20px #ffd700;
+            text-align: center;
+            letter-spacing: 2px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .stats-info {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+            color: #e8d5a8;
+            font-size: 0.95rem;
+            font-weight: bold;
+            flex-wrap: wrap;
+        }
+
+        .central-area {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            width: 100%;
+        }
+
+        .click-area {
+            position: relative;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .william-holder {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.05s ease;
+            display: inline-block;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.5));
+        }
+
+        .william-holder:active {
+            transform: scale(0.95);
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.5));
+        }
+
+        .william-img {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 0 0 6px #8B6914, 0 0 0 12px #5a4310, 0 20px 40px black;
+            background: #2c2e3e;
+            transition: all 0.1s;
+        }
+
+        .boss-active .william-img {
+            box-shadow: 0 0 0 6px #ff4444, 0 0 0 12px #8b0000, 0 0 40px #ff0000 !important;
+            animation: bossPulse 0.8s infinite;
+        }
+
+        @keyframes bossPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .right-section {
+            flex: 1;
+            min-width: 320px;
+            background: rgba(20, 12, 8, 0.7);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            border: 2px solid #8B6914;
+            padding: 20px;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            color: #ffd700;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 0 #5a4310;
+            cursor: pointer;
+        }
+
+        .upgrade-card {
+            background: linear-gradient(135deg, #2a1f0e, #1a1208);
+            border-radius: 12px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 2px solid #6b4c1a;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3), 0 3px 0 #3d2b12;
+        }
+
+        .upgrade-icon {
+            font-size: 2.2rem;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .upgrade-info {
+            flex: 1;
+        }
+
+        .upgrade-name {
+            font-weight: bold;
+            font-size: 0.95rem;
+            color: #ffd700;
+        }
+
+        .upgrade-desc {
+            font-size: 0.65rem;
+            color: #c8a86e;
+        }
+
+        .upgrade-cost {
+            font-weight: bold;
+            background: #1a0f08;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #ffd700;
+            border: 1px solid #6b4c1a;
+        }
+
+        button.buy-btn {
+            background: #8B6914;
+            border: none;
+            font-weight: bold;
+            padding: 7px 14px;
+            border-radius: 20px;
+            color: #ffd700;
+            font-size: 0.75rem;
+            cursor: pointer;
+            box-shadow: 0 3px 0 #5a4310;
+            min-width: 60px;
+        }
+
+        button.buy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .reset-btn {
+            background: #3d2b12;
+            border: 2px solid #6b4c1a;
+            color: #c8a86e;
+            padding: 12px;
+            border-radius: 30px;
+            font-weight: bold;
+            margin-top: 20px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .easter-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffd700;
+            color: #1a0f08;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            z-index: 9999;
+            animation: fadeOut 3s forwards;
+            border: 3px solid #8B6914;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            70% { opacity: 1; }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-30px); visibility: hidden; }
+        }
+
+        .character-wrapper {
+            position: absolute;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        .carl-position {
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .carl-on-head {
+            animation: hopHop 0.4s infinite ease-in-out;
+        }
+
+        @keyframes hopHop {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .carl-head-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 3px solid #ffd700;
+            object-fit: cover;
+        }
+
+        .aksel-position {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .aksel-orbit {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            animation: orbitWilliam 4s linear infinite;
+        }
+
+        @keyframes orbitWilliam {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .aksel-card {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #2a1f0e, #1a1208);
+            border-radius: 50px;
+            padding: 5px 12px;
+            border: 2px solid #8B6914;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .aksel-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #ffd700;
+            object-fit: cover;
+        }
+
+        .saleh-position {
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .saleh-card {
+            background: linear-gradient(135deg, #2a1f0e, #1a1208);
+            border-radius: 50px;
+            padding: 8px 15px;
+            border: 2px solid #8B6914;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: salehFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes salehFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .saleh-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #ffd700;
+            object-fit: cover;
+        }
+
+        .pizza-throw {
+            position: absolute;
+            right: 10px;
+            top: 0;
+            font-size: 2rem;
+            animation: throwPizza 1.5s ease-in-out infinite;
+        }
+
+        @keyframes throwPizza {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+            50% { transform: translate(-60px, -30px) rotate(180deg); opacity: 1; }
+            100% { transform: translate(-120px, 0) rotate(360deg); opacity: 0; }
+        }
+
+        .johannes-position {
+            bottom: -80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+        .farmer-pig-area {
+            background: linear-gradient(180deg, #4a6b2e, #2d4518);
+            border-radius: 20px;
+            border: 3px solid #8B6914;
+            padding: 10px;
+            width: 90%;
+            margin: 0 auto;
+        }
+
+        .pig-field {
+            background: #6b4c1a;
+            border-radius: 15px;
+            padding: 8px;
+            position: relative;
+            height: 70px;
+            border: inset 3px solid #3d2b12;
+            overflow: hidden;
+        }
+
+        .pig-walk {
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            animation: walkOnPigField 7s linear infinite;
+        }
+
+        @keyframes walkOnPigField {
+            0% { left: -60px; transform: scaleX(1); }
+            45% { left: calc(100% - 60px); transform: scaleX(1); }
+            50% { left: calc(100% - 60px); transform: scaleX(-1); }
+            95% { left: -60px; transform: scaleX(-1); }
+            100% { left: -60px; transform: scaleX(1); }
+        }
+
+        .johannes-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 3px solid #ffd700;
+            object-fit: cover;
+        }
+
+        .leaderboard-section {
+            margin-top: 120px;
+            background: rgba(26, 15, 8, 0.8);
+            border: 2px solid #8B6914;
+            border-radius: 15px;
+            padding: 15px;
+            width: 100%;
+        }
+
+        .leaderboard-title {
+            color: #ffd700;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .leaderboard-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-bottom: 1px solid #6b4c1a;
+            color: #e8d5a8;
+        }
+
+        .leaderboard-rank {
+            color: #ffd700;
+            font-weight: bold;
+            min-width: 35px;
+        }
+
+        .leaderboard-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid #ffd700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            background: #2c2e3e;
+        }
+
+        .leaderboard-name {
+            flex: 1;
+        }
+
+        .leaderboard-clicks {
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .boss-card {
+            background: linear-gradient(135deg, #4a1010, #2a0808) !important;
+            border-color: #ff4444 !important;
+        }
+
+        .boss-health-bar {
+            width: 100%;
+            height: 10px;
+            background: #1a0a0a;
+            border-radius: 10px;
+            margin: 8px 0;
+            border: 1px solid #ff4444;
+            overflow: hidden;
+        }
+
+        .boss-health-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4444, #ff8888);
+            border-radius: 10px;
+            transition: width 0.1s;
+        }
+
+        .damage-number {
+            position: absolute;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ff4444;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px black;
+            pointer-events: none;
+            z-index: 100;
+            animation: floatUp 1s forwards;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -80px); }
+        }
+    </style>
 </head>
 <body>
-    <h1>JavaScript Test</h1>
-    <button id="testBtn">KLIK MIG</button>
-    <div id="result">Intet endnu</div>
 
-    <script>
-        document.getElementById('testBtn').addEventListener('click', function() {
-            document.getElementById('result').innerHTML = 'KNAPPEN VIRKER! ' + new Date();
-        });
+<!-- LOGIN OVERLAY -->
+<div class="login-overlay" id="loginOverlay">
+    <div class="login-box" id="loginBox">
+        <div class="login-title" id="loginTitle">🔐 LOGIN</div>
         
-        // Test om script kører
-        document.getElementById('result').innerHTML = 'Script loaded!';
-    </script>
+        <div id="avatarSelection">
+            <p style="color: #ffd700; text-align: center; margin-bottom: 10px;">Vælg dit profilbillede:</p>
+            <div class="avatar-grid" id="avatarGrid"></div>
+        </div>
+        
+        <input type="text" class="login-input" id="loginName" placeholder="Brugernavn">
+        <input type="password" class="login-input" id="loginPassword" placeholder="Password">
+        
+        <button class="login-btn" id="loginBtn">Login</button>
+        <button class="login-btn" id="registerBtn" style="display: none;">Opret konto</button>
+        
+        <div class="login-switch" id="switchMode">Opret ny konto →</div>
+        <div id="errorMsg" style="color: #ff4444; margin-top: 10px;"></div>
+    </div>
+</div>
+
+<!-- PROFIL BAR -->
+<div class="profile-bar hidden" id="profileBar">
+    <div class="profile-avatar" id="profileAvatar">🦊</div>
+    <span class="profile-name" id="profileName"></span>
+    <button class="logout-btn" id="logoutBtn">Log ud</button>
+</div>
+
+<div class="game-container hidden" id="gameContainer">
+    <div class="left-section" id="gameLeft">
+        <div class="stats-bar">
+            <div class="score-display" id="scoreDisplay">0</div>
+            <div class="stats-info">
+                <span>💪 Klikkraft: <strong id="clickPowerSpan">1</strong></span>
+                <span>⚡ <strong id="totalPtsPerSec">0</strong>/sek</span>
+                <span>🖱️ Klik: <strong id="totalClicks">0</strong></span>
+                <span>🌟 Prestige: <strong id="prestigeLevel">0</strong></span>
+            </div>
+        </div>
+
+        <div class="powerup-bar">
+            <div class="powerup-btn" id="powerupDouble">
+                <div>💪 2x Klik</div>
+                <small>5.000 · 30s</small>
+            </div>
+            <div class="powerup-btn" id="powerupAuto">
+                <div>🤖 Auto-klik</div>
+                <small>20.000 · 60s</small>
+            </div>
+            <div class="powerup-btn" id="powerupMulti">
+                <div>✨ 3x Point</div>
+                <small>50.000 · 45s</small>
+            </div>
+        </div>
+
+        <div class="central-area">
+            <div class="character-wrapper aksel-position" id="akselWrapper" style="display: none;">
+                <div class="aksel-orbit">
+                    <div class="aksel-card">
+                        <img class="aksel-img" id="akselImg" alt="Aksel">
+                        <div style="color: #ffd700; font-weight: bold; font-size: 0.8rem;">🐐 Aksel</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="character-wrapper saleh-position" id="salehWrapper" style="display: none;">
+                <div class="saleh-card">
+                    <img class="saleh-img" id="salehImg" alt="Saleh">
+                    <div style="color: #ffd700; font-weight: bold; font-size: 0.8rem;">🍕 Saleh</div>
+                </div>
+                <div class="pizza-throw">🍕</div>
+            </div>
+
+            <div class="click-area">
+                <div class="william-holder" id="williamClicker">
+                    <img class="william-img" id="williamImg" alt="William">
+                    <div class="mouth-overlay" id="mouthState"></div>
+                    
+                    <div class="character-wrapper carl-position" id="carlWrapper" style="display: none;">
+                        <div class="carl-on-head">
+                            <img class="carl-head-img" id="carlImg" alt="Carl">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="character-wrapper johannes-position" id="johannesWrapper" style="display: none;">
+                <div class="farmer-pig-area">
+                    <div class="pig-field">
+                        <div class="pig-walk">
+                            <div style="display: flex; flex-direction: column; align-items: center;">
+                                <img class="johannes-img" id="johannesImg" alt="Johannes">
+                                <div style="font-size: 1.5rem; margin-top: -5px;">🐷</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align:center; margin-top:5px; color:#a5d6a7; font-size: 0.7rem;">👨‍🌾 Johannes · 10.000/sek</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="achievements-panel">
+            <div style="color: #ffd700; font-weight: bold; margin-bottom: 10px;">🏆 ACHIEVEMENTS</div>
+            <div id="achievementsList"></div>
+        </div>
+
+        <div class="leaderboard-section">
+            <div class="leaderboard-title">🏆 GLOBALT LEADERBOARD 🏆</div>
+            <div class="leaderboard-list" id="leaderboardList">
+                <div class="leaderboard-item" style="justify-content: center; color: #8B6914;">Indlæser...</div>
+            </div>
+            <div style="text-align: center; margin-top: 8px; font-size: 0.65rem; color: #8B6914;">
+                Opdateres live 🔄
+            </div>
+        </div>
+    </div>
+
+    <div class="right-section">
+        <div class="section-title" id="easterEggTitle">✨ UPGRADES ✨</div>
+        
+        <div class="upgrade-card">
+            <div class="upgrade-icon">💪</div>
+            <div class="upgrade-info">
+                <div class="upgrade-name">Stærkere Klik</div>
+                <div class="upgrade-desc">+1 point pr. klik (nuværende: <span id="clickLevel">1</span>)</div>
+            </div>
+            <span class="upgrade-cost" id="clickCostSpan">10</span>
+            <button class="buy-btn" id="buyClickBtn">KØB</button>
+        </div>
+
+        <div class="upgrade-card">
+            <div class="upgrade-icon">🐐</div>
+            <div class="upgrade-info">
+                <div class="upgrade-name">Aksel the GOAT</div>
+                <div class="upgrade-desc">Flyver rundt – +10/sek</div>
+            </div>
+            <span class="upgrade-cost" id="goatCostSpan">50</span>
+            <button class="buy-btn" id="buyGoatBtn">KØB</button>
+        </div>
+
+        <div class="upgrade-card">
+            <div class="upgrade-icon">🐄</div>
+            <div class="upgrade-info">
+                <div class="upgrade-name">Carl er en Kal</div>
+                <div class="upgrade-desc">Hopper på hovedet – +100/sek</div>
+            </div>
+            <span class="upgrade-cost" id="carlCostSpan">1.000</span>
+            <button class="buy-btn" id="buyCarlBtn">KØB</button>
+        </div>
+
+        <div class="upgrade-card">
+            <div class="upgrade-icon">🍕</div>
+            <div class="upgrade-info">
+                <div class="upgrade-name">Pizza Saleh</div>
+                <div class="upgrade-desc">Kaster pizzaer – +1.000/sek</div>
+            </div>
+            <span class="upgrade-cost" id="salehCostSpan">10.000</span>
+            <button class="buy-btn" id="buySalehBtn">KØB</button>
+        </div>
+
+        <div class="upgrade-card">
+            <div class="upgrade-icon">👨‍🌾</div>
+            <div class="upgrade-info">
+                <div class="upgrade-name">Johannes på Gris</div>
+                <div class="upgrade-desc">Rider under – +10.000/sek</div>
+            </div>
+            <span class="upgrade-cost" id="johannesCostSpan">100.000</span>
+            <button class="buy-btn" id="buyJohannesBtn">KØB</button>
+        </div>
+
+        <div class="upgrade-card boss-card" id="bossCard" style="display: none;">
+            <div class="upgrade-icon">👹</div>
+            <div class="upgrade-info" style="width: 100%;">
+                <div class="upgrade-name" style="color: #ff6666;">ONDE WILLIAM</div>
+                <div class="upgrade-desc" style="color: #ffaaaa;">BOSS FIGHT! Klik for at besejre!</div>
+                <div class="boss-health-bar">
+                    <div class="boss-health-fill" id="bossHealthFill"></div>
+                </div>
+                <div id="bossHealthText" style="font-size: 0.75rem; color: #ffaaaa;">❤️ 5.000 / 5.000</div>
+            </div>
+        </div>
+
+        <button class="prestige-btn" id="prestigeBtn">
+            🌟 PRESTIGE 🌟<br>
+            <small>Nulstil for +10% permanent bonus · Kræver 10M point</small>
+        </button>
+
+        <button class="reset-btn" id="resetBtn">🔄 Nulstil spil</button>
+    </div>
+</div>
+
+<script>
+    // BILLED-URL'ER
+    const WILLIAM_IMG_URL = "https://media-prod.aula.dk/profile-pictures/9096069_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%229096069_400x400.jpg%22&Expires=1776420000&Signature=TF7pfeatPbsvW3fSlx-Jov9rjHTRrN8sexeWjceM9B8ohSJAdUhYwbDtBZkrpyjshvcwfytLWuhSSZx6b22oR6Yh7yQBskgT3D1FFjr4Ntpk1XgMHbAuhuZHgNhezs0DKkpoVxsTA9x57wdx1TXEvc-XxpHD2jle28HG8GXdKQf4HUlDqp0tv5ywb4zueF0dVceLHrjS3Ds7Nhwp8nFC~Ini5B32K-FANcw6kusGCwaBhuG9ob2HK05Qj1Fio7knRC1DHyWppcOqNELvNdZpo17D7ymcBApQKVqElk6xwPf2l8Q5H26L3BnXTSxPiBgy2VIBiUvN6~S~0KH5oo1dxw__&Key-Pair-Id=APKAILBPECUQMHIBROXQ";
+    const AKSEL_IMG_URL = "https://media-prod.aula.dk/profile-pictures/9155257_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%229155257_400x400.jpg%22&Expires=1776420000&Signature=Gzhm3~mCed5-Ej2F~ZzKoUIO3nQmuidbtDiJgKvSr00b~jAQHfDl9yIaGIPxK9C3Wg8yTgYaw2EaE3dBzr0~p2rqgzbk6r4uxqk1MVP1XhIspNGuYijKb094wApaMI-GzX9Evj6SHaxbDekZz6ZiLqgXMgdT-1HelHjPmlD3HhyQyu20VRBc--w4HeX91fNAfEiuYaXCzRpzm9IaKbBz8VXMI--jqgyhCTj10sqE3YnHof~eq9CTCk6SgNl5xXX4KwRsSiKZzVGsaqWXY6JC44~Be1kdYnWKTgIiKJyaUkqH6YgRFaHjcuB6UHC3DAIbK6yphp71S6PpolGSQvJoYQ__&Key-Pair-Id=APKAILBPECUQMHIBROXQ";
+    const CARL_IMG_URL = "https://media-prod.aula.dk/profile-pictures/9139073_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%229139073_400x400.jpg%22&Expires=1776420000&Signature=BoRnzFfD2nwzJiYO6a59BE02bz2ZzLAh~YdrnltXvLuXfdwjydeR59r~znKkN1Ed1wYZjfr63kOH8f3Xd3JzSN2c8ICPL-eQTbh0xvO3SPB37q-IZfXt89uY4GeLYPfXW79Sp0vYzTyaCXuhhHylPJVTNIb36SZPjKm16xx6VXEn5fu9fYtorgVGMLh7HdznzHolTGV~AtL-dxtg~tPfQSy6I24Vkav8ZJmfKQ69LPF86KLFEA~NWeHA8iJu7~zGBOY2TRUeIKiL99ocrUhUi5ApvZG3-tbU-9~1sRvfrmz3iQKc5fzN8-NHraulzgzcaKxurLT43EFODCvRGORmQA__&Key-Pair-Id=APKAILBPECUQMHIBROXQ";
+    const SALEH_IMG_URL = "https://media-prod.aula.dk/profile-pictures/9802623_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%229802623_400x400.jpg%22&Expires=1776420000&Signature=fP4Na-KK-Cf1OesXmpeUT9bPDTEgN9CxkodQAB7GUb1eNZMIRAXlXCMl7BOCPyLEoxnwos66glSR2SyN6sMgAuGg11qbcV6geBejSIat302FgCMs7PPqzuNP95GJ5l7b5OxwNOUjiz9zFafw9EtvzZVd8H125k2oMax3VmHoZR8nGT6T-~rN~uhfakC5iGBIsP1oWl3btwCkK1eo8HQ8~eRMRz0oRPymbbmucnZVoVmZlWQCdVoDPiL0gSKI7NXMeRXZRvshMbXVildC6Hlt-AztQHTC8r8nLae4ocmm0aQuBiGsOv9JvB1Fl6jWLfVI78Y32aI1pZM9cdMdNuJJkA__&Key-Pair-Id=APKAILBPECUQMHIBROXQ";
+    const JOHANNES_IMG_URL = "https://media-prod.aula.dk/profile-pictures/9200259_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%229200259_400x400.jpg%22&Expires=1776423600&Signature=QyikzDtJevpp9YssIaFklFxhYInN-aivuzhVzZYObNLSdclXk2O-TnADC4GCY7KIhj1vxDAxUhm8lxRVJ9Sl51xgZJUBPsT2UZR98lgU-KMCFX74pY9oGquYRHRs6pmzyEdfdmW9JEhX~j52JcTPJ1Vs95i8W4bT8jvxRhI2QQvaorkDz2gENnLvs4N~XxnnYCAKf~VCT3Qr16aBuTlSEFgQHdx3ZWzXDP7UUdQ8tKCPcqUUAIz-gYTE8-mpAbYyRXO1zhMIk3z2twSG3N6dGhQamWfb-je3gt9GSZlwCv~pRdWZbvMnrD5UVH67wyY5IOI7nVuz93SvLX3rX3F45A__&Key-Pair-Id=APKAILBPECUQMHIBROXQ";
+
+    // SUPABASE CONFIG
+    const SUPABASE_URL = 'https://twuwlostiswxtivutyvd.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_Fhc4uhNVDEbR-4zQlD_mGg_irCRpGC9';
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Spil state
+    let currentUser = null;
+    let userId = null;
+    let points = 0;
+    let lifetimePoints = 0;
+    let totalClicks = 0;
+    let clickMultiplier = 1;
+    let prestigeLevel = 0;
+    let prestigeBonus = 1;
+    let hasGoat = false, hasCarl = false, hasSaleh = false, hasJohannes = false;
+    let doubleClickActive = false, autoClickActive = false, multiPointsActive = false;
+    let doubleClickEnd = 0, autoClickEnd = 0, multiPointsEnd = 0;
+    let achievements = [];
+    let goldenClicks = 0;
+    let easterEggClicks = 0;
+    let leaderboard = [];
+    
+    // Boss
+    let bossActive = false;
+    let bossHealth = 5000;
+    let bossMaxHealth = 5000;
+    let bossDefeated = false;
+    let bossDamageMultiplier = 1;
+    const bossReward = 50000;
+    const bossTriggerPoints = 50000;
+    
+    let goatInterval = null, carlInterval = null, salehInterval = null, johannesInterval = null;
+    let goldenWilliamTimeout;
+    let saveInterval;
+
+    // Avatarer
+    const AVATARS = ['🦊', '🐼', '🐨', '🦁', '🐸', '🐧', '🦉', '🦄'];
+    let selectedAvatar = AVATARS[0];
+
+    // DOM elementer
+    const loginOverlay = document.getElementById('loginOverlay');
+    const gameContainer = document.getElementById('gameContainer');
+    const profileBar = document.getElementById('profileBar');
+    const profileAvatar = document.getElementById('profileAvatar');
+    const profileName = document.getElementById('profileName');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    const clickPowerSpan = document.getElementById('clickPowerSpan');
+    const totalPtsPerSecSpan = document.getElementById('totalPtsPerSec');
+    const totalClicksSpan = document.getElementById('totalClicks');
+    const prestigeLevelSpan = document.getElementById('prestigeLevel');
+    const clickLevelSpan = document.getElementById('clickLevel');
+    const clickCostSpan = document.getElementById('clickCostSpan');
+    const williamArea = document.getElementById('williamClicker');
+    const akselWrapper = document.getElementById('akselWrapper');
+    const carlWrapper = document.getElementById('carlWrapper');
+    const salehWrapper = document.getElementById('salehWrapper');
+    const johannesWrapper = document.getElementById('johannesWrapper');
+    const easterEggTitle = document.getElementById('easterEggTitle');
+    const gameLeft = document.getElementById('gameLeft');
+    const bossCard = document.getElementById('bossCard');
+    const bossHealthFill = document.getElementById('bossHealthFill');
+    const bossHealthText = document.getElementById('bossHealthText');
+    const mouthElement = document.getElementById('mouthState');
+    const leaderboardList = document.getElementById('leaderboardList');
+    const errorMsg = document.getElementById('errorMsg');
+
+    // Sæt billeder
+    document.getElementById('williamImg').src = WILLIAM_IMG_URL;
+    document.getElementById('akselImg').src = AKSEL_IMG_URL;
+    document.getElementById('carlImg').src = CARL_IMG_URL;
+    document.getElementById('salehImg').src = SALEH_IMG_URL;
+    document.getElementById('johannesImg').src = JOHANNES_IMG_URL;
+
+    // Avatar grid
+    function setupAvatarGrid() {
+        const grid = document.getElementById('avatarGrid');
+        AVATARS.forEach(avatar => {
+            const div = document.createElement('div');
+            div.textContent = avatar;
+            div.className = 'avatar-option';
+            div.onclick = () => {
+                document.querySelectorAll('.avatar-option').forEach(el => el.classList.remove('selected'));
+                div.classList.add('selected');
+                selectedAvatar = avatar;
+            };
+            grid.appendChild(div);
+        });
+        grid.children[0].classList.add('selected');
+    }
+
+    function showError(msg) {
+        errorMsg.textContent = msg;
+        setTimeout(() => errorMsg.textContent = '', 3000);
+    }
+
+    // Login/Register
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const name = document.getElementById('loginName').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        
+        if (!name || !password) {
+            showError('Udfyld alle felter!');
+            return;
+        }
+        
+        const { data, error } = await supabase
+            .from('users')
+            .select('*')
+            .eq('name', name)
+            .eq('password', password)
+            .single();
+        
+        if (error) {
+            showError('Forkert brugernavn eller password!');
+        } else if (data) {
+            currentUser = data;
+            userId = data.id;
+            profileName.textContent = name;
+            profileAvatar.textContent = data.avatar || '🦊';
+            selectedAvatar = data.avatar;
+            
+            await loadGameFromCloud();
+            showGame();
+            showToast(`Velkommen tilbage, ${name}!`, '#00ff00');
+        }
+    });
+
+    document.getElementById('registerBtn').addEventListener('click', async () => {
+        const name = document.getElementById('loginName').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        
+        if (!name || !password) {
+            showError('Udfyld alle felter!');
+            return;
+        }
+        
+        const { data, error } = await supabase
+            .from('users')
+            .insert([{ name, password, avatar: selectedAvatar }])
+            .select()
+            .single();
+        
+        if (error) {
+            if (error.code === '23505') {
+                showError('Brugernavn er allerede taget!');
+            } else {
+                showError('Fejl: ' + error.message);
+            }
+        } else {
+            currentUser = data;
+            userId = data.id;
+            profileName.textContent = name;
+            profileAvatar.textContent = selectedAvatar;
+            
+            showGame();
+            showToast(`Konto oprettet! Velkommen, ${name}!`, '#00ff00');
+        }
+    });
+
+    document.getElementById('switchMode').addEventListener('click', () => {
+        const isLogin = document.getElementById('loginTitle').textContent.includes('LOGIN');
+        document.getElementById('loginTitle').textContent = isLogin ? '📝 OPRET KONTO' : '🔐 LOGIN';
+        document.getElementById('loginBtn').style.display = isLogin ? 'none' : 'block';
+        document.getElementById('registerBtn').style.display = isLogin ? 'block' : 'none';
+        document.getElementById('switchMode').textContent = isLogin ? '← Tilbage til login' : 'Opret ny konto →';
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+        await saveGameToCloud();
+        clearInterval(saveInterval);
+        location.reload();
+    });
+
+    function showGame() {
+        loginOverlay.classList.add('hidden');
+        gameContainer.classList.remove('hidden');
+        profileBar.classList.remove('hidden');
+        
+        startGoldenWilliam();
+        startGameLoop();
+        
+        saveInterval = setInterval(async () => {
+            await saveGameToCloud();
+        }, 5000);
+    }
+
+    async function saveGameToCloud() {
+        if (!userId) return;
+        
+        const gameData = {
+            points, lifetimePoints, totalClicks, clickMultiplier,
+            prestigeLevel, prestigeBonus, hasGoat, hasCarl, hasSaleh, hasJohannes,
+            goldenClicks, bossDefeated, updated_at: new Date()
+        };
+        
+        await supabase.from('game_saves').upsert({ user_id: userId, ...gameData });
+    }
+
+    async function loadGameFromCloud() {
+        if (!userId) return;
+        
+        const { data } = await supabase
+            .from('game_saves')
+            .select('*')
+            .eq('user_id', userId)
+            .single();
+        
+        if (data) {
+            points = data.points || 0;
+            lifetimePoints = data.lifetimePoints || 0;
+            totalClicks = data.totalClicks || 0;
+            clickMultiplier = data.clickMultiplier || 1;
+            prestigeLevel = data.prestigeLevel || 0;
+            prestigeBonus = data.prestigeBonus || 1;
+            hasGoat = data.hasGoat || false;
+            hasCarl = data.hasCarl || false;
+            hasSaleh = data.hasSaleh || false;
+            hasJohannes = data.hasJohannes || false;
+            goldenClicks = data.goldenClicks || 0;
+            bossDefeated = data.bossDefeated || false;
+            
+            if (hasGoat && !goatInterval) goatInterval = setInterval(() => { if (hasGoat) addPoints(10); }, 1000);
+            if (hasCarl && !carlInterval) carlInterval = setInterval(() => { if (hasCarl) addPoints(100); }, 1000);
+            if (hasSaleh && !salehInterval) salehInterval = setInterval(() => { if (hasSaleh) addPoints(1000); }, 1000);
+            if (hasJohannes && !johannesInterval) johannesInterval = setInterval(() => { if (hasJohannes) addPoints(10000); }, 1000);
+            
+            updateUI();
+        }
+    }
+
+    // Achievements
+    const ACHIEVEMENTS_LIST = [
+        { id: 'click_100', name: '100 Klik!', desc: 'Klik 100 gange', icon: '🖱️', check: () => totalClicks >= 100 },
+        { id: 'click_1000', name: '1000 Klik!', desc: 'Klik 1000 gange', icon: '🔥', check: () => totalClicks >= 1000 },
+        { id: 'goat_unlock', name: 'Aksel Unlocked', desc: 'Køb Aksel', icon: '🐐', check: () => hasGoat },
+        { id: 'carl_unlock', name: 'Carl Unlocked', desc: 'Køb Carl', icon: '🐄', check: () => hasCarl },
+        { id: 'saleh_unlock', name: 'Saleh Unlocked', desc: 'Køb Saleh', icon: '🍕', check: () => hasSaleh },
+        { id: 'johannes_unlock', name: 'Johannes Unlocked', desc: 'Køb Johannes', icon: '👨‍🌾', check: () => hasJohannes },
+        { id: 'all_unlocks', name: 'Samler', desc: 'Køb alle upgrades', icon: '👑', check: () => hasGoat && hasCarl && hasSaleh && hasJohannes }
+    ];
+
+    function setupAchievements() {
+        achievements = ACHIEVEMENTS_LIST.map(a => ({ ...a, unlocked: false }));
+        updateAchievementsDisplay();
+    }
+
+    function checkAchievements() {
+        let newUnlocks = false;
+        achievements.forEach(a => {
+            if (!a.unlocked && a.check()) {
+                a.unlocked = true;
+                newUnlocks = true;
+                showToast(`🏆 ACHIEVEMENT: ${a.name}!`, '#ffd700');
+            }
+        });
+        if (newUnlocks) updateAchievementsDisplay();
+    }
+
+    function updateAchievementsDisplay() {
+        const list = document.getElementById('achievementsList');
+        list.innerHTML = achievements.slice(0, 5).map(a => `
+            <div class="achievement-item ${a.unlocked ? 'unlocked' : ''}">
+                <span class="achievement-icon">${a.unlocked ? a.icon : '🔒'}</span>
+                <div>
+                    <div><strong>${a.name}</strong></div>
+                    <small>${a.desc}</small>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // GULD-WILLIAM
+    function startGoldenWilliam() {
+        scheduleGoldenWilliam();
+    }
+
+    function scheduleGoldenWilliam() {
+        if (goldenWilliamTimeout) clearTimeout(goldenWilliamTimeout);
+        const delay = 30000 + Math.random() * 30000;
+        goldenWilliamTimeout = setTimeout(spawnGoldenWilliam, delay);
+    }
+
+    function spawnGoldenWilliam() {
+        const golden = document.createElement('div');
+        golden.className = 'golden-william';
+        golden.style.left = (10 + Math.random() * 70) + '%';
+        golden.style.top = (10 + Math.random() * 70) + '%';
+        golden.innerHTML = `<img class="golden-william-img" src="${WILLIAM_IMG_URL}" alt="Guld William">`;
+        
+        let timeLeft = 10;
+        const timer = setInterval(() => {
+            timeLeft--;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                golden.remove();
+                scheduleGoldenWilliam();
+            }
+        }, 1000);
+        
+        golden.onclick = () => {
+            const bonus = 10000 * prestigeBonus * (multiPointsActive ? 3 : 1);
+            addPoints(bonus);
+            goldenClicks++;
+            showToast(`🥇 GULD-WILLIAM! +${Math.floor(bonus).toLocaleString()} point!`, '#ffd700');
+            clearInterval(timer);
+            golden.remove();
+            scheduleGoldenWilliam();
+        };
+        
+        document.body.appendChild(golden);
+    }
+
+    // Power-ups
+    document.getElementById('powerupDouble').addEventListener('click', () => {
+        if (points >= 5000 && !doubleClickActive) {
+            points -= 5000;
+            doubleClickActive = true;
+            doubleClickEnd = Date.now() + 30000;
+            showToast('💪 2x Klik aktiveret i 30 sekunder!', '#00ff00');
+            updateUI();
+        }
+    });
+
+    document.getElementById('powerupAuto').addEventListener('click', () => {
+        if (points >= 20000 && !autoClickActive) {
+            points -= 20000;
+            autoClickActive = true;
+            autoClickEnd = Date.now() + 60000;
+            showToast('🤖 Auto-klikker aktiveret i 60 sekunder!', '#00ff00');
+            updateUI();
+        }
+    });
+
+    document.getElementById('powerupMulti').addEventListener('click', () => {
+        if (points >= 50000 && !multiPointsActive) {
+            points -= 50000;
+            multiPointsActive = true;
+            multiPointsEnd = Date.now() + 45000;
+            showToast('✨ 3x Point aktiveret i 45 sekunder!', '#00ff00');
+            updateUI();
+        }
+    });
+
+    // Prestige
+    document.getElementById('prestigeBtn').addEventListener('click', () => {
+        if (points >= 10000000) {
+            prestigeLevel++;
+            prestigeBonus += 0.1;
+            points = 0;
+            hasGoat = hasCarl = hasSaleh = hasJohannes = false;
+            clickMultiplier = 1;
+            if (goatInterval) clearInterval(goatInterval);
+            if (carlInterval) clearInterval(carlInterval);
+            if (salehInterval) clearInterval(salehInterval);
+            if (johannesInterval) clearInterval(johannesInterval);
+            goatInterval = carlInterval = salehInterval = johannesInterval = null;
+            showToast(`🌟 PRESTIGE ${prestigeLevel}! +${Math.floor((prestigeBonus-1)*100)}% permanent bonus!`, '#ff00ff');
+            updateUI();
+        } else {
+            showToast('Du skal bruge 10.000.000 point!', '#ff4444');
+        }
+    });
+
+    // Easter egg
+    easterEggTitle.addEventListener('click', () => {
+        easterEggClicks++;
+        if (easterEggClicks >= 5) {
+            points += 999999;
+            lifetimePoints += 999999;
+            showToast('🔓 EASTER EGG: +999.999 point! 🔓', '#ffd700');
+            easterEggClicks = 0;
+            updateUI();
+        }
+        setTimeout(() => { easterEggClicks = 0; }, 1000);
+    });
+
+    // Boss fight
+    function startBossFight() {
+        if (bossDefeated || bossActive) return;
+        
+        bossActive = true;
+        bossHealth = bossMaxHealth;
+        bossCard.style.display = 'flex';
+        gameLeft.classList.add('boss-active');
+        
+        updateBossUI();
+        showToast('👹 ONDE WILLIAM DUKKER OP! KLIK FOR AT BESEJRE! 👹', '#ff4444');
+    }
+
+    function damageBoss(amount) {
+        if (!bossActive) return;
+        
+        const damage = amount * bossDamageMultiplier;
+        bossHealth -= damage;
+        
+        const damageDiv = document.createElement('div');
+        damageDiv.className = 'damage-number';
+        damageDiv.innerText = `-${Math.floor(damage)}`;
+        williamArea.appendChild(damageDiv);
+        setTimeout(() => damageDiv.remove(), 1000);
+        
+        if (bossHealth <= 0) {
+            defeatBoss();
+        }
+        
+        updateBossUI();
+    }
+
+    function defeatBoss() {
+        bossActive = false;
+        bossDefeated = true;
+        
+        bossCard.style.display = 'none';
+        gameLeft.classList.remove('boss-active');
+        
+        addPoints(bossReward);
+        showToast(`🏆 SEJR! 🏆 +${bossReward.toLocaleString()} point!`, '#ffd700');
+        
+        bossDamageMultiplier = 2;
+        clickMultiplier = clickMultiplier * 2;
+        
+        updateUI();
+    }
+
+    function updateBossUI() {
+        const healthPercent = (bossHealth / bossMaxHealth) * 100;
+        bossHealthFill.style.width = Math.max(0, healthPercent) + '%';
+        bossHealthText.innerText = `❤️ ${Math.max(0, Math.floor(bossHealth))} / ${bossMaxHealth}`;
+    }
+
+    // Game loop
+    function startGameLoop() {
+        setInterval(() => {
+            let earned = 0;
+            if (hasGoat) earned += 10;
+            if (hasCarl) earned += 100;
+            if (hasSaleh) earned += 1000;
+            if (hasJohannes) earned += 10000;
+            earned *= prestigeBonus;
+            if (multiPointsActive && Date.now() < multiPointsEnd) earned *= 3;
+            if (earned > 0) addPoints(earned);
+            
+            if (autoClickActive && Date.now() < autoClickEnd) {
+                onWilliamClick();
+            }
+            
+            if (doubleClickActive && Date.now() > doubleClickEnd) doubleClickActive = false;
+            if (autoClickActive && Date.now() > autoClickEnd) autoClickActive = false;
+            if (multiPointsActive && Date.now() > multiPointsEnd) multiPointsActive = false;
+            
+            updateUI();
+            checkAchievements();
+        }, 1000);
+    }
+
+    function addPoints(amount) {
+        points += amount;
+        lifetimePoints += amount;
+        updateUI();
+        
+        if (!bossDefeated && !bossActive && points >= bossTriggerPoints) {
+            startBossFight();
+        }
+    }
+
+    let mouthTimeout = null;
+    function animateMouth() {
+        if (mouthTimeout) clearTimeout(mouthTimeout);
+        mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 50\"><path fill=\"%23442211\" stroke=\"%23b97f44\" stroke-width=\"2\" d=\"M20,15 Q50,45 80,15 Q65,30 35,30 Q20,28 20,15Z\" /></svg>')";
+        mouthTimeout = setTimeout(() => {
+            mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
+        }, 180);
+    }
+
+    function onWilliamClick() {
+        let clickValue = clickMultiplier * prestigeBonus;
+        if (doubleClickActive && Date.now() < doubleClickEnd) clickValue *= 2;
+        if (multiPointsActive && Date.now() < multiPointsEnd) clickValue *= 3;
+        
+        addPoints(clickValue);
+        totalClicks++;
+        animateMouth();
+        
+        if (bossActive) {
+            damageBoss(clickValue);
+        }
+        
+        const img = document.querySelector('.william-img');
+        if (img) {
+            img.style.transform = 'scale(0.96)';
+            setTimeout(() => { if(img) img.style.transform = ''; }, 100);
+        }
+        
+        updateUI();
+        checkAchievements();
+    }
+
+    function updateUI() {
+        scoreDisplay.textContent = Math.floor(points).toLocaleString();
+        clickPowerSpan.textContent = Math.floor(clickMultiplier * prestigeBonus * (doubleClickActive ? 2 : 1) * (multiPointsActive ? 3 : 1));
+        totalClicksSpan.textContent = totalClicks.toLocaleString();
+        prestigeLevelSpan.textContent = prestigeLevel;
+        clickLevelSpan.textContent = clickMultiplier;
+        
+        const clickCost = 10 + (clickMultiplier - 1) * 8;
+        clickCostSpan.textContent = clickCost;
+        
+        let total = 0;
+        if (hasGoat) total += 10;
+        if (hasCarl) total += 100;
+        if (hasSaleh) total += 1000;
+        if (hasJohannes) total += 10000;
+        totalPtsPerSecSpan.textContent = Math.floor(total * prestigeBonus * (multiPointsActive ? 3 : 1));
+        
+        akselWrapper.style.display = hasGoat ? 'block' : 'none';
+        carlWrapper.style.display = hasCarl ? 'block' : 'none';
+        salehWrapper.style.display = hasSaleh ? 'block' : 'none';
+        johannesWrapper.style.display = hasJohannes ? 'block' : 'none';
+        
+        document.getElementById('powerupDouble').classList.toggle('active', doubleClickActive);
+        document.getElementById('powerupAuto').classList.toggle('active', autoClickActive);
+        document.getElementById('powerupMulti').classList.toggle('active', multiPointsActive);
+    }
+
+    function showToast(message, color = '#8B6914') {
+        const toast = document.createElement('div');
+        toast.className = 'easter-toast';
+        toast.style.background = color;
+        toast.innerHTML = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    // Buy functions
+    function buyClickUpgrade() {
+        let cost = 10 + (clickMultiplier - 1) * 8;
+        if (points >= cost) {
+            points -= cost;
+            clickMultiplier++;
+            updateUI();
+        }
+    }
+
+    function buyGoat() {
+        if (hasGoat) return;
+        if (points >= 50) {
+            points -= 50;
+            hasGoat = true;
+            if (goatInterval) clearInterval(goatInterval);
+            goatInterval = setInterval(() => { if (hasGoat) addPoints(10); }, 1000);
+            updateUI();
+            checkAchievements();
+        }
+    }
+
+    function buyCarl() {
+        if (hasCarl) return;
+        if (points >= 1000) {
+            points -= 1000;
+            hasCarl = true;
+            if (carlInterval) clearInterval(carlInterval);
+            carlInterval = setInterval(() => { if (hasCarl) addPoints(100); }, 1000);
+            updateUI();
+            checkAchievements();
+        }
+    }
+
+    function buySaleh() {
+        if (hasSaleh) return;
+        if (points >= 10000) {
+            points -= 10000;
+            hasSaleh = true;
+            if (salehInterval) clearInterval(salehInterval);
+            salehInterval = setInterval(() => { if (hasSaleh) addPoints(1000); }, 1000);
+            updateUI();
+            checkAchievements();
+        }
+    }
+
+    function buyJohannes() {
+        if (hasJohannes) return;
+        if (points >= 100000) {
+            points -= 100000;
+            hasJohannes = true;
+            if (johannesInterval) clearInterval(johannesInterval);
+            johannesInterval = setInterval(() => { if (hasJohannes) addPoints(10000); }, 1000);
+            updateUI();
+            checkAchievements();
+        }
+    }
+
+    function resetGame() {
+        points = 0;
+        totalClicks = 0;
+        clickMultiplier = 1;
+        hasGoat = hasCarl = hasSaleh = hasJohannes = false;
+        if (goatInterval) clearInterval(goatInterval);
+        if (carlInterval) clearInterval(carlInterval);
+        if (salehInterval) clearInterval(salehInterval);
+        if (johannesInterval) clearInterval(johannesInterval);
+        goatInterval = carlInterval = salehInterval = johannesInterval = null;
+        
+        bossActive = false;
+        bossDefeated = false;
+        bossCard.style.display = 'none';
+        gameLeft.classList.remove('boss-active');
+        
+        updateUI();
+    }
+
+    // Event listeners
+    williamArea.addEventListener('click', onWilliamClick);
+    document.getElementById('buyClickBtn').addEventListener('click', buyClickUpgrade);
+    document.getElementById('buyGoatBtn').addEventListener('click', buyGoat);
+    document.getElementById('buyCarlBtn').addEventListener('click', buyCarl);
+    document.getElementById('buySalehBtn').addEventListener('click', buySaleh);
+    document.getElementById('buyJohannesBtn').addEventListener('click', buyJohannes);
+    document.getElementById('resetBtn').addEventListener('click', resetGame);
+
+    // Init
+    setupAvatarGrid();
+    setupAchievements();
+    updateUI();
+
+    window.addEventListener('load', () => {
+        mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
+    });
+</script>
 </body>
 </html>
