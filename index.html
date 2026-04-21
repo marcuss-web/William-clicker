@@ -3,64 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>William Clicker ⭐ Power-ups · Marcus · Anonym · Rasmus Prange</title>
+    <title>William Clicker ✨ Aksel the Goat</title>
     <style>
         * {
             user-select: none;
             -webkit-tap-highlight-color: transparent;
             box-sizing: border-box;
         }
+
         body {
-            background: linear-gradient(145deg, #1a2a2f, #0a1117);
+            background: linear-gradient(145deg, #1e2a2e, #0f1a1f);
             min-height: 100vh;
-            font-family: 'Segoe UI', 'Quicksand', system-ui, sans-serif;
-            margin: 0;
-            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-family: 'Segoe UI', 'Quicksand', system-ui, 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
         }
-        .game-layout {
-            max-width: 1400px;
+
+        /* Hovedcontainer */
+        .game-wrapper {
+            max-width: 700px;
             width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            justify-content: center;
+            background: rgba(10, 14, 23, 0.65);
+            backdrop-filter: blur(4px);
+            border-radius: 85px;
+            padding: 20px 24px 40px;
+            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
         }
-        .game-left {
-            flex: 2;
-            min-width: 300px;
-            background: rgba(10, 14, 23, 0.6);
-            backdrop-filter: blur(5px);
-            border-radius: 70px;
-            padding: 25px 20px 35px;
-            box-shadow: 0 20px 35px rgba(0,0,0,0.4);
-            border: 1px solid #ffb34766;
-        }
-        .upgrade-panel {
-            flex: 1.2;
-            min-width: 280px;
-            max-height: 85vh;
-            overflow-y: auto;
-            background: #0b0e16cc;
-            backdrop-filter: blur(8px);
-            border-radius: 60px;
-            padding: 20px 18px;
-            border: 1px solid #f3aa4a88;
-            box-shadow: 0 10px 25px black;
-            scrollbar-width: thin;
-        }
-        .upgrade-panel::-webkit-scrollbar { width: 6px; }
-        .upgrade-panel::-webkit-scrollbar-track { background: #2a241e; border-radius: 10px; }
-        .upgrade-panel::-webkit-scrollbar-thumb { background: #f0a34b; border-radius: 10px; }
+
+        /* Score panel */
         .score-panel {
             background: #03050ce6;
             border-radius: 100px;
             padding: 12px 20px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             text-align: center;
+            box-shadow: inset 0 1px 4px #00000055, 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid #f3b33d88;
         }
+
+        .score-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ffdf9c;
+            letter-spacing: 1px;
+        }
+
         .score-value {
             font-size: 4rem;
             font-weight: 800;
@@ -69,636 +60,402 @@
             -webkit-background-clip: text;
             color: transparent;
             line-height: 1;
+            margin: 5px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        .per-second-stats {
-            background: #00000066;
-            border-radius: 40px;
-            padding: 12px;
-            margin: 15px 0;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .characters-row {
+
+        /* Klik-område med William + mund-animation */
+        .click-area {
             display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin: 15px 0;
-        }
-        .william-holder {
-            position: relative;
+            margin: 15px 0 15px;
             cursor: pointer;
-            transition: 0.05s linear;
+            transition: transform 0.05s linear;
+            position: relative;
+        }
+        .click-area:active {
+            transform: scale(0.97);
+        }
+
+        /* Billede-container til mund-effekt */
+        .william-container {
+            position: relative;
             display: inline-block;
         }
-        .william-holder:active { transform: scale(0.97); }
-        .william-img {
-            width: 210px;
-            height: 210px;
+
+        .william-base {
+            width: 260px;
+            height: 260px;
             object-fit: cover;
             border-radius: 50%;
-            box-shadow: 0 15px 25px black, 0 0 0 5px #f9b23f, 0 0 0 9px #d95b00;
-            background: #2c2e3e;
+            box-shadow: 0 18px 30px rgba(0, 0, 0, 0.6), 0 0 0 6px #f9b23f, 0 0 0 12px #d95b00;
+            transition: filter 0.05s, box-shadow 0.1s;
+            background: #2a2e40;
+            display: block;
         }
+
+        /* Mund lag - SVG / tegning over WilliAM */
         .mouth-overlay {
             position: absolute;
             bottom: 22%;
             left: 50%;
             transform: translateX(-50%);
-            width: 75px;
-            height: 40px;
+            width: 80px;
+            height: 38px;
             pointer-events: none;
+            transition: all 0.07s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            z-index: 15;
         }
-        .carl-on-head {
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 25;
-            pointer-events: none;
-            animation: hopHop 0.45s infinite ease-in-out;
+
+        .mouth-open {
+            content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><path fill="%23442211" stroke="%23b97f44" stroke-width="2" d="M20,15 Q50,45 80,15 Q65,30 35,30 Q20,28 20,15Z" /></svg>');
+            width: 90px;
+            height: 45px;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
         }
-        @keyframes hopHop {
-            0% { transform: translateX(-50%) translateY(0px); }
-            50% { transform: translateX(-50%) translateY(-14px); }
-            100% { transform: translateX(-50%) translateY(0px); }
+
+        .mouth-closed {
+            content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><path fill="%238B5A2B" stroke="%23c28544" stroke-width="2.2" d="M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z" /></svg>');
+            width: 85px;
+            height: 32px;
+            filter: drop-shadow(0 1px 1px black);
         }
-        .carl-head-img {
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            border: 3px solid #ffc107;
-            object-fit: cover;
-        }
-        .saleh-card {
-            background: #231f1acc;
-            border-radius: 60px;
-            padding: 12px 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border: 2px solid #ffaa55;
-        }
-        .saleh-img {
-            width: 110px;
-            height: 110px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #ffaa44;
-        }
-        .pizza-hand { font-size: 2.5rem; margin-top: 5px; }
-        .goat-orbit { display: flex; justify-content: center; margin: 15px 0; height: 85px; }
-        .orbit {
+
+        /* Aksel THE GOAT - cirkulerende sprite */
+        .goat-runner {
             position: relative;
+            display: flex;
+            justify-content: center;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            height: 70px;
+        }
+
+        .goat-orbiting {
+            position: relative;
+            display: inline-block;
             width: 60px;
             height: 60px;
             animation: orbitGoat 6s linear infinite;
         }
+
         @keyframes orbitGoat {
-            0% { transform: rotate(0deg) translateX(130px) rotate(0deg); }
-            100% { transform: rotate(360deg) translateX(130px) rotate(-360deg); }
+            0% { transform: rotate(0deg) translateX(110px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
         }
+
         .goat-img {
             width: 58px;
             height: 58px;
-            border-radius: 50%;
-            border: 2px solid gold;
             object-fit: cover;
-        }
-        .farmer-pig-area {
-            margin-top: 25px;
-            padding: 15px;
-            background: linear-gradient(180deg, #5d8c48, #3d6b2e);
-            border-radius: 50px;
-            border: 2px solid #c9a87b;
-            display: none;
-        }
-        .farmer-pig-area.active-field { display: block; }
-        .pig-field {
-            background: #8b5e3c;
-            border-radius: 30px;
-            padding: 10px;
-            position: relative;
-            height: 90px;
-        }
-        .pig-walk {
-            position: absolute;
-            bottom: 10px;
-            left: 0;
-            animation: walkOnPigField 7s linear infinite;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        @keyframes walkOnPigField {
-            0% { left: -70px; transform: scaleX(1); }
-            45% { left: calc(100% - 70px); transform: scaleX(1); }
-            50% { left: calc(100% - 70px); transform: scaleX(-1); }
-            95% { left: -70px; transform: scaleX(-1); }
-            100% { left: -70px; transform: scaleX(1); }
-        }
-        .johannes-img {
-            width: 55px;
-            height: 55px;
             border-radius: 50%;
-            border: 2px solid #ffd966;
-            object-fit: cover;
-        }
-        .pig-emoji { font-size: 2.2rem; margin-top: -8px; }
-        .farmer-label {
-            background: #2c1e0ecc;
-            font-size: 0.6rem;
-            padding: 2px 8px;
-            border-radius: 20px;
-            white-space: nowrap;
-            color: #ffecb3;
-            margin-top: 2px;
-        }
-        .powerup-card {
-            background: linear-gradient(115deg, #2a1f3a, #1a1028);
-            border-radius: 50px;
-            padding: 12px 18px;
-            margin-bottom: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            border: 1px solid #aa66ff;
-        }
-        .rasmus-area {
-            margin-top: 25px;
-            padding: 15px;
-            background: linear-gradient(135deg, #2d1b4e, #1a0a2e);
-            border-radius: 60px;
-            border: 3px solid #ff66cc;
-            box-shadow: 0 0 15px rgba(255,102,204,0.5);
-            display: none;
+            border: 3px solid #ffbe4d;
+            box-shadow: 0 0 0 2px #a45d2e, 0 8px 14px black;
+            background: #f0c674;
             cursor: pointer;
             transition: 0.1s;
         }
-        .rasmus-area.active-rasmus { display: block; animation: rasmusGlow 1s infinite alternate; }
-        @keyframes rasmusGlow {
-            0% { box-shadow: 0 0 10px rgba(255,102,204,0.3); border-color: #ff66cc; }
-            100% { box-shadow: 0 0 30px rgba(255,102,204,0.8); border-color: #ff99ee; }
-        }
-        .rasmus-area:active { transform: scale(0.98); }
-        .rasmus-container { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; justify-content: center; }
-        .rasmus-image { position: relative; }
-        .rasmus-img {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            border: 4px solid #ff66cc;
-            object-fit: cover;
-            filter: drop-shadow(0 0 10px magenta) brightness(1.1);
-            animation: rasmusFilter 2s infinite alternate;
-        }
-        @keyframes rasmusFilter {
-            0% { filter: drop-shadow(0 0 5px magenta) brightness(1); }
-            100% { filter: drop-shadow(0 0 20px hotpink) brightness(1.2); }
-        }
-        .rasmus-crown { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 2rem; }
-        .rasmus-info { text-align: center; }
-        .rasmus-name { font-size: 1.3rem; font-weight: bold; color: #ff88dd; text-shadow: 0 0 5px magenta; }
-        .rasmus-counter { background: #1a0a2e; padding: 5px 15px; border-radius: 50px; margin: 8px 0; }
-        .rasmus-clicks { font-size: 1.5rem; font-weight: bold; color: #ffccff; letter-spacing: 5px; }
-        .victory-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            animation: victoryPop 0.5s ease-out;
-        }
-        @keyframes victoryPop {
-            0% { transform: scale(0); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .victory-box {
-            background: linear-gradient(135deg, #ffd700, #ffaa00);
-            padding: 40px;
-            border-radius: 80px;
-            text-align: center;
-            box-shadow: 0 0 50px gold;
-        }
-        .victory-text { font-size: 3rem; font-weight: bold; color: #2c2c2c; }
-        .victory-sub { font-size: 1.2rem; margin-top: 20px; }
-        .victory-btn {
-            background: #2c2c2c;
-            color: gold;
-            border: none;
-            padding: 12px 30px;
+
+        .goat-label {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d2418cc;
+            backdrop-filter: blur(4px);
+            font-size: 0.7rem;
+            font-weight: bold;
+            padding: 2px 8px;
             border-radius: 50px;
-            font-size: 1.2rem;
-            margin-top: 25px;
-            cursor: pointer;
+            color: #ffdd99;
+            white-space: nowrap;
+            pointer-events: none;
         }
+
+        /* Stats + upgrades sektion */
+        .upgrade-zone {
+            background: #0b0e16aa;
+            backdrop-filter: blur(8px);
+            border-radius: 55px;
+            padding: 18px 20px;
+            margin-top: 20px;
+            border: 1px solid #f3aa4a66;
+        }
+
+        .per-click-row {
+            display: flex;
+            justify-content: space-between;
+            background: #00000066;
+            padding: 10px 20px;
+            border-radius: 60px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #ffdaa5;
+        }
+
+        .dps-info {
+            font-size: 1rem;
+            background: #211d14;
+            padding: 5px 16px;
+            border-radius: 40px;
+            display: inline-flex;
+            gap: 10px;
+        }
+
+        .upgrade-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
         .upgrade-card {
             background: linear-gradient(115deg, #262b3f, #191e2f);
-            border-radius: 50px;
-            padding: 12px 18px;
-            margin-bottom: 16px;
+            border-radius: 60px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             border: 1px solid #f6b55766;
+            transition: 0.1s;
         }
-        .upgrade-info { flex: 2; }
-        .upgrade-name { font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; color: #ffe1ae; }
-        .upgrade-desc { font-size: 0.7rem; color: #cfbc8f; }
+
+        .upgrade-info {
+            flex: 2;
+        }
+
+        .upgrade-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffe1ae;
+        }
+
+        .mini-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid gold;
+        }
+
+        .upgrade-desc {
+            font-size: 0.7rem;
+            color: #cfbc8f;
+        }
+
         .upgrade-cost {
             font-weight: bold;
             background: #1a1208;
-            padding: 5px 14px;
+            padding: 6px 15px;
             border-radius: 50px;
             font-family: monospace;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #ffcf7a;
             margin-right: 12px;
         }
+
         button.buy-btn {
             background: #e48f2b;
             border: none;
             font-weight: bold;
-            padding: 6px 16px;
+            padding: 8px 18px;
             border-radius: 40px;
             color: #201c10;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: pointer;
+            transition: 0.07s linear;
             box-shadow: 0 3px 0 #784a1a;
+            font-family: inherit;
         }
-        button.buy-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #784a1a; }
-        button.buy-btn.disabled-btn { opacity: 0.6; cursor: not-allowed; }
+        button.buy-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #784a1a;
+        }
+        button.buy-btn.disabled-btn {
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
+            filter: grayscale(0.1);
+        }
+
+        .reset-area {
+            text-align: center;
+            margin-top: 18px;
+        }
         .reset-btn {
             background: #3e2a24;
             border: none;
             color: #ffbe89;
-            padding: 8px 20px;
+            padding: 6px 18px;
             border-radius: 60px;
             font-weight: bold;
-            margin-top: 15px;
-            width: 100%;
             cursor: pointer;
         }
-        footer { font-size: 0.7rem; text-align: center; margin-top: 15px; color: #af9a74; }
-        .hidden-saleh { display: none; }
-        .easter-toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ffd966;
-            color: #2c2c2c;
-            padding: 10px 20px;
-            border-radius: 50px;
-            font-weight: bold;
-            z-index: 999;
-            animation: fadeOut 2s forwards;
-            pointer-events: none;
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 15px;
+            color: #af9a74;
         }
-        @keyframes fadeOut {
-            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            100% { opacity: 0; transform: translateX(-50%) translateY(-30px); visibility: hidden; }
-        }
-        .section-title {
-            color: #ffcf7a;
-            margin-top: 20px;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            border-bottom: 1px solid #ffb34755;
-            padding-bottom: 5px;
+        @media (max-width: 550px) {
+            .william-base { width: 200px; height: 200px; }
+            .mouth-overlay { bottom: 20%; width: 60px; }
+            .mouth-open, .mouth-closed { transform: scale(0.8); }
+            .goat-orbiting { animation: orbitGoat 5s linear infinite; }
+            @keyframes orbitGoat {
+                0% { transform: rotate(0deg) translateX(85px) rotate(0deg); }
+                100% { transform: rotate(360deg) translateX(85px) rotate(-360deg); }
+            }
         }
     </style>
 </head>
 <body>
-
-<div class="game-layout">
-    <div class="game-left">
-        <div class="score-panel">
-            <div class="score-value" id="scoreDisplay">0</div>
-            <div class="per-second-stats">
-                <span>💪 Klikkraft: <strong id="clickPowerSpan">1</strong></span>
-                <span>⚡ Point/sek: <strong id="totalPtsPerSec">0</strong></span>
-                <span>⭐ Klik Multi: <strong id="clickMultiSpan">1x</strong></span>
-            </div>
+<div class="game-wrapper">
+    <div class="score-panel">
+        <div class="score-title">🍪 WILLIAM POINTS</div>
+        <div class="score-value" id="scoreDisplay">0</div>
+        <div class="per-click-row">
+            <span>👆 KRAFT PR. KLIK:</span>
+            <span id="clickPowerSpan">1</span>
         </div>
-
-        <div class="characters-row">
-            <div class="william-holder" id="williamClicker">
-                <img class="william-img" id="williamImg" src="https://i.imgur.com/tOA4mV1.jpeg" alt="William">
-                <div class="mouth-overlay mouth-closed" id="mouthState"></div>
-                <div id="carlHeadContainer" style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); z-index: 30; pointer-events: none; display: none;">
-                    <div class="carl-on-head">
-                        <img id="carlHeadImg" class="carl-head-img" src="https://i.imgur.com/TALXHKW.jpeg" alt="Carl">
-                    </div>
-                </div>
-            </div>
-            <div id="salehContainer" class="saleh-card hidden-saleh">
-                <img class="saleh-img" id="salehImg" src="https://i.imgur.com/oDSD9gL.jpeg" alt="Saleh">
-                <div class="pizza-hand">🍕</div>
-                <div style="font-size:0.8rem; font-weight:bold;">PIZZA SALEH</div>
-                <div id="salehStatus" style="font-size:0.7rem;">🔒 Koster 10.000</div>
-            </div>
-        </div>
-
-        <div id="goatWrapper" style="display: none;" class="goat-orbit">
-            <div class="orbit">
-                <img class="goat-img" id="akselGoatImg" src="https://i.imgur.com/vzsUvSf.jpeg" alt="Aksel">
-                <div style="text-align:center; font-size:0.6rem;">🐐 Aksel</div>
-            </div>
-        </div>
-        
-        <div id="johannesArea" class="farmer-pig-area">
-            <div class="pig-field">
-                <div class="pig-walk">
-                    <div class="johannes-on-pig">
-                        <img id="johannesImg" class="johannes-img" src="https://i.imgur.com/Xn4CWKd.jpeg" alt="Johannes">
-                        <div class="pig-emoji">🐷</div>
-                        <div class="farmer-label">👨‍🌾 Johannes på gris</div>
-                    </div>
-                </div>
-            </div>
-            <div style="text-align:center; font-size:0.7rem; margin-top:8px; color:#a5d6a7;">🌾 Giver 10.000/sek 🌾</div>
-        </div>
-        
-        <div id="rasmusArea" class="rasmus-area">
-            <div class="rasmus-container">
-                <div class="rasmus-image">
-                    <div class="rasmus-crown">👑✨</div>
-                    <img class="rasmus-img" id="rasmusImg" src="https://media-prod.aula.dk/profile-pictures/7874719_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%227874719_400x400.jpg%22&Expires=1776427200&Signature=EiKDqFULodzxekAefDDNFb~ENvT2UdxDIOiOmtCkCACYOm-1d~5jKPXpvWgXspzJOKD~TppfFt7N33H6NpiXtFM2dQRisfU2f1hOrvkTPY34cPtpy087hocqvhfr-mOz~5LDHEEBmcZsTcIzyGpJSRKlRhg0rAW39jBXTjAA1C4pwqFg8P41tMogUNAAjlAUqt9a~3fUFZZCkh-CbRMCpgE9-Z1mfJmpPuxf9UIZ~jazcariotTHe30z7ViJBNHJ68sHSrcr~Qloz20OZ~9r5yLAknrJqC6Fizg~8NRUFLJzUQpBe2TXXx81FwpviSsUMm6sNoQYtxPdGZh031fKjw__&Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="Rasmus">
-                </div>
-                <div class="rasmus-info">
-                    <div class="rasmus-name">⭐ RASMUS PRANGE ⭐</div>
-                    <div class="rasmus-counter">Tryk på ham! <span id="rasmusClickCount">0</span>/10</div>
-                    <div class="rasmus-clicks" id="rasmusProgress">⬜⬜⬜⬜⬜⬜⬜⬜⬜⬜</div>
-                </div>
-            </div>
-        </div>
-        
-        <footer>👇 Klik på William – mund åbnes! Køb upgrades til højre 👉</footer>
     </div>
 
-    <div class="upgrade-panel">
-        <h3 style="color:#ffcf7a; margin-top:0; text-align:center; cursor:pointer;" id="easterEggTitle">✨ UPGRADES ✨</h3>
-        
-        <div class="section-title">💪 KLIK-OPGRADERINGER</div>
-        
-        <div class="upgrade-card">
-            <div class="upgrade-info">
-                <div class="upgrade-name">💪 Stærkere Klik</div>
-                <div class="upgrade-desc">+1 point pr. klik (nuværende: <span id="clickLevel">1</span>)</div>
-            </div>
-            <div class="upgrade-cost" id="clickCostSpan">10</div>
-            <button class="buy-btn" id="buyClickBtn">KØB</button>
+    <!-- William klikområde med mund-animation -->
+    <div class="click-area" id="williamClicker">
+        <div class="william-container">
+            <img class="william-base" id="williamImg" src="https://media-prod.aula.dk/profile-pictures/9096069.jpg?response-content-disposition=attachment%3Bfilename%3D%229096069.jpg%22&amp;Expires=1776416400&amp;Signature=dKDS1BMZd7D3xhJurPS2rLfjpqEUYBgPWa67aQKs1xK-wBkPrZ1hW0dYoPRm-phg-6k9w4gihq3x2Dgyp4FVSSnWdtCElHQO8R2CuT1aj0PAk75rLV92RK1UqQ97b1mXK3AhrwV9DDYfDs3PPv11qzR~ghjwWDREwdoECdEdvfriVS6Mz-3zIPXJ9AJLz~2HdgNWBBSETbeaXnJBilDJ~qNkPd0PqDdGbFk057AbRsN6zwSbS0BmgJ9mOQahsWxQ~GqSYOXZatH9rDxGRIuNPgB217fctBKb7FXdM7phOSP9mniLQv9aAV0SOqpqhdD2UbMSL-Pqvxwo~1iX~rn2jg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="William Noah Hald">
+            <div class="mouth-overlay mouth-closed" id="mouthState"></div>
         </div>
-
-        <div class="section-title">👥 PASSIVE INDTÆGTER</div>
-
-        <div class="upgrade-card">
-            <div class="upgrade-info">
-                <div class="upgrade-name">🐐 Aksel the GOAT</div>
-                <div class="upgrade-desc">Går rundt om William – giver +10 point/sek</div>
-            </div>
-            <div class="upgrade-cost" id="goatCostSpan">50</div>
-            <button class="buy-btn" id="buyGoatBtn">KØB</button>
-        </div>
-
-        <div class="upgrade-card">
-            <div class="upgrade-info">
-                <div class="upgrade-name">🐄 Carl er en Kal</div>
-                <div class="upgrade-desc">Hopper på Williams hoved – giver +100 point/sek</div>
-            </div>
-            <div class="upgrade-cost" id="carlCostSpan">1000</div>
-            <button class="buy-btn" id="buyCarlBtn">KØB</button>
-        </div>
-
-        <div class="upgrade-card">
-            <div class="upgrade-info">
-                <div class="upgrade-name">🍕 Pizza Saleh</div>
-                <div class="upgrade-desc">Holder en pizza – giver +1.000 point/sek</div>
-            </div>
-            <div class="upgrade-cost" id="salehCostSpan">10000</div>
-            <button class="buy-btn" id="buySalehBtn">KØB</button>
-        </div>
-
-        <div class="upgrade-card">
-            <div class="upgrade-info">
-                <div class="upgrade-name">👨‍🌾 Johannes på Gris</div>
-                <div class="upgrade-desc">Rider på en gris – giver +10.000 point/sek</div>
-            </div>
-            <div class="upgrade-cost" id="johannesCostSpan">100000</div>
-            <button class="buy-btn" id="buyJohannesBtn">KØB</button>
-        </div>
-
-        <div class="section-title">⚡ POWER-UPS (Midlertidige boosts)</div>
-
-        <div class="powerup-card" id="powerupMarcusCard">
-            <div class="upgrade-info">
-                <div class="upgrade-name">⭐ Marcus - Kritisk Klik</div>
-                <div class="upgrade-desc">Næste 10 klik giver 10x point! (Aktiver når klar)</div>
-            </div>
-            <div class="upgrade-cost" id="marcusCostSpan">5000</div>
-            <button class="buy-btn" id="buyMarcusBtn">AKTIVER</button>
-        </div>
-
-        <div class="powerup-card" id="powerupAnonymCard">
-            <div class="upgrade-info">
-                <div class="upgrade-name">🕵️ Anonym - Hacker Boost</div>
-                <div class="upgrade-desc">Dobbelt passiv indtægt i 30 sekunder</div>
-            </div>
-            <div class="upgrade-cost" id="anonymCostSpan">25000</div>
-            <button class="buy-btn" id="buyAnonymBtn">AKTIVER</button>
-        </div>
-
-        <div class="section-title">👑 ULTIMATE BOSS</div>
-
-        <div class="upgrade-card">
-            <div class="upgrade-info">
-                <div class="upgrade-name">👑 Rasmus Prange</div>
-                <div class="upgrade-desc">⭐ Tryk på ham 10 gange og VIND spillet! ⭐</div>
-            </div>
-            <div class="upgrade-cost" id="rasmusCostSpan">1000000</div>
-            <button class="buy-btn" id="buyRasmusBtn">KØB (1.000.000)</button>
-        </div>
-
-        <button class="reset-btn" id="resetBtn">🔄 Nulstil spil</button>
     </div>
+
+    <!-- Aksel the goat der går rundt om William (cirkulerende) -->
+    <div class="goat-runner" id="goatOrbitZone" style="min-height: 85px;">
+        <!-- Dynamisk hvis man har købt Aksel, vises animationen -->
+        <div id="goatWrapper" style="display: none;">
+            <div class="goat-orbiting">
+                <img class="goat-img" id="akselGoatImg" src="https://media-prod.aula.dk/profile-pictures/9155257.jpg?response-content-disposition=attachment%3Bfilename%3D%229155257.jpg%22&amp;Expires=1776416400&amp;Signature=E-g0wFe4oUNEvMmVf3R6BEw6JoyuLwEKv6vhXArP5AMVjvYjpfD5uQVSB~IgCwZg3lv0pK38q4wpzqYITnkErNWDOG7nU3d2Zub3f07VMRFuhjMaRWCRY5oj8Jp2HpYvQWW8SCA~u946n5WU0uxfNHJNiUmHNJXVqtW0AtZ~A94tnZGta9tU35vhAEYdExwTR5sqhT1b2UKrpy1IL8H8clylIlNt0TOaS9ruQdvyH7rJqE9Ju1KNKJYAmrqJesqKzvBvRFL2aSi9Gc67l-4Oo4bKOXjr6F5vRyD-x0~wi1bnweivpavJQuTyO3QkPxWXFvvHpLjK4ElFDDng4RYECg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="Aksel the goat">
+                <div class="goat-label">🐐 Aksel</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upgrades sektion -->
+    <div class="upgrade-zone">
+        <div class="upgrade-list">
+            <!-- Upgrade 1: Øg klikstyrke -->
+            <div class="upgrade-card" id="upgradeClickCard">
+                <div class="upgrade-info">
+                    <div class="upgrade-name">💪 Stærkere Klik</div>
+                    <div class="upgrade-desc">+1 point per klik (nuværende: <span id="clickLevel">1</span>)</div>
+                </div>
+                <div class="upgrade-cost" id="clickCostSpan">10</div>
+                <button class="buy-btn" id="buyClickBtn">KØB</button>
+            </div>
+
+            <!-- Upgrade 2: Aksel the goat - går rundt og giver 1 click/sek -->
+            <div class="upgrade-card" id="upgradeGoatCard">
+                <div class="upgrade-info">
+                    <div class="upgrade-name">
+                        <span>🐐 Aksel the GOAT</span>
+                        <img class="mini-avatar" src="https://media-prod.aula.dk/profile-pictures/9155257.jpg?response-content-disposition=attachment%3Bfilename%3D%229155257.jpg%22&amp;Expires=1776416400&amp;Signature=E-g0wFe4oUNEvMmVf3R6BEw6JoyuLwEKv6vhXArP5AMVjvYjpfD5uQVSB~IgCwZg3lv0pK38q4wpzqYITnkErNWDOG7nU3d2Zub3f07VMRFuhjMaRWCRY5oj8Jp2HpYvQWW8SCA~u946n5WU0uxfNHJNiUmHNJXVqtW0AtZ~A94tnZGta9tU35vhAEYdExwTR5sqhT1b2UKrpy1IL8H8clylIlNt0TOaS9ruQdvyH7rJqE9Ju1KNKJYAmrqJesqKzvBvRFL2aSi9Gc67l-4Oo4bKOXjr6F5vRyD-x0~wi1bnweivpavJQuTyO3QkPxWXFvvHpLjK4ElFDDng4RYECg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="aksel">
+                    </div>
+                    <div class="upgrade-desc">✨ Går rundt om William og giver +1 point hvert sekund</div>
+                </div>
+                <div class="upgrade-cost" id="goatCostSpan">50</div>
+                <button class="buy-btn" id="buyGoatBtn">KØB</button>
+            </div>
+        </div>
+        <div class="reset-area">
+            <button class="reset-btn" id="resetBtn">🔄 Nulstil spil</button>
+        </div>
+    </div>
+    <footer>👑 Klik på William → han åbner munden! Køb Aksel for passiv indkomst 🐐</footer>
 </div>
 
 <script>
-    // Spil data
+    // ------ SPIL STATUS ------
     let points = 0;
-    let clickMultiplier = 1;
-    let hasGoat = false, hasCarl = false, hasSaleh = false, hasJohannes = false, hasRasmus = false;
-    let rasmusClicks = 0;
-    let infiniteMoney = false;
-    let easterEggClicks = 0;
-    let gameWon = false;
-    let goatInterval, carlInterval, salehInterval, johannesInterval;
-    
-    // Power-ups
-    let marcusActive = false;
-    let marcusClicksLeft = 0;
-    let anonymActive = false;
-    let anonymInterval = null;
+    let clickMultiplier = 1;      // start: +1 per klik
+    let hasGoat = false;          // om aksel er købt
+    let goatInterval = null;
 
-    // DOM
+    // DOM elementer
     const scoreDisplay = document.getElementById('scoreDisplay');
     const clickPowerSpan = document.getElementById('clickPowerSpan');
     const clickLevelSpan = document.getElementById('clickLevel');
-    const clickMultiSpan = document.getElementById('clickMultiSpan');
-    const totalPtsPerSecSpan = document.getElementById('totalPtsPerSec');
     const clickCostSpan = document.getElementById('clickCostSpan');
     const goatCostSpan = document.getElementById('goatCostSpan');
-    const carlCostSpan = document.getElementById('carlCostSpan');
-    const salehCostSpan = document.getElementById('salehCostSpan');
-    const johannesCostSpan = document.getElementById('johannesCostSpan');
-    const rasmusCostSpan = document.getElementById('rasmusCostSpan');
-    const marcusCostSpan = document.getElementById('marcusCostSpan');
-    const anonymCostSpan = document.getElementById('anonymCostSpan');
-    
     const buyClickBtn = document.getElementById('buyClickBtn');
     const buyGoatBtn = document.getElementById('buyGoatBtn');
-    const buyCarlBtn = document.getElementById('buyCarlBtn');
-    const buySalehBtn = document.getElementById('buySalehBtn');
-    const buyJohannesBtn = document.getElementById('buyJohannesBtn');
-    const buyRasmusBtn = document.getElementById('buyRasmusBtn');
-    const buyMarcusBtn = document.getElementById('buyMarcusBtn');
-    const buyAnonymBtn = document.getElementById('buyAnonymBtn');
     const resetBtn = document.getElementById('resetBtn');
     const mouthElement = document.getElementById('mouthState');
     const williamArea = document.getElementById('williamClicker');
-    const goatWrapper = document.getElementById('goatWrapper');
-    const carlHeadContainer = document.getElementById('carlHeadContainer');
-    const salehContainer = document.getElementById('salehContainer');
-    const salehStatusSpan = document.getElementById('salehStatus');
-    const johannesArea = document.getElementById('johannesArea');
-    const rasmusArea = document.getElementById('rasmusArea');
-    const rasmusClickCountSpan = document.getElementById('rasmusClickCount');
-    const rasmusProgressSpan = document.getElementById('rasmusProgress');
-    const easterEggTitle = document.getElementById('easterEggTitle');
+    const goatWrapperDiv = document.getElementById('goatWrapper');
 
-    function showToast(msg) {
-        let toast = document.createElement('div');
-        toast.className = 'easter-toast';
-        toast.innerText = msg;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2500);
-    }
-
-    // EASTER EGG
-    easterEggTitle.addEventListener('click', () => {
-        if (gameWon) return;
-        easterEggClicks++;
-        if (easterEggClicks >= 5 && !infiniteMoney) {
-            infiniteMoney = true;
-            points = 999999999;
-            updateUI();
-            showToast('🥚 EASTER EGG! UENDELIGE PENGE! 🥚');
-            easterEggClicks = 0;
-        }
-        setTimeout(() => { if (easterEggClicks < 5) easterEggClicks = 0; }, 1000);
-    });
-
-    function calcTotalIncome() {
-        let total = 0;
-        if (hasGoat) total += 10;
-        if (hasCarl) total += 100;
-        if (hasSaleh) total += 1000;
-        if (hasJohannes) total += 10000;
-        return total;
-    }
-
+    // Opdater UI af point og klikkraft
     function updateUI() {
-        if (gameWon) return;
-        if (infiniteMoney) scoreDisplay.innerText = "∞";
-        else scoreDisplay.innerText = Math.floor(points);
-        
+        scoreDisplay.innerText = Math.floor(points);
         clickPowerSpan.innerText = clickMultiplier;
         clickLevelSpan.innerText = clickMultiplier;
-        clickMultiSpan.innerText = marcusActive ? '10x (aktiv)' : '1x';
-        
-        let clickCost = 10 + (clickMultiplier - 1) * 8;
+        // Opdater knap tilstande
+        const clickCost = getClickUpgradeCost();
         clickCostSpan.innerText = clickCost;
-        goatCostSpan.innerText = 50;
-        carlCostSpan.innerText = 1000;
-        salehCostSpan.innerText = 10000;
-        johannesCostSpan.innerText = 100000;
-        rasmusCostSpan.innerText = 1000000;
-        marcusCostSpan.innerText = 5000;
-        anonymCostSpan.innerText = 25000;
-        
-        if (infiniteMoney) {
+        const goatCost = 50;
+        goatCostSpan.innerText = goatCost;
+
+        if (points >= clickCost) {
             buyClickBtn.disabled = false;
-            buyGoatBtn.disabled = hasGoat;
-            buyCarlBtn.disabled = hasCarl;
-            buySalehBtn.disabled = hasSaleh;
-            buyJohannesBtn.disabled = hasJohannes;
-            buyRasmusBtn.disabled = hasRasmus;
-            buyMarcusBtn.disabled = marcusActive;
-            buyAnonymBtn.disabled = anonymActive;
+            buyClickBtn.classList.remove('disabled-btn');
         } else {
-            buyClickBtn.disabled = (points < clickCost);
-            buyGoatBtn.disabled = (hasGoat || points < 50);
-            buyCarlBtn.disabled = (hasCarl || points < 1000);
-            buySalehBtn.disabled = (hasSaleh || points < 10000);
-            buyJohannesBtn.disabled = (hasJohannes || points < 100000);
-            buyRasmusBtn.disabled = (hasRasmus || points < 1000000);
-            buyMarcusBtn.disabled = (marcusActive || points < 5000);
-            buyAnonymBtn.disabled = (anonymActive || points < 25000);
+            buyClickBtn.disabled = true;
+            buyClickBtn.classList.add('disabled-btn');
         }
-        
-        buyGoatBtn.innerText = hasGoat ? '🐐 AKTIV' : 'KØB';
-        buyCarlBtn.innerText = hasCarl ? '🐄 HOPPER' : 'KØB';
-        buySalehBtn.innerText = hasSaleh ? '🍕 AKTIV' : 'KØB';
-        buyJohannesBtn.innerText = hasJohannes ? '👨‍🌾 PÅ GRIS' : 'KØB';
-        buyRasmusBtn.innerText = hasRasmus ? '👑 VIND!' : 'KØB';
-        buyMarcusBtn.innerText = marcusActive ? '⭐ AKTIV!' : 'AKTIVER (10x i 10 klik)';
-        buyAnonymBtn.innerText = anonymActive ? '🕵️ AKTIV!' : 'AKTIVER (2x indtægt 30 sek)';
-        
-        if (hasSaleh) {
-            salehContainer.classList.remove('hidden-saleh');
-            salehStatusSpan.innerText = '✅ Giver 1.000/sek!';
+
+        if (!hasGoat && points >= goatCost) {
+            buyGoatBtn.disabled = false;
+            buyGoatBtn.classList.remove('disabled-btn');
+        } else if (hasGoat) {
+            buyGoatBtn.disabled = true;
+            buyGoatBtn.classList.add('disabled-btn');
+            buyGoatBtn.innerText = 'AKSEL ✔️';
         } else {
-            salehContainer.classList.add('hidden-saleh');
-            salehStatusSpan.innerText = '🔒 Koster 10.000';
+            buyGoatBtn.disabled = true;
+            buyGoatBtn.classList.add('disabled-btn');
         }
-        
-        carlHeadContainer.style.display = hasCarl ? 'block' : 'none';
-        goatWrapper.style.display = hasGoat ? 'flex' : 'none';
-        johannesArea.classList.toggle('active-field', hasJohannes);
-        rasmusArea.classList.toggle('active-rasmus', hasRasmus && !gameWon);
-        
-        let total = calcTotalIncome();
-        if (anonymActive) total *= 2;
-        totalPtsPerSecSpan.innerText = total;
+
+        if (!hasGoat) {
+            buyGoatBtn.innerText = 'KØB';
+        } else {
+            buyGoatBtn.innerText = '🐐 AKTIVERET';
+        }
     }
-    
+
+    // Pris for næste klik-upgrade: basis 10, stiger med 8 per niveau (clickMultiplier)
+    function getClickUpgradeCost() {
+        let base = 10;
+        let increase = (clickMultiplier - 1) * 8;
+        return base + increase;
+    }
+
+    // Læg point til (kan komme fra klik eller goat)
     function addPoints(amount) {
-        if (!infiniteMoney && !gameWon) {
-            points += amount;
-            if (points < 0) points = 0;
-        }
+        points += amount;
+        if (points < 0) points = 0;
         updateUI();
+        // Tjek goat animation (hvis goat ejes, skal den være synlig)
+        syncGoatVisual();
     }
-    
+
+    // mund-animation: åben/luk ved klik (hurtig)
     let mouthTimeout = null;
     function animateMouth() {
         if (mouthTimeout) clearTimeout(mouthTimeout);
         mouthElement.classList.remove('mouth-closed');
         mouthElement.classList.add('mouth-open');
+        // skift til open svg
         mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 50\"><path fill=\"%23442211\" stroke=\"%23b97f44\" stroke-width=\"2\" d=\"M20,15 Q50,45 80,15 Q65,30 35,30 Q20,28 20,15Z\" /></svg>')";
         mouthTimeout = setTimeout(() => {
             if (mouthElement) {
@@ -708,193 +465,129 @@
             }
         }, 180);
     }
-    
-    function onWilliamClick() {
-        if (gameWon) return;
+
+    // Klik på William
+    function onClickWilliam() {
         let gain = clickMultiplier;
-        if (marcusActive && marcusClicksLeft > 0) {
-            gain = clickMultiplier * 10;
-            marcusClicksLeft--;
-            if (marcusClicksLeft <= 0) {
-                marcusActive = false;
-                showToast('⭐ Marcus effekt slut! Tilbage til normal klikstyrke ⭐');
-                updateUI();
-            }
-        }
         addPoints(gain);
+        // Mund åbner og lukker
         animateMouth();
-        const img = document.querySelector('.william-img');
+        // Ekstra visuel feed-back: kort skaler (CSS gør det meste)
+        const img = document.querySelector('.william-base');
         if (img) {
-            img.style.transform = 'scale(0.96)';
+            img.style.transform = 'scale(0.98)';
             setTimeout(() => { if(img) img.style.transform = ''; }, 100);
         }
     }
-    
+
+    // Køb klik-upgrade
     function buyClickUpgrade() {
-        if (gameWon) return;
-        let cost = 10 + (clickMultiplier - 1) * 8;
-        if (infiniteMoney) {
-            clickMultiplier++;
-            updateUI();
-        } else if (points >= cost) {
+        let cost = getClickUpgradeCost();
+        if (points >= cost) {
             points -= cost;
             clickMultiplier++;
             updateUI();
+        } else {
+            // utilstrækkeligt
         }
     }
-    
-    function buyGoat() {
-        if (gameWon || hasGoat) return;
-        if (infiniteMoney || points >= 50) {
-            if (!infiniteMoney) points -= 50;
+
+    // Køb Aksel the goat (passiv indkomst)
+    function buyGoatUpgrade() {
+        if (hasGoat) return;
+        let cost = 50;
+        if (points >= cost) {
+            points -= cost;
             hasGoat = true;
+            // start interval: giver +1 hvert sekund
             if (goatInterval) clearInterval(goatInterval);
-            goatInterval = setInterval(() => { if (hasGoat && !gameWon) addPoints(10); }, 1000);
+            goatInterval = setInterval(() => {
+                if (hasGoat) {
+                    addPoints(1);
+                    // lille visuel blink på goat
+                    const goatImg = document.querySelector('.goat-img');
+                    if (goatImg) {
+                        goatImg.style.filter = 'drop-shadow(0 0 4px gold)';
+                        setTimeout(() => { if(goatImg) goatImg.style.filter = ''; }, 150);
+                    }
+                }
+            }, 1000);
+            syncGoatVisual();
             updateUI();
         }
     }
-    
-    function buyCarl() {
-        if (gameWon || hasCarl) return;
-        if (infiniteMoney || points >= 1000) {
-            if (!infiniteMoney) points -= 1000;
-            hasCarl = true;
-            if (carlInterval) clearInterval(carlInterval);
-            carlInterval = setInterval(() => { if (hasCarl && !gameWon) addPoints(100); }, 1000);
-            updateUI();
+
+    // Synkroniser goat synlighed (går rundt om William)
+    function syncGoatVisual() {
+        if (hasGoat) {
+            goatWrapperDiv.style.display = 'block';
+            // Sørg for at billedet er korrekt, og animation kører
+            const existingGoatImg = document.getElementById('akselGoatImg');
+            if (existingGoatImg) {
+                // Billedet er allerede sat
+            }
+        } else {
+            goatWrapperDiv.style.display = 'none';
         }
     }
-    
-    function buySaleh() {
-        if (gameWon || hasSaleh) return;
-        if (infiniteMoney || points >= 10000) {
-            if (!infiniteMoney) points -= 10000;
-            hasSaleh = true;
-            if (salehInterval) clearInterval(salehInterval);
-            salehInterval = setInterval(() => { if (hasSaleh && !gameWon) addPoints(1000); }, 1000);
-            updateUI();
-        }
-    }
-    
-    function buyJohannes() {
-        if (gameWon || hasJohannes) return;
-        if (infiniteMoney || points >= 100000) {
-            if (!infiniteMoney) points -= 100000;
-            hasJohannes = true;
-            if (johannesInterval) clearInterval(johannesInterval);
-            johannesInterval = setInterval(() => { if (hasJohannes && !gameWon) addPoints(10000); }, 1000);
-            updateUI();
-        }
-    }
-    
-    function buyRasmus() {
-        if (gameWon || hasRasmus) return;
-        if (infiniteMoney || points >= 1000000) {
-            if (!infiniteMoney) points -= 1000000;
-            hasRasmus = true;
-            updateUI();
-        }
-    }
-    
-    function buyMarcus() {
-        if (gameWon || marcusActive) return;
-        if (infiniteMoney || points >= 5000) {
-            if (!infiniteMoney) points -= 5000;
-            marcusActive = true;
-            marcusClicksLeft = 10;
-            showToast('⭐ Marcus aktiveret! De næste 10 klik giver 10x point! ⭐');
-            updateUI();
-        }
-    }
-    
-    function buyAnonym() {
-        if (gameWon || anonymActive) return;
-        if (infiniteMoney || points >= 25000) {
-            if (!infiniteMoney) points -= 25000;
-            anonymActive = true;
-            showToast('🕵️ Anonym aktiveret! Dobbelt passiv indtægt i 30 sekunder! 🕵️');
-            if (anonymInterval) clearTimeout(anonymInterval);
-            anonymInterval = setTimeout(() => {
-                anonymActive = false;
-                showToast('🕵️ Anonym effekt slut! Tilbage til normal indtægt 🕵️');
-                updateUI();
-            }, 30000);
-            updateUI();
-        }
-    }
-    
-    function onRasmusClick() {
-        if (!hasRasmus || gameWon) return;
-        rasmusClicks++;
-        rasmusClickCountSpan.innerText = rasmusClicks;
-        let progress = '';
-        for (let i = 0; i < 10; i++) {
-            progress += i < rasmusClicks ? '⭐' : '⬜';
-        }
-        rasmusProgressSpan.innerText = progress;
-        
-        if (rasmusClicks >= 10) {
-            gameWon = true;
-            const victoryDiv = document.createElement('div');
-            victoryDiv.className = 'victory-overlay';
-            victoryDiv.innerHTML = `
-                <div class="victory-box">
-                    <div class="victory-text">🏆 SEJR! 🏆</div>
-                    <div class="victory-sub">Du besejrede Rasmus Prange og vandt spillet!</div>
-                    <div class="victory-sub">✨ Tak for at spille! ✨</div>
-                    <button class="victory-btn" id="victoryResetBtn">SPIL IGEN</button>
-                </div>
-            `;
-            document.body.appendChild(victoryDiv);
-            document.getElementById('victoryResetBtn').addEventListener('click', () => {
-                victoryDiv.remove();
-                resetGame();
-            });
-        }
-        updateUI();
-    }
-    
+
+    // Nulstil spil
     function resetGame() {
         points = 0;
         clickMultiplier = 1;
-        hasGoat = false; hasCarl = false; hasSaleh = false; hasJohannes = false; hasRasmus = false;
-        rasmusClicks = 0;
-        infiniteMoney = false;
-        easterEggClicks = 0;
-        gameWon = false;
-        marcusActive = false;
-        marcusClicksLeft = 0;
-        anonymActive = false;
-        if (anonymInterval) clearTimeout(anonymInterval);
+        if (hasGoat) {
+            if (goatInterval) clearInterval(goatInterval);
+            goatInterval = null;
+            hasGoat = false;
+        }
+        // stop evt interval helt
         if (goatInterval) clearInterval(goatInterval);
-        if (carlInterval) clearInterval(carlInterval);
-        if (salehInterval) clearInterval(salehInterval);
-        if (johannesInterval) clearInterval(johannesInterval);
-        goatInterval = carlInterval = salehInterval = johannesInterval = null;
+        goatInterval = null;
+        hasGoat = false;
         updateUI();
-        if (mouthTimeout) clearTimeout(mouthTimeout);
+        syncGoatVisual();
+        // mund tilbage til lukket
         mouthElement.classList.remove('mouth-open');
         mouthElement.classList.add('mouth-closed');
         mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
+        // Ryd evt timers
+        if (mouthTimeout) clearTimeout(mouthTimeout);
     }
-    
+
     // Event listeners
-    williamArea.addEventListener('click', onWilliamClick);
+    williamArea.addEventListener('click', onClickWilliam);
     buyClickBtn.addEventListener('click', buyClickUpgrade);
-    buyGoatBtn.addEventListener('click', buyGoat);
-    buyCarlBtn.addEventListener('click', buyCarl);
-    buySalehBtn.addEventListener('click', buySaleh);
-    buyJohannesBtn.addEventListener('click', buyJohannes);
-    buyRasmusBtn.addEventListener('click', buyRasmus);
-    buyMarcusBtn.addEventListener('click', buyMarcus);
-    buyAnonymBtn.addEventListener('click', buyAnonym);
+    buyGoatBtn.addEventListener('click', buyGoatUpgrade);
     resetBtn.addEventListener('click', resetGame);
-    rasmusArea.addEventListener('click', onRasmusClick);
-    
+
+    // Initial opdatering og goat synlig
     updateUI();
+    syncGoatVisual();
+    // For at undgå at billedet af goat fejler hvis allerede købt? nej start uden goat
+    // Hvis man har goat fra start? nej.
+    // Ekstra: sikre at hvis goat købes, interval startes korrekt.
+    // Hvis reset kaldes, sikre goat interval stoppes
     window.addEventListener('load', () => {
+        // Hvis noget persistens kunne være her, men vi starter fra 0
+        resetGame(); // starter clean
+        updateUI();
+        syncGoatVisual();
+        // sæt standard mund-lukket css
         mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
     });
+
+    // Husk at opdatere priser hvis point ændres (updateUI klarer det)
+    // Forbedring: Tilføj goat orbit start når goat købes. animationen kører altid i CSS når wrapper er synlig.
+    // Fix goat wrapper start: sikre at ved goat køb, animation kører flot.
+    // Mund-animation ved klik: er allerede implementeret.
+    // Derudover hvis man klikker hurtigt, lukker den korrekt efter 180ms.
+    // Gør det umuligt at købe goat to gange
+    // Eventuel præcisering: aksel giver 1 click hvert sekund = 1 point hvert sekund, uanset clickMultiplier.
+    // Men det er i tråd med "giver 1 click hvert sekund". Super!
+    // Lav ekstra sikkerhed så goat interval ikke dobbelt-startes
+    const originalBuyGoat = buyGoatUpgrade;
+    window.buyGoatUpgrade = buyGoatUpgrade;
+    // done
 </script>
 </body>
 </html>
