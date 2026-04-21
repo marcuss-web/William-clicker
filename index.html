@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>William Clicker ✨ Aksel the Goat</title>
+    <title>William Clicker ✨ med Carl Smart & Pizza Saleh</title>
     <style>
         * {
             user-select: none;
@@ -22,19 +22,144 @@
             padding: 20px;
         }
 
-        /* Hovedcontainer */
-        .game-wrapper {
-            max-width: 700px;
+        /* Ny hovedcontainer med flex til venstre/højre */
+        .main-dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+            max-width: 1300px;
             width: 100%;
-            background: rgba(10, 14, 23, 0.65);
-            backdrop-filter: blur(4px);
-            border-radius: 85px;
-            padding: 20px 24px 40px;
-            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
-            transition: all 0.2s;
+            justify-content: center;
+            align-items: flex-start;
         }
 
-        /* Score panel */
+        /* Venstre side: spilomrde */
+        .game-left {
+            flex: 2;
+            min-width: 280px;
+            background: rgba(10, 14, 23, 0.65);
+            backdrop-filter: blur(4px);
+            border-radius: 65px;
+            padding: 20px 24px 30px;
+            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hjre side: upgrades med scroll */
+        .upgrades-right {
+            flex: 1.2;
+            min-width: 280px;
+            background: rgba(10, 14, 23, 0.75);
+            backdrop-filter: blur(8px);
+            border-radius: 55px;
+            padding: 20px 18px;
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid #f3aa4a66;
+            display: flex;
+            flex-direction: column;
+            max-height: 85vh;
+        }
+
+        .upgrades-header {
+            text-align: center;
+            font-size: 1.7rem;
+            font-weight: bold;
+            background: #00000055;
+            border-radius: 60px;
+            padding: 10px;
+            margin-bottom: 18px;
+            color: #ffdd99;
+            letter-spacing: 1px;
+        }
+
+        /* Scrollbar container */
+        .upgrades-scroll-list {
+            overflow-y: auto;
+            padding-right: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .upgrades-scroll-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .upgrades-scroll-list::-webkit-scrollbar-track {
+            background: #2c241a;
+            border-radius: 10px;
+        }
+        .upgrades-scroll-list::-webkit-scrollbar-thumb {
+            background: #e0aa4a;
+            border-radius: 10px;
+        }
+
+        .upgrade-card {
+            background: linear-gradient(115deg, #262b3f, #191e2f);
+            border-radius: 50px;
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 1px solid #f6b55766;
+            transition: 0.1s;
+            cursor: pointer;
+        }
+        .upgrade-card:hover {
+            background: #323a55;
+            transform: scale(1.01);
+        }
+
+        .upgrade-info {
+            flex: 2;
+        }
+        .upgrade-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #ffe1ae;
+        }
+        .mini-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid gold;
+            object-fit: cover;
+        }
+        .upgrade-desc {
+            font-size: 0.7rem;
+            color: #cfbc8f;
+        }
+        .upgrade-cost {
+            font-weight: bold;
+            background: #1a1208;
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-family: monospace;
+            font-size: 1rem;
+            color: #ffcf7a;
+            margin-right: 12px;
+        }
+        button.buy-btn {
+            background: #e48f2b;
+            border: none;
+            font-weight: bold;
+            padding: 8px 18px;
+            border-radius: 40px;
+            color: #201c10;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.07s linear;
+            box-shadow: 0 3px 0 #784a1a;
+            font-family: inherit;
+        }
+        button.buy-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #784a1a;
+        }
+
         .score-panel {
             background: #03050ce6;
             border-radius: 100px;
@@ -44,27 +169,27 @@
             box-shadow: inset 0 1px 4px #00000055, 0 10px 20px rgba(0, 0, 0, 0.3);
             border: 1px solid #f3b33d88;
         }
-
-        .score-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: #ffdf9c;
-            letter-spacing: 1px;
-        }
-
         .score-value {
-            font-size: 4rem;
+            font-size: 3.5rem;
             font-weight: 800;
             background: linear-gradient(135deg, #ffdd99, #ffaa33);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
             line-height: 1;
-            margin: 5px 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .per-click-row {
+            display: flex;
+            justify-content: space-between;
+            background: #00000066;
+            padding: 8px 18px;
+            border-radius: 60px;
+            margin-top: 10px;
+            font-weight: bold;
+            color: #ffdaa5;
         }
 
-        /* Klik-område med William + mund-animation */
+        /* William klik område med relativ container til Saleh på skulder */
         .click-area {
             display: flex;
             justify-content: center;
@@ -76,61 +201,98 @@
         .click-area:active {
             transform: scale(0.97);
         }
-
-        /* Billede-container til mund-effekt */
         .william-container {
             position: relative;
             display: inline-block;
         }
-
         .william-base {
             width: 260px;
             height: 260px;
             object-fit: cover;
             border-radius: 50%;
             box-shadow: 0 18px 30px rgba(0, 0, 0, 0.6), 0 0 0 6px #f9b23f, 0 0 0 12px #d95b00;
-            transition: filter 0.05s, box-shadow 0.1s;
+            transition: filter 0.05s;
             background: #2a2e40;
             display: block;
         }
 
-        /* Mund lag - SVG / tegning over WilliAM */
-        .mouth-overlay {
+        /* Saleh på skulderen (placeret oven på William) */
+        .saleh-shoulder {
             position: absolute;
-            bottom: 22%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 38px;
-            pointer-events: none;
-            transition: all 0.07s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-            z-index: 15;
+            top: 15%;
+            right: 5%;
+            z-index: 25;
+            cursor: pointer;
+            filter: drop-shadow(0 6px 8px rgba(0,0,0,0.5));
+            transition: transform 0.1s;
+            text-align: center;
+        }
+        .saleh-shoulder img {
+            width: 70px;
+            height: 70px;
+            border-radius: 40%;
+            border: 3px solid #ffb347;
+            background: #f4cda6;
+            object-fit: cover;
+            box-shadow: 0 4px 0 #a55317;
+        }
+        .pizza-badge {
+            position: absolute;
+            top: -12px;
+            right: -15px;
+            font-size: 32px;
+            filter: drop-shadow(0 2px 2px black);
+        }
+        .saleh-label {
+            background: #b83b1ecc;
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            border-radius: 20px;
+            padding: 2px 6px;
+            white-space: nowrap;
+            margin-top: 4px;
         }
 
-        .mouth-open {
-            content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><path fill="%23442211" stroke="%23b97f44" stroke-width="2" d="M20,15 Q50,45 80,15 Q65,30 35,30 Q20,28 20,15Z" /></svg>');
-            width: 90px;
-            height: 45px;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
+        /* Carl Smart boks (under William) */
+        .carl-smart-box {
+            background: #2a401fcc;
+            backdrop-filter: blur(4px);
+            border-radius: 60px;
+            padding: 8px 16px;
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border: 1px solid #b3a123;
         }
-
-        .mouth-closed {
-            content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><path fill="%238B5A2B" stroke="%23c28544" stroke-width="2.2" d="M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z" /></svg>');
-            width: 85px;
-            height: 32px;
-            filter: drop-shadow(0 1px 1px black);
+        .carl-avatar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-
-        /* Aksel THE GOAT - cirkulerende sprite */
+        .carl-avatar img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid #f7b32b;
+        }
+        .carl-action-btn {
+            background: #7c5e2c;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 40px;
+            color: #ffeaac;
+            font-weight: bold;
+            cursor: pointer;
+        }
         .goat-runner {
-            position: relative;
             display: flex;
             justify-content: center;
-            margin-top: 5px;
-            margin-bottom: 15px;
+            margin: 10px 0;
             height: 70px;
         }
-
         .goat-orbiting {
             position: relative;
             display: inline-block;
@@ -138,152 +300,21 @@
             height: 60px;
             animation: orbitGoat 6s linear infinite;
         }
-
         @keyframes orbitGoat {
             0% { transform: rotate(0deg) translateX(110px) rotate(0deg); }
             100% { transform: rotate(360deg) translateX(110px) rotate(-360deg); }
         }
-
         .goat-img {
             width: 58px;
             height: 58px;
             object-fit: cover;
             border-radius: 50%;
             border: 3px solid #ffbe4d;
-            box-shadow: 0 0 0 2px #a45d2e, 0 8px 14px black;
-            background: #f0c674;
-            cursor: pointer;
-            transition: 0.1s;
+            box-shadow: 0 0 0 2px #a45d2e;
         }
-
-        .goat-label {
-            position: absolute;
-            bottom: -22px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #2d2418cc;
-            backdrop-filter: blur(4px);
-            font-size: 0.7rem;
-            font-weight: bold;
-            padding: 2px 8px;
-            border-radius: 50px;
-            color: #ffdd99;
-            white-space: nowrap;
-            pointer-events: none;
-        }
-
-        /* Stats + upgrades sektion */
-        .upgrade-zone {
-            background: #0b0e16aa;
-            backdrop-filter: blur(8px);
-            border-radius: 55px;
-            padding: 18px 20px;
-            margin-top: 20px;
-            border: 1px solid #f3aa4a66;
-        }
-
-        .per-click-row {
-            display: flex;
-            justify-content: space-between;
-            background: #00000066;
-            padding: 10px 20px;
-            border-radius: 60px;
-            margin-bottom: 20px;
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: #ffdaa5;
-        }
-
-        .dps-info {
-            font-size: 1rem;
-            background: #211d14;
-            padding: 5px 16px;
-            border-radius: 40px;
-            display: inline-flex;
-            gap: 10px;
-        }
-
-        .upgrade-list {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .upgrade-card {
-            background: linear-gradient(115deg, #262b3f, #191e2f);
-            border-radius: 60px;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            border: 1px solid #f6b55766;
-            transition: 0.1s;
-        }
-
-        .upgrade-info {
-            flex: 2;
-        }
-
-        .upgrade-name {
-            font-weight: bold;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #ffe1ae;
-        }
-
-        .mini-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1px solid gold;
-        }
-
-        .upgrade-desc {
-            font-size: 0.7rem;
-            color: #cfbc8f;
-        }
-
-        .upgrade-cost {
-            font-weight: bold;
-            background: #1a1208;
-            padding: 6px 15px;
-            border-radius: 50px;
-            font-family: monospace;
-            font-size: 1.2rem;
-            color: #ffcf7a;
-            margin-right: 12px;
-        }
-
-        button.buy-btn {
-            background: #e48f2b;
-            border: none;
-            font-weight: bold;
-            padding: 8px 18px;
-            border-radius: 40px;
-            color: #201c10;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.07s linear;
-            box-shadow: 0 3px 0 #784a1a;
-            font-family: inherit;
-        }
-        button.buy-btn:active {
-            transform: translateY(2px);
-            box-shadow: 0 1px 0 #784a1a;
-        }
-        button.buy-btn.disabled-btn {
-            opacity: 0.6;
-            transform: none;
-            cursor: not-allowed;
-            filter: grayscale(0.1);
-        }
-
         .reset-area {
             text-align: center;
-            margin-top: 18px;
+            margin-top: 20px;
         }
         .reset-btn {
             background: #3e2a24;
@@ -297,55 +328,100 @@
         footer {
             font-size: 0.7rem;
             text-align: center;
-            margin-top: 15px;
+            margin-top: 12px;
             color: #af9a74;
         }
-        @media (max-width: 550px) {
+        @media (max-width: 850px) {
+            .main-dashboard { flex-direction: column; }
             .william-base { width: 200px; height: 200px; }
-            .mouth-overlay { bottom: 20%; width: 60px; }
-            .mouth-open, .mouth-closed { transform: scale(0.8); }
+            .saleh-shoulder img { width: 55px; height: 55px; }
+            .pizza-badge { font-size: 24px; top: -8px; right: -10px; }
             .goat-orbiting { animation: orbitGoat 5s linear infinite; }
             @keyframes orbitGoat {
                 0% { transform: rotate(0deg) translateX(85px) rotate(0deg); }
                 100% { transform: rotate(360deg) translateX(85px) rotate(-360deg); }
             }
         }
+        .mouth-overlay {
+            position: absolute;
+            bottom: 22%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 38px;
+            pointer-events: none;
+            transition: all 0.07s;
+            z-index: 15;
+        }
+        .mouth-open { content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><path fill="%23442211" stroke="%23b97f44" stroke-width="2" d="M20,15 Q50,45 80,15 Q65,30 35,30 Q20,28 20,15Z" /></svg>'); width: 90px; }
+        .mouth-closed { content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><path fill="%238B5A2B" stroke="%23c28544" stroke-width="2.2" d="M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z" /></svg>'); width: 85px; }
+        .feedback-msg {
+            background: #000000aa;
+            border-radius: 50px;
+            padding: 6px 12px;
+            font-size: 12px;
+            text-align: center;
+            color: #ffefb0;
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
-<div class="game-wrapper">
-    <div class="score-panel">
-        <div class="score-title">🍪 WILLIAM POINTS</div>
-        <div class="score-value" id="scoreDisplay">0</div>
-        <div class="per-click-row">
-            <span>👆 KRAFT PR. KLIK:</span>
-            <span id="clickPowerSpan">1</span>
-        </div>
-    </div>
-
-    <!-- William klikområde med mund-animation -->
-    <div class="click-area" id="williamClicker">
-        <div class="william-container">
-            <img class="william-base" id="williamImg" src="https://media-prod.aula.dk/profile-pictures/9096069.jpg?response-content-disposition=attachment%3Bfilename%3D%229096069.jpg%22&amp;Expires=1776416400&amp;Signature=dKDS1BMZd7D3xhJurPS2rLfjpqEUYBgPWa67aQKs1xK-wBkPrZ1hW0dYoPRm-phg-6k9w4gihq3x2Dgyp4FVSSnWdtCElHQO8R2CuT1aj0PAk75rLV92RK1UqQ97b1mXK3AhrwV9DDYfDs3PPv11qzR~ghjwWDREwdoECdEdvfriVS6Mz-3zIPXJ9AJLz~2HdgNWBBSETbeaXnJBilDJ~qNkPd0PqDdGbFk057AbRsN6zwSbS0BmgJ9mOQahsWxQ~GqSYOXZatH9rDxGRIuNPgB217fctBKb7FXdM7phOSP9mniLQv9aAV0SOqpqhdD2UbMSL-Pqvxwo~1iX~rn2jg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="William Noah Hald">
-            <div class="mouth-overlay mouth-closed" id="mouthState"></div>
-        </div>
-    </div>
-
-    <!-- Aksel the goat der går rundt om William (cirkulerende) -->
-    <div class="goat-runner" id="goatOrbitZone" style="min-height: 85px;">
-        <!-- Dynamisk hvis man har købt Aksel, vises animationen -->
-        <div id="goatWrapper" style="display: none;">
-            <div class="goat-orbiting">
-                <img class="goat-img" id="akselGoatImg" src="https://media-prod.aula.dk/profile-pictures/9155257.jpg?response-content-disposition=attachment%3Bfilename%3D%229155257.jpg%22&amp;Expires=1776416400&amp;Signature=E-g0wFe4oUNEvMmVf3R6BEw6JoyuLwEKv6vhXArP5AMVjvYjpfD5uQVSB~IgCwZg3lv0pK38q4wpzqYITnkErNWDOG7nU3d2Zub3f07VMRFuhjMaRWCRY5oj8Jp2HpYvQWW8SCA~u946n5WU0uxfNHJNiUmHNJXVqtW0AtZ~A94tnZGta9tU35vhAEYdExwTR5sqhT1b2UKrpy1IL8H8clylIlNt0TOaS9ruQdvyH7rJqE9Ju1KNKJYAmrqJesqKzvBvRFL2aSi9Gc67l-4Oo4bKOXjr6F5vRyD-x0~wi1bnweivpavJQuTyO3QkPxWXFvvHpLjK4ElFDDng4RYECg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="Aksel the goat">
-                <div class="goat-label">🐐 Aksel</div>
+<div class="main-dashboard">
+    <!-- VENSTRE: Hovedspil -->
+    <div class="game-left">
+        <div class="score-panel">
+            <div class="score-value" id="scoreDisplay">0</div>
+            <div class="per-click-row">
+                <span>👆 KRAFT PR. KLIK:</span>
+                <span id="clickPowerSpan">1</span>
             </div>
         </div>
+
+        <!-- William klikområde med Saleh på skulderen -->
+        <div class="click-area" id="williamClicker">
+            <div class="william-container">
+                <img class="william-base" id="williamImg" src="https://media-prod.aula.dk/profile-pictures/9096069.jpg?response-content-disposition=attachment%3Bfilename%3D%229096069.jpg%22&amp;Expires=1776416400&amp;Signature=dKDS1BMZd7D3xhJurPS2rLfjpqEUYBgPWa67aQKs1xK-wBkPrZ1hW0dYoPRm-phg-6k9w4gihq3x2Dgyp4FVSSnWdtCElHQO8R2CuT1aj0PAk75rLV92RK1UqQ97b1mXK3AhrwV9DDYfDs3PPv11qzR~ghjwWDREwdoECdEdvfriVS6Mz-3zIPXJ9AJLz~2HdgNWBBSETbeaXnJBilDJ~qNkPd0PqDdGbFk057AbRsN6zwSbS0BmgJ9mOQahsWxQ~GqSYOXZatH9rDxGRIuNPgB217fctBKb7FXdM7phOSP9mniLQv9aAV0SOqpqhdD2UbMSL-Pqvxwo~1iX~rn2jg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="William Noah Hald">
+                <div class="mouth-overlay mouth-closed" id="mouthState"></div>
+                <!-- SALEH PÅ SKULDER med pizza -->
+                <div class="saleh-shoulder" id="salehOnShoulder">
+                    <img src="https://media-prod.aula.dk/profile-pictures/9802623_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%229802623_400x400.jpg%22&amp;Expires=1776420000&amp;Signature=fP4Na-KK-Cf1OesXmpeUT9bPDTEgN9CxkodQAB7GUb1eNZMIRAXlXCMl7BOCPyLEoxnwos66glSR2SyN6sMgAuGg11qbcV6geBejSIat302FgCMs7PPqzuNP95GJ5l7b5OxwNOUjiz9zFafw9EtvzZVd8H125k2oMax3VmHoZR8nGT6T-~rN~uhfakC5iGBIsP1oWl3btwCkK1eo8HQ8~eRMRz0oRPymbbmucnZVoVmZlWQCdVoDPiL0gSKI7NXMeRXZRvshMbXVildC6Hlt-AztQHTC8r8nLae4ocmm0aQuBiGsOv9JvB1Fl6jWLfVI78Y32aI1pZM9cdMdNuJJkA__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="Saleh">
+                    <div class="pizza-badge">🍕🔥</div>
+                    <div class="saleh-label">Pizza Saleh</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARL SMART (bonde / farmer) -->
+        <div class="carl-smart-box" id="carlSmartBox">
+            <div class="carl-avatar">
+                <img src="https://media-prod.aula.dk/profile-pictures/9139073_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%229139073_400x400.jpg%22&amp;Expires=1776420000&amp;Signature=BoRnzFfD2nwzJiYO6a59BE02bz2ZzLAh~YdrnltXvLuXfdwjydeR59r~znKkN1Ed1wYZjfr63kOH8f3Xd3JzSN2c8ICPL-eQTbh0xvO3SPB37q-IZfXt89uY4GeLYPfXW79Sp0vYzTyaCXuhhHylPJVTNIb36SZPjKm16xx6VXEn5fu9fYtorgVGMLh7HdznzHolTGV~AtL-dxtg~tPfQSy6I24Vkav8ZJmfKQ69LPF86KLFEA~NWeHA8iJu7~zGBOY2TRUeIKiL99ocrUhUi5ApvZG3-tbU-9~1sRvfrmz3iQKc5fzN8-NHraulzgzcaKxurLT43EFODCvRGORmQA__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="Carl Smart">
+                <span style="font-weight:bold; color:#ffe1aa;">🌾 Carl Smart</span>
+            </div>
+            <button class="carl-action-btn" id="carlFarmBtn">🚜 FARM BONUS (+8)</button>
+        </div>
+
+        <!-- Aksel the goat (cirkulerende) -->
+        <div class="goat-runner" id="goatOrbitZone">
+            <div id="goatWrapper" style="display: none;">
+                <div class="goat-orbiting">
+                    <img class="goat-img" id="akselGoatImg" src="https://media-prod.aula.dk/profile-pictures/9155257.jpg?response-content-disposition=attachment%3Bfilename%3D%229155257.jpg%22&amp;Expires=1776416400&amp;Signature=E-g0wFe4oUNEvMmVf3R6BEw6JoyuLwEKv6vhXArP5AMVjvYjpfD5uQVSB~IgCwZg3lv0pK38q4wpzqYITnkErNWDOG7nU3d2Zub3f07VMRFuhjMaRWCRY5oj8Jp2HpYvQWW8SCA~u946n5WU0uxfNHJNiUmHNJXVqtW0AtZ~A94tnZGta9tU35vhAEYdExwTR5sqhT1b2UKrpy1IL8H8clylIlNt0TOaS9ruQdvyH7rJqE9Ju1KNKJYAmrqJesqKzvBvRFL2aSi9Gc67l-4Oo4bKOXjr6F5vRyD-x0~wi1bnweivpavJQuTyO3QkPxWXFvvHpLjK4ElFDDng4RYECg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="Aksel">
+                    <div class="goat-label" style="position:absolute; bottom:-22px; left:50%; transform:translateX(-50%); background:#2d2418cc; font-size:0.7rem; padding:2px 8px; border-radius:50px; white-space:nowrap;">🐐 Aksel</div>
+                </div>
+            </div>
+        </div>
+        <div class="feedback-msg" id="globalFeedback">Klik på William, Carl eller Saleh!</div>
+        <div class="reset-area">
+            <button class="reset-btn" id="resetBtn">🔄 Nulstil spil</button>
+        </div>
+        <footer>🍕 Saleh på skulderen laver pizza · Carl Smart passer marker</footer>
     </div>
 
-    <!-- Upgrades sektion -->
-    <div class="upgrade-zone">
-        <div class="upgrade-list">
-            <!-- Upgrade 1: Øg klikstyrke -->
+    <!-- HØJRE SIDE: UPGRADES MED SCROLL -->
+    <div class="upgrades-right">
+        <div class="upgrades-header">⚡ UPGRADES ⚡</div>
+        <div class="upgrades-scroll-list" id="upgradeScrollList">
+            <!-- Upgrade 1: Klikkraft -->
             <div class="upgrade-card" id="upgradeClickCard">
                 <div class="upgrade-info">
                     <div class="upgrade-name">💪 Stærkere Klik</div>
@@ -354,33 +430,56 @@
                 <div class="upgrade-cost" id="clickCostSpan">10</div>
                 <button class="buy-btn" id="buyClickBtn">KØB</button>
             </div>
-
-            <!-- Upgrade 2: Aksel the goat - går rundt og giver 1 click/sek -->
+            <!-- Upgrade 2: Aksel the goat passiv -->
             <div class="upgrade-card" id="upgradeGoatCard">
                 <div class="upgrade-info">
-                    <div class="upgrade-name">
-                        <span>🐐 Aksel the GOAT</span>
-                        <img class="mini-avatar" src="https://media-prod.aula.dk/profile-pictures/9155257.jpg?response-content-disposition=attachment%3Bfilename%3D%229155257.jpg%22&amp;Expires=1776416400&amp;Signature=E-g0wFe4oUNEvMmVf3R6BEw6JoyuLwEKv6vhXArP5AMVjvYjpfD5uQVSB~IgCwZg3lv0pK38q4wpzqYITnkErNWDOG7nU3d2Zub3f07VMRFuhjMaRWCRY5oj8Jp2HpYvQWW8SCA~u946n5WU0uxfNHJNiUmHNJXVqtW0AtZ~A94tnZGta9tU35vhAEYdExwTR5sqhT1b2UKrpy1IL8H8clylIlNt0TOaS9ruQdvyH7rJqE9Ju1KNKJYAmrqJesqKzvBvRFL2aSi9Gc67l-4Oo4bKOXjr6F5vRyD-x0~wi1bnweivpavJQuTyO3QkPxWXFvvHpLjK4ElFDDng4RYECg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="aksel">
-                    </div>
-                    <div class="upgrade-desc">✨ Går rundt om William og giver +1 point hvert sekund</div>
+                    <div class="upgrade-name">🐐 Aksel the GOAT</div>
+                    <div class="upgrade-desc">Går rundt om William: +1/sek</div>
                 </div>
                 <div class="upgrade-cost" id="goatCostSpan">50</div>
                 <button class="buy-btn" id="buyGoatBtn">KØB</button>
             </div>
+            <!-- Upgrade 3: Pizzaovn (Saleh bonus) -->
+            <div class="upgrade-card" id="pizzaOvenCard">
+                <div class="upgrade-info">
+                    <div class="upgrade-name">🍕 Salehs Pizzaovn</div>
+                    <div class="upgrade-desc">Hvert klik giver +2 ekstra mønter</div>
+                </div>
+                <div class="upgrade-cost" id="pizzaCostSpan">80</div>
+                <button class="buy-btn" id="buyPizzaBtn">KØB</button>
+            </div>
+            <!-- Upgrade 4: Carls Gulerodsmark -->
+            <div class="upgrade-card" id="carrotFieldCard">
+                <div class="upgrade-info">
+                    <div class="upgrade-name">🥕 Carls Gulerodsmark</div>
+                    <div class="upgrade-desc">Carl farmer giver +3 ekstra pr klik</div>
+                </div>
+                <div class="upgrade-cost" id="carrotCostSpan">120</div>
+                <button class="buy-btn" id="buyCarrotBtn">KØB</button>
+            </div>
+            <!-- Upgrade 5: Traktorboost -->
+            <div class="upgrade-card" id="tractorCard">
+                <div class="upgrade-info">
+                    <div class="upgrade-name">🚜 Traktor Boost</div>
+                    <div class="upgrade-desc">Fordobler alle møntgevinster!</div>
+                </div>
+                <div class="upgrade-cost" id="tractorCostSpan">200</div>
+                <button class="buy-btn" id="buyTractorBtn">KØB</button>
+            </div>
         </div>
-        <div class="reset-area">
-            <button class="reset-btn" id="resetBtn">🔄 Nulstil spil</button>
-        </div>
+        <div style="text-align:center; font-size:11px; margin-top:12px; color:#bc9a5a;">⬇️ Scroll for flere upgrades ⬇️</div>
     </div>
-    <footer>👑 Klik på William → han åbner munden! Køb Aksel for passiv indkomst 🐐</footer>
 </div>
 
 <script>
-    // ------ SPIL STATUS ------
+    // Spil data
     let points = 0;
-    let clickMultiplier = 1;      // start: +1 per klik
-    let hasGoat = false;          // om aksel er købt
+    let clickMultiplier = 1;      // base per klik
+    let hasGoat = false;
     let goatInterval = null;
+    let pizzaBonus = 0;            // +2 ekstra per klik
+    let carrotBonus = 0;           // +3 ekstra pr klik
+    let tractorMultiplier = 1;     // 1 eller 2
 
     // DOM elementer
     const scoreDisplay = document.getElementById('scoreDisplay');
@@ -388,77 +487,86 @@
     const clickLevelSpan = document.getElementById('clickLevel');
     const clickCostSpan = document.getElementById('clickCostSpan');
     const goatCostSpan = document.getElementById('goatCostSpan');
+    const pizzaCostSpan = document.getElementById('pizzaCostSpan');
+    const carrotCostSpan = document.getElementById('carrotCostSpan');
+    const tractorCostSpan = document.getElementById('tractorCostSpan');
+
     const buyClickBtn = document.getElementById('buyClickBtn');
     const buyGoatBtn = document.getElementById('buyGoatBtn');
+    const buyPizzaBtn = document.getElementById('buyPizzaBtn');
+    const buyCarrotBtn = document.getElementById('buyCarrotBtn');
+    const buyTractorBtn = document.getElementById('buyTractorBtn');
     const resetBtn = document.getElementById('resetBtn');
-    const mouthElement = document.getElementById('mouthState');
     const williamArea = document.getElementById('williamClicker');
+    const mouthElement = document.getElementById('mouthState');
     const goatWrapperDiv = document.getElementById('goatWrapper');
+    const carlFarmBtn = document.getElementById('carlFarmBtn');
+    const salehShoulder = document.getElementById('salehOnShoulder');
+    const feedbackSpan = document.getElementById('globalFeedback');
 
-    // Opdater UI af point og klikkraft
+    function showMessage(msg) {
+        feedbackSpan.innerText = msg;
+        setTimeout(() => { if(feedbackSpan.innerText === msg) feedbackSpan.innerText = "Klik på William, Carl eller Saleh!"; }, 1800);
+    }
+
     function updateUI() {
         scoreDisplay.innerText = Math.floor(points);
-        clickPowerSpan.innerText = clickMultiplier;
+        let totalPerClick = clickMultiplier + (pizzaBonus ? 2 : 0) + (carrotBonus ? 3 : 0);
+        totalPerClick = totalPerClick * tractorMultiplier;
+        clickPowerSpan.innerText = totalPerClick;
         clickLevelSpan.innerText = clickMultiplier;
-        // Opdater knap tilstande
-        const clickCost = getClickUpgradeCost();
+
+        let clickCost = 10 + (clickMultiplier-1)*8;
         clickCostSpan.innerText = clickCost;
-        const goatCost = 50;
-        goatCostSpan.innerText = goatCost;
+        goatCostSpan.innerText = 50;
+        pizzaCostSpan.innerText = 80;
+        carrotCostSpan.innerText = 120;
+        tractorCostSpan.innerText = 200;
 
-        if (points >= clickCost) {
-            buyClickBtn.disabled = false;
-            buyClickBtn.classList.remove('disabled-btn');
-        } else {
-            buyClickBtn.disabled = true;
-            buyClickBtn.classList.add('disabled-btn');
-        }
+        buyClickBtn.disabled = !(points >= clickCost);
+        buyGoatBtn.disabled = (hasGoat || points < 50);
+        buyPizzaBtn.disabled = (pizzaBonus >= 1 || points < 80);
+        buyCarrotBtn.disabled = (carrotBonus >= 1 || points < 120);
+        buyTractorBtn.disabled = (tractorMultiplier >= 2 || points < 200);
 
-        if (!hasGoat && points >= goatCost) {
-            buyGoatBtn.disabled = false;
-            buyGoatBtn.classList.remove('disabled-btn');
-        } else if (hasGoat) {
-            buyGoatBtn.disabled = true;
-            buyGoatBtn.classList.add('disabled-btn');
-            buyGoatBtn.innerText = 'AKSEL ✔️';
-        } else {
-            buyGoatBtn.disabled = true;
-            buyGoatBtn.classList.add('disabled-btn');
-        }
-
-        if (!hasGoat) {
-            buyGoatBtn.innerText = 'KØB';
-        } else {
-            buyGoatBtn.innerText = '🐐 AKTIVERET';
-        }
+        if(hasGoat) buyGoatBtn.innerText = '🐐 AKTIV';
+        else buyGoatBtn.innerText = 'KØB';
+        if(pizzaBonus) buyPizzaBtn.innerText = '🍕 AKTIV';
+        if(carrotBonus) buyCarrotBtn.innerText = '🥕 AKTIV';
+        if(tractorMultiplier>=2) buyTractorBtn.innerText = '🚜 AKTIV';
     }
 
-    // Pris for næste klik-upgrade: basis 10, stiger med 8 per niveau (clickMultiplier)
-    function getClickUpgradeCost() {
-        let base = 10;
-        let increase = (clickMultiplier - 1) * 8;
-        return base + increase;
-    }
-
-    // Læg point til (kan komme fra klik eller goat)
     function addPoints(amount) {
         points += amount;
-        if (points < 0) points = 0;
+        if(points<0) points=0;
         updateUI();
-        // Tjek goat animation (hvis goat ejes, skal den være synlig)
         syncGoatVisual();
     }
 
-    // mund-animation: åben/luk ved klik (hurtig)
+    function getClickGain() {
+        let base = clickMultiplier;
+        let extra = (pizzaBonus ? 2 : 0) + (carrotBonus ? 3 : 0);
+        let total = (base + extra) * tractorMultiplier;
+        return total;
+    }
+
+    function onClickWilliam() {
+        let gain = getClickGain();
+        addPoints(gain);
+        animateMouth();
+        const img = document.querySelector('.william-base');
+        if(img) { img.style.transform = 'scale(0.98)'; setTimeout(() => { if(img) img.style.transform = ''; }, 100); }
+        showMessage(`+${gain} point!`);
+    }
+
     let mouthTimeout = null;
     function animateMouth() {
-        if (mouthTimeout) clearTimeout(mouthTimeout);
+        if(mouthTimeout) clearTimeout(mouthTimeout);
         mouthElement.classList.remove('mouth-closed');
         mouthElement.classList.add('mouth-open');
-        // skift til open svg
         mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 50\"><path fill=\"%23442211\" stroke=\"%23b97f44\" stroke-width=\"2\" d=\"M20,15 Q50,45 80,15 Q65,30 35,30 Q20,28 20,15Z\" /></svg>')";
         mouthTimeout = setTimeout(() => {
-            if (mouthElement) {
+            if(mouthElement) {
                 mouthElement.classList.remove('mouth-open');
                 mouthElement.classList.add('mouth-closed');
                 mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
@@ -466,128 +574,119 @@
         }, 180);
     }
 
-    // Klik på William
-    function onClickWilliam() {
-        let gain = clickMultiplier;
-        addPoints(gain);
-        // Mund åbner og lukker
-        animateMouth();
-        // Ekstra visuel feed-back: kort skaler (CSS gør det meste)
-        const img = document.querySelector('.william-base');
-        if (img) {
-            img.style.transform = 'scale(0.98)';
-            setTimeout(() => { if(img) img.style.transform = ''; }, 100);
-        }
-    }
-
-    // Køb klik-upgrade
     function buyClickUpgrade() {
-        let cost = getClickUpgradeCost();
-        if (points >= cost) {
+        let cost = 10 + (clickMultiplier-1)*8;
+        if(points >= cost) {
             points -= cost;
             clickMultiplier++;
             updateUI();
-        } else {
-            // utilstrækkeligt
+            showMessage(`Klikkraft steg til +${clickMultiplier}`);
         }
     }
-
-    // Køb Aksel the goat (passiv indkomst)
     function buyGoatUpgrade() {
-        if (hasGoat) return;
-        let cost = 50;
-        if (points >= cost) {
-            points -= cost;
+        if(hasGoat) return;
+        if(points >= 50) {
+            points -= 50;
             hasGoat = true;
-            // start interval: giver +1 hvert sekund
-            if (goatInterval) clearInterval(goatInterval);
+            if(goatInterval) clearInterval(goatInterval);
             goatInterval = setInterval(() => {
-                if (hasGoat) {
-                    addPoints(1);
-                    // lille visuel blink på goat
-                    const goatImg = document.querySelector('.goat-img');
-                    if (goatImg) {
-                        goatImg.style.filter = 'drop-shadow(0 0 4px gold)';
-                        setTimeout(() => { if(goatImg) goatImg.style.filter = ''; }, 150);
-                    }
-                }
+                if(hasGoat) { addPoints(1); }
             }, 1000);
             syncGoatVisual();
             updateUI();
+            showMessage("Aksel the GOAT løber rundt og giver +1/sek!");
+        }
+    }
+    function buyPizzaBonus() {
+        if(pizzaBonus) return;
+        if(points >= 80) {
+            points -= 80;
+            pizzaBonus = 1;
+            updateUI();
+            showMessage("🍕 Salehs pizzaovn giver +2 mønter per klik!");
+        }
+    }
+    function buyCarrotBonus() {
+        if(carrotBonus) return;
+        if(points >= 120) {
+            points -= 120;
+            carrotBonus = 1;
+            updateUI();
+            showMessage("🥕 Carls gulerodsmark giver +3 mønter per klik!");
+        }
+    }
+    function buyTractorBoost() {
+        if(tractorMultiplier >= 2) return;
+        if(points >= 200) {
+            points -= 200;
+            tractorMultiplier = 2;
+            updateUI();
+            showMessage("🚜 TRAKTOR BOOST! Alle mønter fordobles!");
         }
     }
 
-    // Synkroniser goat synlighed (går rundt om William)
+    // Carl Smart unik handling (FARM) – giver bonus
+    function carlFarmAction() {
+        let farmGain = 8 + (carrotBonus ? 5 : 0);
+        addPoints(farmGain);
+        showMessage(`🌾 Carl passer markerne! +${farmGain} mønter`);
+        const carlBox = document.getElementById('carlSmartBox');
+        carlBox.style.transform = 'scale(0.98)';
+        setTimeout(() => { if(carlBox) carlBox.style.transform = ''; }, 120);
+    }
+
+    // Saleh laver pizza (unik handling)
+    function salehMakePizza() {
+        let pizzaGain = 12 + (pizzaBonus ? 8 : 0);
+        addPoints(pizzaGain);
+        showMessage(`🍕🔥 SALEH laver en kæmpe pizza! +${pizzaGain} mønter!`);
+        const salehDiv = document.getElementById('salehOnShoulder');
+        salehDiv.style.transform = 'scale(1.1) rotate(5deg)';
+        setTimeout(() => { if(salehDiv) salehDiv.style.transform = ''; }, 200);
+        // ekstra effekt
+        const pizzaFly = document.createElement('div');
+        pizzaFly.innerText = '🍕';
+        pizzaFly.style.position = 'fixed';
+        pizzaFly.style.fontSize = '28px';
+        pizzaFly.style.left = '70%';
+        pizzaFly.style.bottom = '40%';
+        pizzaFly.style.pointerEvents = 'none';
+        pizzaFly.style.transition = 'all 0.6s ease';
+        document.body.appendChild(pizzaFly);
+        setTimeout(() => { pizzaFly.style.transform = 'translateY(-100px) rotate(30deg)'; pizzaFly.style.opacity = '0'; setTimeout(() => pizzaFly.remove(), 600); }, 10);
+    }
+
     function syncGoatVisual() {
-        if (hasGoat) {
-            goatWrapperDiv.style.display = 'block';
-            // Sørg for at billedet er korrekt, og animation kører
-            const existingGoatImg = document.getElementById('akselGoatImg');
-            if (existingGoatImg) {
-                // Billedet er allerede sat
-            }
-        } else {
-            goatWrapperDiv.style.display = 'none';
-        }
+        if(hasGoat) goatWrapperDiv.style.display = 'block';
+        else goatWrapperDiv.style.display = 'none';
     }
 
-    // Nulstil spil
     function resetGame() {
         points = 0;
         clickMultiplier = 1;
-        if (hasGoat) {
-            if (goatInterval) clearInterval(goatInterval);
-            goatInterval = null;
-            hasGoat = false;
-        }
-        // stop evt interval helt
-        if (goatInterval) clearInterval(goatInterval);
-        goatInterval = null;
+        if(hasGoat) { if(goatInterval) clearInterval(goatInterval); goatInterval = null; }
         hasGoat = false;
+        pizzaBonus = 0;
+        carrotBonus = 0;
+        tractorMultiplier = 1;
         updateUI();
         syncGoatVisual();
-        // mund tilbage til lukket
-        mouthElement.classList.remove('mouth-open');
-        mouthElement.classList.add('mouth-closed');
-        mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
-        // Ryd evt timers
-        if (mouthTimeout) clearTimeout(mouthTimeout);
+        showMessage("Spillet er nulstillet!");
     }
 
-    // Event listeners
     williamArea.addEventListener('click', onClickWilliam);
     buyClickBtn.addEventListener('click', buyClickUpgrade);
     buyGoatBtn.addEventListener('click', buyGoatUpgrade);
+    buyPizzaBtn.addEventListener('click', buyPizzaBonus);
+    buyCarrotBtn.addEventListener('click', buyCarrotBonus);
+    buyTractorBtn.addEventListener('click', buyTractorBoost);
     resetBtn.addEventListener('click', resetGame);
+    carlFarmBtn.addEventListener('click', carlFarmAction);
+    salehShoulder.addEventListener('click', (e) => { e.stopPropagation(); salehMakePizza(); });
 
-    // Initial opdatering og goat synlig
     updateUI();
     syncGoatVisual();
-    // For at undgå at billedet af goat fejler hvis allerede købt? nej start uden goat
-    // Hvis man har goat fra start? nej.
-    // Ekstra: sikre at hvis goat købes, interval startes korrekt.
-    // Hvis reset kaldes, sikre goat interval stoppes
-    window.addEventListener('load', () => {
-        // Hvis noget persistens kunne være her, men vi starter fra 0
-        resetGame(); // starter clean
-        updateUI();
-        syncGoatVisual();
-        // sæt standard mund-lukket css
-        mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
-    });
-
-    // Husk at opdatere priser hvis point ændres (updateUI klarer det)
-    // Forbedring: Tilføj goat orbit start når goat købes. animationen kører altid i CSS når wrapper er synlig.
-    // Fix goat wrapper start: sikre at ved goat køb, animation kører flot.
-    // Mund-animation ved klik: er allerede implementeret.
-    // Derudover hvis man klikker hurtigt, lukker den korrekt efter 180ms.
-    // Gør det umuligt at købe goat to gange
-    // Eventuel præcisering: aksel giver 1 click hvert sekund = 1 point hvert sekund, uanset clickMultiplier.
-    // Men det er i tråd med "giver 1 click hvert sekund". Super!
-    // Lav ekstra sikkerhed så goat interval ikke dobbelt-startes
-    const originalBuyGoat = buyGoatUpgrade;
-    window.buyGoatUpgrade = buyGoatUpgrade;
-    // done
+    mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
 </script>
 </body>
 </html>
