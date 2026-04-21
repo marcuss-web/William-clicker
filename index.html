@@ -161,10 +161,12 @@
             transform: scale(0.97);
         }
 
+        /* Beskæring af William billede - fjerner personen til højre */
         .william-img {
             width: 210px;
             height: 210px;
             object-fit: cover;
+            object-position: 0% 50%;
             border-radius: 50%;
             box-shadow: 0 15px 25px black, 0 0 0 5px #f9b23f, 0 0 0 9px #d95b00;
             background: #2c2e3e;
@@ -564,6 +566,13 @@
             margin: 10px 0;
             min-height: 24px;
         }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #ffcf7a;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -819,146 +828,20 @@
     </div>
 </div>
 
-<!-- Leaderboard Modal -->
-<div class="modal" id="leaderboardModal">
-    <div class="modal-content">
-        <h2>🏆 LEADERBOARD 🏆</h2>
-        
-        <div class="leaderboard-tabs">
-            <button class="tab-btn-lb active" data-category="money">💰 Mest Penge</button>
-            <button class="tab-btn-lb" data-category="time">⏱️ Mest Tid</button>
-            <button class="tab-btn-lb" data-category="clicks">👆 Mest Clicks</button>
-        </div>
-        
-        <div class="name-input-section">
-            <input type="text" id="playerName" placeholder="Dit navn...">
-            <button class="save-score-btn" id="saveScoreBtn">GEM SCORE</button>
-        </div>
+<!-- Modals (samme som før) -->
+<div class="modal" id="leaderboardModal"><div class="modal-content"><h2>🏆 LEADERBOARD 🏆</h2><div class="leaderboard-tabs"><button class="tab-btn-lb active" data-category="money">💰 Mest Penge</button><button class="tab-btn-lb" data-category="time">⏱️ Mest Tid</button><button class="tab-btn-lb" data-category="clicks">👆 Mest Clicks</button></div><div class="name-input-section"><input type="text" id="playerName" placeholder="Dit navn..."><button class="save-score-btn" id="saveScoreBtn">GEM SCORE</button></div><div id="leaderboardList" class="leaderboard-list"><p>Indlæser...</p></div><button class="close-modal" id="closeLeaderboard">✖ LUK</button></div></div>
+<div class="modal" id="achievementsModal"><div class="modal-content"><h2>🎖️ ACHIEVEMENTS 🎖️</h2><div id="achievementsList"></div><button class="close-modal" id="closeAchievements">✖ LUK</button></div></div>
+<div class="modal" id="challengesModal"><div class="modal-content"><h2>🎯 CHALLENGES 🎯</h2><div id="challengesList"></div><button class="close-modal" id="closeChallenges">✖ LUK</button></div></div>
+<div class="modal" id="prestigeUpgradesModal"><div class="modal-content"><h2>✨ PRESTIGE UPGRADES ✨</h2><div id="upgradesList"></div><button class="close-modal" id="closePrestigeUpgrades">✖ LUK</button></div></div>
+<div class="modal" id="skinsModal"><div class="modal-content"><h2>🎨 CHARACTER SKINS 🎨</h2><div id="skinsList"></div><button class="close-modal" id="closeSkins">✖ LUK</button></div></div>
+<div class="modal" id="bankModal"><div class="modal-content"><h2>🏦 MARCUS BANK 🏦</h2><div class="bank-balance-box">💰 I banken: <span id="bankBalance">0</span> point</div><div id="bankTimerDisplay" style="display: none;">⏱️ Returnerer om: <span id="bankCountdown">0:00</span></div><div style="margin:15px 0"><p style="color:#ffcf7a;">Vælg hvor meget du vil indsætte:</p><button class="bank-option-btn" data-percent="10">10% (1 min) → 15% tilbage</button><button class="bank-option-btn" data-percent="25">25% (3 min) → 40% tilbage</button><button class="bank-option-btn" data-percent="50">50% (5 min) → 75% tilbage</button><button class="bank-option-btn" data-percent="75">75% (7 min) → 125% tilbage</button><button class="bank-option-btn" data-percent="100">100% (10 min) → 200% tilbage</button></div><button class="bank-withdraw-btn" id="bankWithdrawBtn" style="display:none;">🏧 Hæv penge</button><button class="close-modal" id="closeBank">✖ LUK</button></div></div>
+<div class="modal" id="prestigeModal"><div class="modal-content prestige-content"><h2>👑 PRESTIGE 👑</h2><p style="color:#dda0dd;">Nulstil spillet og få permanent bonus!</p><div class="prestige-info"><p>Nuværende Points: <span id="prestigeCurrentPoints">0</span></p><p>Prestige Level: <span id="prestigeLevel">0</span></p><p class="prestige-bonus" id="prestigeBonusText">+0% Point Bonus</p><p style="color:#ffcf7a;">Kræver: <span id="prestigeRequirementText">0</span> point</p></div><div class="prestige-actions"><button class="prestige-confirm" id="prestigeConfirm">PRESTIGE NU 👑</button><button class="prestige-cancel" id="prestigeCancel">ANNULLER</button></div></div></div>
 
-        <div id="leaderboardList" class="leaderboard-list">
-            <p style="color: #aaa;">Indlæser...</p>
-        </div>
-
-        <button class="close-modal" id="closeLeaderboard">✖ LUK</button>
-    </div>
-</div>
-
-<!-- Achievements Modal -->
-<div class="modal" id="achievementsModal">
-    <div class="modal-content">
-        <h2>🎖️ ACHIEVEMENTS 🎖️</h2>
-        <div id="achievementsList"></div>
-        <button class="close-modal" id="closeAchievements">✖ LUK</button>
-    </div>
-</div>
-
-<!-- Challenges Modal -->
-<div class="modal" id="challengesModal">
-    <div class="modal-content">
-        <h2>🎯 CHALLENGES 🎯</h2>
-        <div id="challengesList"></div>
-        <button class="close-modal" id="closeChallenges">✖ LUK</button>
-    </div>
-</div>
-
-<!-- Prestige Upgrades Modal -->
-<div class="modal" id="prestigeUpgradesModal">
-    <div class="modal-content">
-        <h2>✨ PRESTIGE UPGRADES ✨</h2>
-        <div id="upgradesList"></div>
-        <button class="close-modal" id="closePrestigeUpgrades">✖ LUK</button>
-    </div>
-</div>
-
-<!-- Skins Modal -->
-<div class="modal" id="skinsModal">
-    <div class="modal-content">
-        <h2>🎨 CHARACTER SKINS 🎨</h2>
-        <div id="skinsList"></div>
-        <button class="close-modal" id="closeSkins">✖ LUK</button>
-    </div>
-</div>
-
-<!-- Marcus Bank Modal -->
-<div class="modal" id="bankModal">
-    <div class="modal-content">
-        <h2>🏦 MARCUS BANK 🏦</h2>
-        
-        <div class="bank-balance-box">
-            💰 I banken: <span id="bankBalance">0</span> point
-        </div>
-        
-        <div id="bankTimerDisplay" style="display: none;">
-            ⏱️ Returnerer om: <span id="bankCountdown">0:00</span>
-        </div>
-        
-        <div style="margin: 15px 0;">
-            <p style="color: #ffcf7a; margin-bottom: 10px;">Vælg hvor meget du vil indsætte:</p>
-            
-            <button class="bank-option-btn" data-percent="10">
-                10% (1 min) → 15% tilbage
-            </button>
-            
-            <button class="bank-option-btn" data-percent="25">
-                25% (3 min) → 40% tilbage
-            </button>
-            
-            <button class="bank-option-btn" data-percent="50">
-                50% (5 min) → 75% tilbage
-            </button>
-            
-            <button class="bank-option-btn" data-percent="75">
-                75% (7 min) → 125% tilbage
-            </button>
-            
-            <button class="bank-option-btn" data-percent="100">
-                100% (10 min) → 200% tilbage
-            </button>
-        </div>
-        
-        <button class="bank-withdraw-btn" id="bankWithdrawBtn" style="display: none;">
-            🏧 Hæv penge
-        </button>
-        
-        <button class="close-modal" id="closeBank">✖ LUK</button>
-    </div>
-</div>
-
-<!-- Prestige Modal -->
-<div class="modal" id="prestigeModal">
-    <div class="modal-content prestige-content">
-        <h2>👑 PRESTIGE 👑</h2>
-        <p style="color: #dda0dd;">Nulstil spillet og få permanent bonus!</p>
-        
-        <div class="prestige-info">
-            <p>Nuværende Points: <span id="prestigeCurrentPoints">0</span></p>
-            <p>Prestige Level: <span id="prestigeLevel">0</span></p>
-            <p class="prestige-bonus" id="prestigeBonusText">+0% Point Bonus</p>
-            <p style="color: #ffcf7a; font-size: 0.95rem;">Kræver: <span id="prestigeRequirementText">0</span> point</p>
-        </div>
-        
-        <p style="color: #dda0dd; font-size: 0.95rem;">Når du prestige'r:</p>
-        <ul style="color: #bbb; text-align: left; font-size: 0.95rem;">
-            <li>✅ Spillet nulstilles (alle points & upgrades)</li>
-            <li>✅ Du får <strong>+5% point multiplier</strong> permanent</li>
-            <li>✅ Prestige level øges med 1</li>
-        </ul>
-
-        <div class="prestige-actions">
-            <button class="prestige-confirm" id="prestigeConfirm">PRESTIGE NU 👑</button>
-            <button class="prestige-cancel" id="prestigeCancel">ANNULLER</button>
-        </div>
-    </div>
-</div>
-
-<!-- Boss Container -->
 <div class="boss-container" id="bossContainer">
     <div class="boss-name" id="bossName">👹 RASMUS PRANGE</div>
-    <img class="boss-img" id="bossImg" src="https://imgur.com/7874719_400x400.jpg" alt="Rasmus Prange">
-    <div class="boss-health-bar">
-        <div class="boss-health-fill" id="bossHealthFill"></div>
-    </div>
-    <div id="bossHealthText" style="color: #ff8888; margin: 5px 0;">❤️ 100.000 / 100.000</div>
+    <img class="boss-img" id="bossImg" src="https://i.imgur.com/7874719.jpeg" alt="Rasmus Prange">
+    <div class="boss-health-bar"><div class="boss-health-fill" id="bossHealthFill"></div></div>
+    <div id="bossHealthText" style="color:#ff8888;">❤️ 100.000 / 100.000</div>
     <div class="boss-timer" id="bossTimer">⏱️ 3:00</div>
     <div class="boss-attack-warning" id="bossAttackWarning"></div>
 </div>
@@ -966,399 +849,61 @@
 <div id="comboCounter">🔥 0x COMBO!</div>
 
 <style>
-    /* Modal Styles */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.8);
-        z-index: 2000;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .modal.active {
-        display: flex;
-    }
-
-    .modal-content {
-        background: rgba(10, 14, 23, 0.95);
-        border-radius: 50px;
-        padding: 30px;
-        max-width: 600px;
-        width: 90%;
-        max-height: 80vh;
-        overflow-y: auto;
-        border: 2px solid #ffb347;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-        text-align: center;
-    }
-
-    .modal-content h2 {
-        color: #ffd700;
-        font-size: 2rem;
-        margin-top: 0;
-    }
-
-    .close-modal {
-        background: #3e2a24;
-        border: none;
-        color: #ffbe89;
-        padding: 10px 20px;
-        border-radius: 30px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 15px;
-        width: 100%;
-    }
-
-    /* Leaderboard Tabs */
-    .leaderboard-tabs {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 15px;
-        justify-content: center;
-    }
-
-    .tab-btn-lb {
-        padding: 8px 15px;
-        background: rgba(255, 215, 0, 0.1);
-        color: #ffd700;
-        border: 2px solid transparent;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 0.95rem;
-        font-weight: bold;
-        transition: all 0.3s;
-    }
-
-    .tab-btn-lb.active {
-        border-color: #ffd700;
-        background: rgba(255, 215, 0, 0.2);
-    }
-
-    .name-input-section {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-    }
-
-    #playerName {
-        flex: 1;
-        padding: 10px 15px;
-        border-radius: 30px;
-        border: none;
-        background: #1a1208;
-        color: #ffcf7a;
-        font-weight: bold;
-        font-size: 1rem;
-    }
-
-    .save-score-btn {
-        background: #e48f2b;
-        border: none;
-        color: #201c10;
-        padding: 10px 20px;
-        border-radius: 30px;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 3px 0 #784a1a;
-    }
-
-    .leaderboard-list {
-        text-align: left;
-        max-height: 300px;
-        overflow-y: auto;
-    }
-
-    .leaderboard-entry {
-        background: rgba(38, 43, 63, 0.8);
-        border-left: 4px solid #ffd700;
-        padding: 10px 15px;
-        margin-bottom: 10px;
-        border-radius: 10px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .leaderboard-entry.top1 { border-left-color: #ffd700; }
-    .leaderboard-entry.top2 { border-left-color: #c0c0c0; }
-    .leaderboard-entry.top3 { border-left-color: #cd7f32; }
-
-    .entry-rank { color: #aaa; width: 30px; font-weight: bold; }
-    .entry-name { color: #ffe1ae; font-weight: bold; }
-    .entry-score { color: #ffcf7a; font-weight: bold; }
-
-    /* Bank Modal */
-    .bank-balance-box {
-        background: rgba(255, 183, 71, 0.1);
-        padding: 15px;
-        border-radius: 15px;
-        margin-bottom: 15px;
-        font-size: 1.2rem;
-        color: #ffd700;
-    }
-
-    .bank-option-btn {
-        width: 100%;
-        padding: 12px;
-        margin: 5px 0;
-        background: #1a1208;
-        border: 2px solid #8B6914;
-        border-radius: 10px;
-        color: #ffcf7a;
-        font-weight: bold;
-        cursor: pointer;
-        transition: all 0.1s;
-    }
-
-    .bank-option-btn:hover {
-        background: #2a1f0e;
-        border-color: #ffd700;
-    }
-
-    .bank-withdraw-btn {
-        width: 100%;
-        padding: 12px;
-        margin: 10px 0;
-        background: #4CAF50;
-        border: none;
-        border-radius: 10px;
-        color: white;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    /* Prestige */
-    .prestige-content {
-        background: linear-gradient(135deg, #1a0f2e, #2d1b4e) !important;
-        border-color: #9b59b6 !important;
-    }
-
-    .prestige-content h2 {
-        color: #c71585 !important;
-    }
-
-    .prestige-info {
-        background: rgba(38, 20, 60, 0.8);
-        border-radius: 30px;
-        padding: 20px;
-        margin: 20px 0;
-        border: 2px solid #9b59b6;
-    }
-
-    .prestige-bonus {
-        color: #ffd700;
-        font-weight: bold;
-        font-size: 1.3rem;
-    }
-
-    .prestige-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 20px;
-    }
-
-    .prestige-confirm {
-        flex: 1;
-        background: #c71585;
-        border: none;
-        color: white;
-        padding: 12px;
-        border-radius: 30px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .prestige-cancel {
-        flex: 1;
-        background: #3e2a24;
-        border: none;
-        color: #ffbe89;
-        padding: 12px;
-        border-radius: 30px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    /* Upgrade Card */
-    .upgrade-card {
-        background: linear-gradient(115deg, #262b3f, #191e2f);
-        border-radius: 50px;
-        padding: 12px 18px;
-        margin-bottom: 16px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border: 1px solid #f6b55766;
-    }
-
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
+    .modal.active { display: flex; }
+    .modal-content { background: rgba(10,14,23,0.95); border-radius: 50px; padding: 30px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; border: 2px solid #ffb347; }
+    .modal-content h2 { color: #ffd700; }
+    .close-modal { background: #3e2a24; border: none; color: #ffbe89; padding: 10px 20px; border-radius: 30px; cursor: pointer; margin-top: 15px; width: 100%; }
+    .leaderboard-tabs { display: flex; gap: 10px; margin-bottom: 15px; justify-content: center; }
+    .tab-btn-lb { padding: 8px 15px; background: rgba(255,215,0,0.1); color: #ffd700; border: 2px solid transparent; border-radius: 5px; cursor: pointer; }
+    .tab-btn-lb.active { border-color: #ffd700; background: rgba(255,215,0,0.2); }
+    .name-input-section { display: flex; gap: 10px; margin-bottom: 20px; }
+    #playerName { flex: 1; padding: 10px; border-radius: 30px; border: none; background: #1a1208; color: #ffcf7a; }
+    .save-score-btn { background: #e48f2b; border: none; padding: 10px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; }
+    .leaderboard-list { text-align: left; max-height: 300px; overflow-y: auto; }
+    .leaderboard-entry { background: rgba(38,43,63,0.8); border-left: 4px solid #ffd700; padding: 10px 15px; margin-bottom: 10px; border-radius: 10px; display: flex; justify-content: space-between; }
+    .bank-balance-box { background: rgba(255,183,71,0.1); padding: 15px; border-radius: 15px; margin-bottom: 15px; color: #ffd700; }
+    .bank-option-btn { width: 100%; padding: 12px; margin: 5px 0; background: #1a1208; border: 2px solid #8B6914; border-radius: 10px; color: #ffcf7a; cursor: pointer; }
+    .bank-withdraw-btn { width: 100%; padding: 12px; background: #4CAF50; border: none; border-radius: 10px; color: white; cursor: pointer; }
+    .prestige-content { background: linear-gradient(135deg, #1a0f2e, #2d1b4e) !important; border-color: #9b59b6 !important; }
+    .prestige-info { background: rgba(38,20,60,0.8); border-radius: 30px; padding: 20px; margin: 20px 0; border: 2px solid #9b59b6; }
+    .prestige-bonus { color: #ffd700; font-weight: bold; }
+    .prestige-actions { display: flex; gap: 10px; }
+    .prestige-confirm { flex: 1; background: #c71585; border: none; color: white; padding: 12px; border-radius: 30px; cursor: pointer; }
+    .prestige-cancel { flex: 1; background: #3e2a24; border: none; color: #ffbe89; padding: 12px; border-radius: 30px; cursor: pointer; }
+    .upgrade-card { background: linear-gradient(115deg, #262b3f, #191e2f); border-radius: 50px; padding: 12px 18px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #f6b55766; }
     .upgrade-info { flex: 2; }
     .upgrade-name { font-weight: bold; color: #ffe1ae; }
     .upgrade-desc { font-size: 0.7rem; color: #cfbc8f; }
-    .upgrade-cost {
-        font-weight: bold;
-        background: #1a1208;
-        padding: 5px 14px;
-        border-radius: 50px;
-        color: #ffcf7a;
-        margin-right: 12px;
-    }
-
-    button.buy-btn {
-        background: #e48f2b;
-        border: none;
-        font-weight: bold;
-        padding: 6px 16px;
-        border-radius: 40px;
-        color: #201c10;
-        cursor: pointer;
-        box-shadow: 0 3px 0 #784a1a;
-    }
-
-    button.buy-btn:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-
-    .tab-container {
-        display: flex;
-        gap: 5px;
-        margin-bottom: 15px;
-    }
-
-    .tab-btn {
-        flex: 1;
-        background: #1a1208;
-        border: 2px solid #8B6914;
-        color: #c8a86e;
-        padding: 8px;
-        border-radius: 30px;
-        cursor: pointer;
-        font-weight: bold;
-    }
-
-    .tab-btn.active {
-        background: #8B6914;
-        color: #ffd700;
-        border-color: #ffd700;
-    }
-
+    .upgrade-cost { font-weight: bold; background: #1a1208; padding: 5px 14px; border-radius: 50px; color: #ffcf7a; margin-right: 12px; }
+    button.buy-btn { background: #e48f2b; border: none; font-weight: bold; padding: 6px 16px; border-radius: 40px; cursor: pointer; box-shadow: 0 3px 0 #784a1a; }
+    button.buy-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .tab-container { display: flex; gap: 5px; margin-bottom: 15px; }
+    .tab-btn { flex: 1; background: #1a1208; border: 2px solid #8B6914; color: #c8a86e; padding: 8px; border-radius: 30px; cursor: pointer; font-weight: bold; }
+    .tab-btn.active { background: #8B6914; color: #ffd700; border-color: #ffd700; }
     .tab-content { display: none; }
     .tab-content.active { display: block; }
-
-    .reset-btn {
-        background: #3e2a24;
-        border: none;
-        color: #ffbe89;
-        padding: 8px 20px;
-        border-radius: 60px;
-        font-weight: bold;
-        margin-top: 15px;
-        width: 100%;
-        cursor: pointer;
-    }
-
-    .prestige-btn {
-        background: linear-gradient(135deg, #9b59b6, #c71585);
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 30px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 15px;
-        width: 100%;
-        box-shadow: 0 0 15px rgba(155, 89, 182, 0.5);
-    }
-
-    /* Golden William */
-    .golden-william {
-        position: fixed;
-        cursor: pointer;
-        z-index: 1000;
-        animation: goldenFloat 0.5s infinite alternate;
-        filter: drop-shadow(0 0 30px #ffd700);
-    }
-
-    @keyframes goldenFloat {
-        from { transform: translateY(0); }
-        to { transform: translateY(-15px); }
-    }
-
-    .golden-william-img {
-        width: 80px;
-        height: 80px;
-        border-radius: 50%;
-        border: 4px solid #ffd700;
-        object-fit: cover;
-    }
-
-    /* Toast */
-    .easter-toast {
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #ffd966;
-        color: #2c2c2c;
-        padding: 10px 20px;
-        border-radius: 50px;
-        font-weight: bold;
-        z-index: 9999;
-        animation: fadeOut 2s forwards;
-        border: 3px solid #8B6914;
-    }
-
-    @keyframes fadeOut {
-        0% { opacity: 1; transform: translateX(-50%) translateY(0); }
-        70% { opacity: 1; }
-        100% { opacity: 0; transform: translateX(-50%) translateY(-30px); visibility: hidden; }
-    }
-
-    /* Particles */
-    .particle {
-        position: fixed;
-        pointer-events: none;
-        font-size: 2rem;
-        animation: floatUp 1s ease-out forwards;
-        z-index: 50;
-    }
-
-    @keyframes floatUp {
-        0% { opacity: 1; transform: translateY(0) translateX(0) rotate(0deg); }
-        100% { opacity: 0; transform: translateY(-100px) translateX(var(--tx, 0)) rotate(360deg); }
-    }
-
-    .score-popup {
-        position: fixed;
-        pointer-events: none;
-        font-weight: bold;
-        color: #ffdd99;
-        text-shadow: 0 0 10px rgba(0,0,0,0.8);
-        animation: scoreFloat 1.5s ease-out forwards;
-        z-index: 50;
-        font-size: 1.5rem;
-    }
-
-    @keyframes scoreFloat {
-        0% { opacity: 1; transform: translateY(0) scale(1); }
-        100% { opacity: 0; transform: translateY(-80px) scale(1.2); }
-    }
+    .reset-btn { background: #3e2a24; border: none; color: #ffbe89; padding: 8px 20px; border-radius: 60px; margin-top: 15px; width: 100%; cursor: pointer; }
+    .prestige-btn { background: linear-gradient(135deg, #9b59b6, #c71585); border: none; color: white; padding: 10px 20px; border-radius: 30px; cursor: pointer; margin-top: 15px; width: 100%; }
+    .golden-william { position: fixed; cursor: pointer; z-index: 1000; animation: goldenFloat 0.5s infinite alternate; }
+    @keyframes goldenFloat { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+    .golden-william-img { width: 80px; height: 80px; border-radius: 50%; border: 4px solid #ffd700; object-fit: cover; }
+    .easter-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffd966; color: #2c2c2c; padding: 10px 20px; border-radius: 50px; z-index: 9999; animation: fadeOut 2s forwards; }
+    @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
+    .particle { position: fixed; pointer-events: none; font-size: 2rem; animation: floatUp 1s ease-out forwards; z-index: 50; }
+    @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-100px); } }
+    .score-popup { position: fixed; pointer-events: none; font-weight: bold; color: #ffdd99; animation: scoreFloat 1.5s ease-out forwards; z-index: 50; }
+    @keyframes scoreFloat { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-80px); } }
 </style>
 
 <script>
-    // ========== BILLED-URL'ER (NYE BILLEDER) ==========
+    // Billede URL'er
     const WILLIAM_IMG_URL = "https://i.imgur.com/qXdBvKv.png";
     const AKSEL_IMG_URL = "https://i.imgur.com/OmHtfXO.png";
     const CARL_IMG_URL = "https://i.imgur.com/KOC0f86.png";
     const SALEH_IMG_URL = "https://i.imgur.com/JsdtT0Q.png";
     const JOHANNES_IMG_URL = "https://i.imgur.com/5TFyXLj.png";
-    const RASMUS_IMG_URL = "https://imgur.com/7874719_400x400.jpg";
+    const RASMUS_IMG_URL = "https://i.imgur.com/7874719.jpeg";
 
     document.addEventListener('DOMContentLoaded', () => {
         // Sæt billeder
@@ -1369,7 +914,7 @@
         document.getElementById('johannesImg').src = JOHANNES_IMG_URL;
         document.getElementById('bossImg').src = RASMUS_IMG_URL;
 
-        // ========== FIREBASE SETUP ==========
+        // Firebase config
         const firebaseConfig = {
             apiKey: "AIzaSyBtWJ7HqkN7VmFe7K6LzX7sL8qK9pZ5nK0",
             projectId: "william-clicker-game",
@@ -1378,353 +923,66 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.database();
 
-        // ========== SPIL STATE ==========
+        // Spil state
         let points = 0;
         let totalClicks = 0;
         let clickMultiplier = 1;
         let gameStartTime = Date.now();
-        let currentLeaderboardCategory = 'money';
         
-        // Karakterer
-        let hasGoat = false;
-        let hasCarl = false;
-        let hasSaleh = false;
-        let hasJohannes = false;
-        let hasMarcus = false;
-        let hasAdvisor = false;
-        
-        // Prestige
-        let prestigeLevel = 0;
-        let prestigeMultiplier = 1;
-        
-        // Auto-buy
-        let autoPowerBuyEnabled = false;
-        let autoClickBuyEnabled = false;
-        
-        // Bank
-        let marcusBankBalance = 0;
-        let marcusBankReturnTime = 0;
-        let bankReturnAmount = 0;
-        
-        // Easter eggs
-        let adminMode = false;
-        let infiniteMoney = false;
-        let williamClickCount = 0;
-        let easterEggClicks = 0;
+        let hasGoat = false, hasCarl = false, hasSaleh = false, hasJohannes = false, hasMarcus = false, hasAdvisor = false;
+        let prestigeLevel = 0, prestigeMultiplier = 1;
+        let autoPowerBuyEnabled = false, autoClickBuyEnabled = false;
+        let marcusBankBalance = 0, marcusBankReturnTime = 0, bankReturnAmount = 0;
+        let adminMode = false, infiniteMoney = false;
+        let williamClickCount = 0, easterEggClicks = 0;
         
         // Power-ups
-        let doubleClickActive = false;
-        let doubleClickEnd = 0;
-        let autoClickActive = false;
-        let autoClickEnd = 0;
-        let multiPointsActive = false;
-        let multiPointsEnd = 0;
-        let boostActive = false;
-        let boostEnd = 0;
-        let comboFreezeActive = false;
-        let comboFreezeEnd = 0;
-        let moneyRainActive = false;
-        let moneyRainEnd = 0;
+        let doubleClickActive = false, doubleClickEnd = 0;
+        let autoClickActive = false, autoClickEnd = 0;
+        let multiPointsActive = false, multiPointsEnd = 0;
+        let boostActive = false, boostEnd = 0;
+        let comboFreezeActive = false, comboFreezeEnd = 0;
+        let moneyRainActive = false, moneyRainEnd = 0;
         let powerupsUsed = 0;
         
         // Combo
-        let comboCount = 0;
-        let lastClickTime = 0;
-        let comboTimeout = null;
+        let comboCount = 0, lastClickTime = 0, comboTimeout = null;
         const COMBO_TIMEOUT = 1500;
         
         // Boss
-        let bossActive = false;
-        let bossHealth = 100000;
-        let bossMaxHealth = 100000;
-        let bossTimer = 180;
-        let bossAttackInterval = null;
-        let bossTimerInterval = null;
+        let bossActive = false, bossHealth = 100000, bossMaxHealth = 100000, bossTimer = 180;
+        let bossAttackInterval = null, bossTimerInterval = null;
         let nextBossSpawn = Date.now() + 600000;
         
         // Intervals
-        let goldenTimeout;
-        let goatInterval = null, carlInterval = null, salehInterval = null, johannesInterval = null;
-        let autoClickInterval = null;
-        let saveInterval = null;
+        let goldenTimeout, goatInterval, carlInterval, salehInterval, johannesInterval, autoClickInterval;
         
-        // Achievements & Challenges
+        // Achievements
         let unlockedAchievements = JSON.parse(localStorage.getItem('achievements')) || [];
         let completedChallenges = JSON.parse(localStorage.getItem('challenges')) || {};
         let boughtUpgrades = JSON.parse(localStorage.getItem('upgrades')) || [];
         let activeSkins = JSON.parse(localStorage.getItem('skins')) || { william: 'default', aksel: 'default', carl: 'default', saleh: 'default', johannes: 'default' };
         let boughtSkins = JSON.parse(localStorage.getItem('boughtSkins')) || [];
 
-        // ========== DOM ELEMENTER ==========
+        // DOM elements
         const scoreDisplay = document.getElementById('scoreDisplay');
         const clickPowerSpan = document.getElementById('clickPowerSpan');
         const clickLevelSpan = document.getElementById('clickLevel');
         const totalPtsPerSecSpan = document.getElementById('totalPtsPerSec');
         const totalClicksSpan = document.getElementById('totalClicks');
         const williamArea = document.getElementById('williamClicker');
-        const akselWrapper = document.getElementById('akselWrapper');
-        const carlWrapper = document.getElementById('carlWrapper');
-        const salehWrapper = document.getElementById('salehWrapper');
-        const johannesArea = document.getElementById('johannesArea');
-        const easterEggTitle = document.getElementById('easterEggTitle');
 
-        // ========== BURGER MENU ==========
-        const burgerBtn = document.getElementById('burgerMenuBtn');
-        const sideMenu = document.getElementById('sideMenu');
-        const sideMenuOverlay = document.getElementById('sideMenuOverlay');
-        
-        function openMenu() {
-            sideMenu.classList.add('active');
-            sideMenuOverlay.classList.add('active');
-        }
-        
-        function closeMenu() {
-            sideMenu.classList.remove('active');
-            sideMenuOverlay.classList.remove('active');
-        }
-        
-        burgerBtn.addEventListener('click', openMenu);
-        sideMenuOverlay.addEventListener('click', closeMenu);
-        
-        // Menu knapper
-        document.getElementById('menuLeaderboard').addEventListener('click', () => { closeMenu(); document.getElementById('leaderboardModal').classList.add('active'); loadLeaderboard(); });
-        document.getElementById('menuAchievements').addEventListener('click', () => { closeMenu(); document.getElementById('achievementsModal').classList.add('active'); renderAchievements(); });
-        document.getElementById('menuChallenges').addEventListener('click', () => { closeMenu(); document.getElementById('challengesModal').classList.add('active'); renderChallenges(); });
-        document.getElementById('menuPrestigeUpgrades').addEventListener('click', () => { closeMenu(); document.getElementById('prestigeUpgradesModal').classList.add('active'); renderPrestigeUpgrades(); });
-        document.getElementById('menuSkins').addEventListener('click', () => { closeMenu(); document.getElementById('skinsModal').classList.add('active'); renderSkins(); });
-        document.getElementById('menuBank').addEventListener('click', () => { closeMenu(); if (hasMarcus) { document.getElementById('bankModal').classList.add('active'); updateBankDisplay(); } else { showToast('🏦 Du skal købe Marcus Bankier først!'); } });
-
-        // Close modals
-        document.querySelectorAll('.close-modal').forEach(btn => {
-            btn.addEventListener('click', () => {
-                btn.closest('.modal').classList.remove('active');
-            });
-        });
-        
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) modal.classList.remove('active');
-            });
+        // Cheat kode: Klik på "UPGRADES" teksten 5 gange for uendelige penge
+        document.getElementById('easterEggTitle').addEventListener('click', () => {
+            easterEggClicks++;
+            if (easterEggClicks >= 5 && !infiniteMoney) {
+                infiniteMoney = true;
+                showToast('🔓 UENDELIGE PENGE AKTIVERET!');
+                updateUI();
+            }
+            setTimeout(() => easterEggClicks = 0, 1000);
         });
 
-        // ========== TABS ==========
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                document.getElementById(this.dataset.tab === 'upgrades' ? 'upgradesTab' : 'powerupsTab').classList.add('active');
-            });
-        });
-
-        // ========== ACHIEVEMENTS ==========
-        const ACHIEVEMENTS = [
-            { id: 'first_click', icon: '🖱️', title: 'Første Klik', desc: 'Klik på William', check: () => totalClicks >= 1 },
-            { id: 'hundred_points', icon: '💯', title: '100 Points', desc: 'Saml 100 points', check: () => points >= 100 },
-            { id: 'thousand_points', icon: '🎉', title: '1.000 Points', desc: 'Saml 1.000 points', check: () => points >= 1000 },
-            { id: 'ten_thousand', icon: '🤑', title: '10.000 Points', desc: 'Saml 10.000 points', check: () => points >= 10000 },
-            { id: 'hundred_thousand', icon: '💎', title: '100.000 Points', desc: 'Saml 100.000 points', check: () => points >= 100000 },
-            { id: 'million', icon: '👑', title: '1 Million Points', desc: 'Saml 1.000.000 points', check: () => points >= 1000000 },
-            { id: 'buy_aksel', icon: '🐐', title: 'Aksel Acquired', desc: 'Køb Aksel the GOAT', check: () => hasGoat },
-            { id: 'buy_carl', icon: '🐄', title: 'Carl Acquired', desc: 'Køb Carl er en Kal', check: () => hasCarl },
-            { id: 'buy_saleh', icon: '🍕', title: 'Saleh Acquired', desc: 'Køb Pizza Saleh', check: () => hasSaleh },
-            { id: 'buy_johannes', icon: '👨‍🌾', title: 'Johannes Acquired', desc: 'Køb Johannes på Gris', check: () => hasJohannes },
-            { id: 'all_characters', icon: '🌟', title: 'Full Team', desc: 'Køb alle karakterer', check: () => hasGoat && hasCarl && hasSaleh && hasJohannes },
-            { id: 'hundred_clicks', icon: '⚡', title: '100 Klik', desc: 'Klik 100 gange', check: () => totalClicks >= 100 },
-            { id: 'thousand_clicks', icon: '🔥', title: '1.000 Klik', desc: 'Klik 1.000 gange', check: () => totalClicks >= 1000 },
-            { id: 'power_user', icon: '💪', title: 'Power User', desc: 'Brug 3 power-ups', check: () => powerupsUsed >= 3 },
-        ];
-
-        function checkAchievements() {
-            ACHIEVEMENTS.forEach(achievement => {
-                if (!unlockedAchievements.includes(achievement.id) && achievement.check()) {
-                    unlockedAchievements.push(achievement.id);
-                    localStorage.setItem('achievements', JSON.stringify(unlockedAchievements));
-                    showToast('🎖️ Achievement Unlocked: ' + achievement.title);
-                }
-            });
-        }
-
-        function renderAchievements() {
-            const html = ACHIEVEMENTS.map(a => {
-                const unlocked = unlockedAchievements.includes(a.id);
-                return `
-                    <div class="achievement-item ${unlocked ? 'unlocked' : 'achievement-locked'}" style="background: rgba(38,43,63,0.8); border-radius:20px; padding:15px; margin-bottom:15px; display:flex; gap:15px; align-items:center; border:2px solid ${unlocked ? '#ffd700' : '#3a3a3a'};">
-                        <div style="font-size:2.5rem; min-width:60px; text-align:center;">${a.icon}</div>
-                        <div>
-                            <div style="color:#ffe1ae; font-weight:bold;">${a.title}</div>
-                            <div style="color:#cfbc8f; font-size:0.85rem;">${a.desc}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-            document.getElementById('achievementsList').innerHTML = html;
-        }
-
-        // ========== CHALLENGES ==========
-        const CHALLENGES = [
-            { id: 'earn_50k', icon: '💰', title: 'Tjener 50.000', desc: 'Tjener 50k points', reward: 5000, check: () => points >= 50000 },
-            { id: 'earn_500k', icon: '🤑', title: 'Tjener 500.000', desc: 'Tjener 500k points', reward: 50000, check: () => points >= 500000 },
-            { id: 'combo_10', icon: '🔥', title: '10x Combo', desc: 'Få 10 combo i træk', reward: 10000, check: () => comboCount >= 10 },
-            { id: 'clicks_1000', icon: '⚡', title: '1.000 Klik', desc: 'Klik 1000 gange', reward: 25000, check: () => totalClicks >= 1000 },
-            { id: 'clicks_10000', icon: '💥', title: '10.000 Klik', desc: 'Klik 10000 gange', reward: 100000, check: () => totalClicks >= 10000 },
-            { id: 'all_chars', icon: '🌟', title: 'Full Team', desc: 'Køb alle karakterer', reward: 75000, check: () => hasGoat && hasCarl && hasSaleh && hasJohannes },
-            { id: 'prestige_once', icon: '👑', title: 'First Prestige', desc: 'Prestige en gang', reward: 200000, check: () => prestigeLevel >= 1 },
-        ];
-
-        function renderChallenges() {
-            const list = document.getElementById('challengesList');
-            list.innerHTML = CHALLENGES.map(c => {
-                const completed = completedChallenges[c.id];
-                const isCompleted = c.check();
-                const progress = isCompleted ? 100 : 0;
-                return `
-                    <div style="background:rgba(255,183,71,0.1); border-left:4px solid ${isCompleted ? '#00ff00' : '#ffb347'}; padding:12px; margin-bottom:10px; border-radius:8px;">
-                        <p style="color:#ffcf7a; font-weight:bold; margin:0 0 5px;">${c.icon} ${c.title}</p>
-                        <div style="background:rgba(0,0,0,0.3); height:8px; border-radius:4px; overflow:hidden; margin:5px 0;">
-                            <div style="height:100%; background:linear-gradient(90deg,#ff6b6b,#ffd700); width:${progress}%;"></div>
-                        </div>
-                        <p style="color:#00ff00; font-size:0.9rem; margin-top:5px;">🎁 Reward: ${c.reward.toLocaleString()} points</p>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function checkChallenges() {
-            CHALLENGES.forEach(c => {
-                if (!completedChallenges[c.id] && c.check()) {
-                    completedChallenges[c.id] = true;
-                    localStorage.setItem('challenges', JSON.stringify(completedChallenges));
-                    points += c.reward;
-                    showToast('🎯 Challenge Completed: ' + c.title + ' +' + c.reward);
-                }
-            });
-        }
-
-        // ========== SKINS ==========
-        const SKINS = {
-            william: [
-                { id: 'default', name: 'William', emoji: '👨', cost: 0, bonus: 1 },
-                { id: 'devil', name: 'Devil William', emoji: '😈', cost: 5000000, bonus: 3 },
-                { id: 'bird', name: 'Bird William', emoji: '🐦', cost: 3000000, bonus: 2.5 },
-                { id: 'ghost', name: 'Ghost William', emoji: '👻', cost: 2500000, bonus: 2 },
-                { id: 'robot', name: 'Robot William', emoji: '🤖', cost: 4000000, bonus: 2.8 },
-            ],
-            aksel: [
-                { id: 'default', name: 'Normal Aksel', emoji: '🐐', cost: 0, bonus: 1 },
-                { id: 'space', name: 'Space Aksel', emoji: '🚀', cost: 500000, bonus: 1.5 },
-                { id: 'cool', name: 'Cool Aksel', emoji: '😎', cost: 800000, bonus: 2 },
-            ],
-            carl: [
-                { id: 'default', name: 'Normal Carl', emoji: '🐄', cost: 0, bonus: 1 },
-                { id: 'king', name: 'King Carl', emoji: '👑', cost: 600000, bonus: 1.8 },
-            ],
-            saleh: [
-                { id: 'default', name: 'Pizza Saleh', emoji: '🍕', cost: 0, bonus: 1 },
-                { id: 'chef', name: 'Chef Saleh', emoji: '👨‍🍳', cost: 400000, bonus: 1.6 },
-            ],
-            johannes: [
-                { id: 'default', name: 'Farmer Johannes', emoji: '👨‍🌾', cost: 0, bonus: 1 },
-                { id: 'knight', name: 'Knight Johannes', emoji: '⚔️', cost: 700000, bonus: 2.2 },
-            ]
-        };
-
-        function getSkinBonusMultiplier(character) {
-            if (!character) return 1;
-            const activeSkinId = activeSkins[character];
-            if (!activeSkinId || activeSkinId === 'default') return 1;
-            const skin = SKINS[character].find(s => s.id === activeSkinId);
-            return skin ? skin.bonus : 1;
-        }
-
-        function renderSkins() {
-            const list = document.getElementById('skinsList');
-            let html = '';
-            for (const [char, skins] of Object.entries(SKINS)) {
-                const sortedSkins = [...skins].sort((a, b) => a.cost - b.cost);
-                html += `<div style="margin-bottom:20px;"><h3 style="color:#ffb347; border-bottom:2px solid #ffb347; padding-bottom:10px;">${char.toUpperCase()}</h3><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px;">`;
-                sortedSkins.forEach(s => {
-                    const owned = boughtSkins.includes(s.id + '_' + char) || s.cost === 0;
-                    const active = activeSkins[char] === s.id;
-                    html += `
-                        <div onclick="buySkin('${s.id}', '${char}')" style="background:rgba(255,107,157,0.1); border:2px solid ${active ? '#ffd700' : (owned ? '#00ff00' : '#ff6b9d')}; border-radius:10px; padding:12px; text-align:center; cursor:pointer;">
-                            <div style="font-size:2.5rem;">${s.emoji}</div>
-                            <div style="color:#ffcf7a; font-weight:bold;">${s.name}</div>
-                            <div style="color:#00ff88;">${s.bonus}x</div>
-                            <div style="color:#ffd700;">${s.cost ? s.cost.toLocaleString() : 'Own'}</div>
-                            <div style="color:#00ff00;">${active ? '✓ AKTIV' : owned ? 'EJET' : 'KØB'}</div>
-                        </div>
-                    `;
-                });
-                html += '</div></div>';
-            }
-            list.innerHTML = html;
-        }
-
-        window.buySkin = function(skinId, character) {
-            const skin = SKINS[character].find(s => s.id === skinId);
-            const key = skinId + '_' + character;
-            
-            if (skinId === 'default' || boughtSkins.includes(key)) {
-                activeSkins[character] = skinId;
-                localStorage.setItem('skins', JSON.stringify(activeSkins));
-                renderSkins();
-                updateUI();
-                showToast(`✨ ${skin.name} aktiveret!`);
-            } else if (infiniteMoney || points >= skin.cost) {
-                if (!infiniteMoney) points -= skin.cost;
-                boughtSkins.push(key);
-                localStorage.setItem('boughtSkins', JSON.stringify(boughtSkins));
-                activeSkins[character] = skinId;
-                localStorage.setItem('skins', JSON.stringify(activeSkins));
-                renderSkins();
-                saveGame();
-                updateUI();
-                showToast(`🎨 ${skin.name} købt!`);
-            }
-        };
-
-        // ========== PRESTIGE UPGRADES ==========
-        const PRESTIGE_UPGRADES = [
-            { id: 'click_power', icon: '💪', title: '+10% Click Power', desc: 'Øg klikkraft med 10% per prestige level', cost: 1 },
-            { id: 'golden_rate', icon: '✨', title: 'Golden William +50%', desc: 'Golden William vises 50% oftere', cost: 1 },
-            { id: 'passive_boost', icon: '🤖', title: '+5% Passive Income', desc: 'Alle karakterer giver 5% mere per prestige', cost: 2 },
-            { id: 'double_combo', icon: '🔥', title: 'Double Combo Rewards', desc: 'Combo multiplier x2', cost: 2 },
-        ];
-
-        function renderPrestigeUpgrades() {
-            const list = document.getElementById('upgradesList');
-            list.innerHTML = PRESTIGE_UPGRADES.map(u => {
-                const bought = boughtUpgrades.includes(u.id);
-                const canBuy = prestigeLevel >= u.cost && !bought;
-                return `
-                    <div style="background:rgba(200,125,255,0.1); border:2px solid ${bought ? '#00ff00' : '#c77dff'}; border-radius:10px; padding:15px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center;">
-                        <div>
-                            <p style="color:#dda0dd; font-weight:bold; margin:0;">${u.icon} ${u.title}</p>
-                            <p style="color:#bbb; font-size:0.9rem; margin:5px 0 0;">${u.desc}</p>
-                        </div>
-                        <span style="color:#ffd700; font-weight:bold; min-width:100px; text-align:right;">🎖️ ${u.cost}</span>
-                        <button onclick="buyPrestigeUpgrade('${u.id}')" style="background:#e48f2b; border:none; color:#201c10; padding:8px 15px; border-radius:8px; font-weight:bold; cursor:pointer;" ${!canBuy ? 'disabled' : ''}>
-                            ${bought ? '✓ KØBT' : 'KØB'}
-                        </button>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        window.buyPrestigeUpgrade = function(id) {
-            const upgrade = PRESTIGE_UPGRADES.find(u => u.id === id);
-            if (prestigeLevel >= upgrade.cost && !boughtUpgrades.includes(id)) {
-                boughtUpgrades.push(id);
-                localStorage.setItem('upgrades', JSON.stringify(boughtUpgrades));
-                showToast('✨ Upgrade købt: ' + upgrade.title);
-                renderPrestigeUpgrades();
-                updateUI();
-                saveGame();
-            }
-        };
-
-        // ========== TOAST & PARTICLES ==========
         function showToast(msg) {
             const toast = document.createElement('div');
             toast.className = 'easter-toast';
@@ -1733,72 +991,67 @@
             setTimeout(() => toast.remove(), 2500);
         }
 
-        function spawnParticles(x, y, emoji = '✨') {
-            for (let i = 0; i < 5; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.textContent = emoji;
-                particle.style.left = x + 'px';
-                particle.style.top = y + 'px';
-                const angle = (Math.PI * 2 * i) / 5;
-                particle.style.setProperty('--tx', Math.cos(angle) * 50 + 'px');
-                document.body.appendChild(particle);
-                setTimeout(() => particle.remove(), 1000);
+        function updateUI() {
+            scoreDisplay.innerText = Math.floor(points).toLocaleString();
+            let power = clickMultiplier;
+            if (doubleClickActive && Date.now() < doubleClickEnd) power *= 2;
+            if (multiPointsActive && Date.now() < multiPointsEnd) power *= 3;
+            clickPowerSpan.innerText = Math.floor(power);
+            clickLevelSpan.innerText = clickMultiplier;
+            totalClicksSpan.innerText = totalClicks;
+
+            const clickCost = 8 + (clickMultiplier - 1) * 5;
+            document.getElementById('clickCostSpan').innerText = clickCost;
+            document.getElementById('buyClickBtn').disabled = !infiniteMoney && points < clickCost;
+            document.getElementById('buyGoatBtn').disabled = hasGoat || (!infiniteMoney && points < 40);
+            document.getElementById('buyCarlBtn').disabled = hasCarl || (!infiniteMoney && points < 750);
+            document.getElementById('buySalehBtn').disabled = hasSaleh || (!infiniteMoney && points < 7500);
+            document.getElementById('buyJohannesBtn').disabled = hasJohannes || (!infiniteMoney && points < 40000);
+            document.getElementById('buyMarcusBtn').disabled = hasMarcus || (!infiniteMoney && points < 50000);
+            document.getElementById('buyAdvisorBtn').disabled = hasAdvisor || (!infiniteMoney && points < 65000);
+
+            document.getElementById('akselWrapper').style.display = hasGoat ? 'block' : 'none';
+            document.getElementById('carlWrapper').style.display = hasCarl ? 'block' : 'none';
+            document.getElementById('salehWrapper').style.display = hasSaleh ? 'block' : 'none';
+            document.getElementById('johannesArea').classList.toggle('active-field', hasJohannes);
+            
+            document.getElementById('autoPowerSection').style.display = hasAdvisor ? 'block' : 'none';
+            document.getElementById('autoBuySection').style.display = hasAdvisor ? 'block' : 'none';
+            
+            let total = 0;
+            if (hasGoat) total += 15;
+            if (hasCarl) total += 150;
+            if (hasSaleh) total += 1500;
+            if (hasJohannes) total += 15000;
+            if (multiPointsActive && Date.now() < multiPointsEnd) total *= 3;
+            totalPtsPerSecSpan.innerText = Math.floor(total);
+            
+            // Power-up knapper
+            document.getElementById('powerupDoubleBtn').disabled = doubleClickActive || (!infiniteMoney && points < 3000);
+            document.getElementById('powerupAutoBtn').disabled = autoClickActive || (!infiniteMoney && points < 12000);
+            document.getElementById('powerupMultiBtn').disabled = multiPointsActive || (!infiniteMoney && points < 30000);
+            document.getElementById('powerupBoostBtn').disabled = boostActive || (!infiniteMoney && points < 25000);
+            document.getElementById('powerupComboBtn').disabled = comboFreezeActive || (!infiniteMoney && points < 20000);
+            document.getElementById('powerupRainBtn').disabled = moneyRainActive || (!infiniteMoney && points < 28000);
+        }
+
+        function addPoints(amount) {
+            let finalAmount = amount;
+            if (multiPointsActive && Date.now() < multiPointsEnd) finalAmount *= 3;
+            if (boostActive && Date.now() < boostEnd) finalAmount *= 1.1;
+            finalAmount *= prestigeMultiplier;
+            points += finalAmount;
+            updateUI();
+            saveGame();
+        }
+
+        function saveGame() {
+            if (!infiniteMoney) {
+                const data = { points, totalClicks, clickMultiplier, hasGoat, hasCarl, hasSaleh, hasJohannes, hasMarcus, hasAdvisor, autoPowerBuyEnabled, autoClickBuyEnabled, prestigeLevel, prestigeMultiplier, marcusBankBalance, marcusBankReturnTime, bankReturnAmount };
+                localStorage.setItem('williamClickerSaveV3', JSON.stringify(data));
             }
         }
 
-        function showScorePopup(x, y, amount) {
-            const popup = document.createElement('div');
-            popup.className = 'score-popup';
-            popup.textContent = '+' + amount.toLocaleString();
-            popup.style.left = x + 'px';
-            popup.style.top = y + 'px';
-            document.body.appendChild(popup);
-            setTimeout(() => popup.remove(), 1500);
-        }
-        // ========== COMBO SYSTEM ==========
-        function updateCombo() {
-            const now = Date.now();
-            if (comboFreezeActive) {
-                comboCount++;
-                lastClickTime = now;
-                displayCombo();
-                return;
-            }
-            if (now - lastClickTime > COMBO_TIMEOUT) {
-                comboCount = 1;
-            } else {
-                comboCount++;
-            }
-            lastClickTime = now;
-            displayCombo();
-            clearTimeout(comboTimeout);
-            comboTimeout = setTimeout(() => {
-                comboCount = 0;
-                document.getElementById('comboCounter').style.opacity = '0';
-                document.getElementById('comboCounter').textContent = '🔥 0x COMBO!';
-            }, COMBO_TIMEOUT);
-        }
-
-        function displayCombo() {
-            const comboEl = document.getElementById('comboCounter');
-            if (comboCount >= 2) {
-                comboEl.style.opacity = '1';
-                comboEl.textContent = `🔥 ${comboCount}x COMBO! 🔥`;
-                comboEl.classList.remove('combo-pulse');
-                void comboEl.offsetWidth;
-                comboEl.classList.add('combo-pulse');
-            } else {
-                comboEl.style.opacity = '0';
-            }
-        }
-
-        function getComboMultiplier() {
-            if (comboCount < 5) return 1;
-            return 1 + Math.min((comboCount - 4) * 0.1, 3);
-        }
-
-        // ========== LOAD/SAVE ==========
         function loadGame() {
             const saved = localStorage.getItem('williamClickerSaveV3');
             if (saved) {
@@ -1820,14 +1073,8 @@
                 marcusBankReturnTime = data.marcusBankReturnTime || 0;
                 bankReturnAmount = data.bankReturnAmount || 0;
             }
-            document.getElementById('autoPowerToggle').checked = autoPowerBuyEnabled;
-            document.getElementById('autoClickToggle').checked = autoClickBuyEnabled;
-            if (!hasAdvisor) {
-                autoPowerBuyEnabled = false;
-                autoClickBuyEnabled = false;
-                document.getElementById('autoPowerToggle').checked = false;
-                document.getElementById('autoClickToggle').checked = false;
-            }
+            document.getElementById('autoPowerToggle').checked = autoPowerBuyEnabled && hasAdvisor;
+            document.getElementById('autoClickToggle').checked = autoClickBuyEnabled && hasAdvisor;
             if (hasGoat) startGoatInterval();
             if (hasCarl) startCarlInterval();
             if (hasSaleh) startSalehInterval();
@@ -1835,379 +1082,284 @@
             updateUI();
         }
 
-        function saveGame() {
-            const data = { points, totalClicks, clickMultiplier, hasGoat, hasCarl, hasSaleh, hasJohannes, hasMarcus, hasAdvisor, autoPowerBuyEnabled, autoClickBuyEnabled, prestigeLevel, prestigeMultiplier, marcusBankBalance, marcusBankReturnTime, bankReturnAmount };
-            localStorage.setItem('williamClickerSaveV3', JSON.stringify(data));
-        }
+        function startGoatInterval() { if (goatInterval) clearInterval(goatInterval); goatInterval = setInterval(() => { if (hasGoat) addPoints(15); }, 1000); }
+        function startCarlInterval() { if (carlInterval) clearInterval(carlInterval); carlInterval = setInterval(() => { if (hasCarl) addPoints(150); }, 1000); }
+        function startSalehInterval() { if (salehInterval) clearInterval(salehInterval); salehInterval = setInterval(() => { if (hasSaleh) addPoints(1500); }, 1000); }
+        function startJohannesInterval() { if (johannesInterval) clearInterval(johannesInterval); johannesInterval = setInterval(() => { if (hasJohannes) addPoints(15000); }, 1000); }
 
-        function addPoints(amount) {
-            let finalAmount = amount;
-            if (multiPointsActive && Date.now() < multiPointsEnd) finalAmount *= 3;
-            if (boostActive && Date.now() < boostEnd) finalAmount *= 1.1;
-            finalAmount *= prestigeMultiplier;
-            points += finalAmount;
-            updateUI();
-            saveGame();
-        }
-
-        // ========== UPDATE UI ==========
-        function updateUI() {
-            scoreDisplay.innerText = Math.floor(points).toLocaleString();
-            
-            let power = clickMultiplier;
-            if (doubleClickActive && Date.now() < doubleClickEnd) power *= 2;
-            if (multiPointsActive && Date.now() < multiPointsEnd) power *= 3;
-            power *= getSkinBonusMultiplier('william');
-            clickPowerSpan.innerText = Math.floor(power);
-            clickLevelSpan.innerText = clickMultiplier;
-            totalClicksSpan.innerText = totalClicks;
-
-            const clickCost = 8 + (clickMultiplier - 1) * 5;
-            document.getElementById('clickCostSpan').innerText = clickCost;
-
-            document.getElementById('buyClickBtn').disabled = points < clickCost;
-            document.getElementById('buyGoatBtn').disabled = hasGoat || points < 25;
-            document.getElementById('buyCarlBtn').disabled = hasCarl || points < 400;
-            document.getElementById('buySalehBtn').disabled = hasSaleh || points < 4000;
-            document.getElementById('buyJohannesBtn').disabled = hasJohannes || points < 40000;
-            document.getElementById('buyMarcusBtn').disabled = hasMarcus || points < 50000;
-            document.getElementById('buyAdvisorBtn').disabled = hasAdvisor || points < 65000;
-
-            document.getElementById('buyGoatBtn').innerText = hasGoat ? '✓ KØBT' : 'KØB';
-            document.getElementById('buyCarlBtn').innerText = hasCarl ? '✓ KØBT' : 'KØB';
-            document.getElementById('buySalehBtn').innerText = hasSaleh ? '✓ KØBT' : 'KØB';
-            document.getElementById('buyJohannesBtn').innerText = hasJohannes ? '✓ KØBT' : 'KØB';
-            document.getElementById('buyMarcusBtn').innerText = hasMarcus ? '✓ KØBT' : 'KØB';
-            document.getElementById('buyAdvisorBtn').innerText = hasAdvisor ? '✓ KØBT' : 'KØB';
-
-            akselWrapper.style.display = hasGoat ? 'block' : 'none';
-            carlWrapper.style.display = hasCarl ? 'block' : 'none';
-            salehWrapper.style.display = hasSaleh ? 'block' : 'none';
-            johannesArea.classList.toggle('active-field', hasJohannes);
-
-            const autoPowerSection = document.getElementById('autoPowerSection');
-            autoPowerSection.style.display = hasAdvisor ? 'block' : 'none';
-            document.getElementById('autoBuySection').style.display = hasAdvisor ? 'block' : 'none';
-
-            let total = 0;
-            if (hasGoat) total += 15 * getSkinBonusMultiplier('aksel');
-            if (hasCarl) total += 150 * getSkinBonusMultiplier('carl');
-            if (hasSaleh) total += 1500 * getSkinBonusMultiplier('saleh');
-            if (hasJohannes) total += 15000 * getSkinBonusMultiplier('johannes');
-            if (multiPointsActive && Date.now() < multiPointsEnd) total *= 3;
-            totalPtsPerSecSpan.innerText = Math.floor(total);
-
-            document.getElementById('powerupDoubleBtn').disabled = doubleClickActive || points < 3000;
-            document.getElementById('powerupAutoBtn').disabled = autoClickActive || points < 12000;
-            document.getElementById('powerupMultiBtn').disabled = multiPointsActive || points < 30000;
-            document.getElementById('powerupBoostBtn').disabled = boostActive || points < 25000;
-            document.getElementById('powerupComboBtn').disabled = comboFreezeActive || points < 20000;
-            document.getElementById('powerupRainBtn').disabled = moneyRainActive || points < 28000;
-            
-            document.getElementById('powerupDoubleBtn').innerText = doubleClickActive ? 'AKTIV' : 'AKTIVER';
-            document.getElementById('powerupAutoBtn').innerText = autoClickActive ? 'AKTIV' : 'AKTIVER';
-            document.getElementById('powerupMultiBtn').innerText = multiPointsActive ? 'AKTIV' : 'AKTIVER';
-            document.getElementById('powerupBoostBtn').innerText = boostActive ? 'AKTIV' : 'AKTIVER';
-            document.getElementById('powerupComboBtn').innerText = comboFreezeActive ? 'AKTIV' : 'AKTIVER';
-            document.getElementById('powerupRainBtn').innerText = moneyRainActive ? 'AKTIV' : 'AKTIVER';
-            
-            checkAchievements();
-        }
-
-        // ========== INTERVALS ==========
-        function startGoatInterval() { if (goatInterval) clearInterval(goatInterval); goatInterval = setInterval(() => { if (hasGoat) addPoints(15 * getSkinBonusMultiplier('aksel')); }, 1000); }
-        function startCarlInterval() { if (carlInterval) clearInterval(carlInterval); carlInterval = setInterval(() => { if (hasCarl) addPoints(150 * getSkinBonusMultiplier('carl')); }, 1000); }
-        function startSalehInterval() { if (salehInterval) clearInterval(salehInterval); salehInterval = setInterval(() => { if (hasSaleh) addPoints(1500 * getSkinBonusMultiplier('saleh')); }, 1000); }
-        function startJohannesInterval() { if (johannesInterval) clearInterval(johannesInterval); johannesInterval = setInterval(() => { if (hasJohannes) addPoints(15000 * getSkinBonusMultiplier('johannes')); }, 1000); }
-
-        // ========== KLIK ==========
+        // Klik på William
         williamArea.addEventListener('click', (e) => {
-            williamClickCount++;
-            if (williamClickCount >= 10 && !adminMode) {
-                adminMode = true;
-                showToast('👑 ADMIN MODE AKTIVERET!');
-                for (const char in SKINS) {
-                    SKINS[char].forEach(skin => { if (skin.cost > 0) { const key = skin.id + '_' + char; if (!boughtSkins.includes(key)) boughtSkins.push(key); } });
-                    activeSkins[char] = SKINS[char][SKINS[char].length - 1].id;
-                }
-                localStorage.setItem('boughtSkins', JSON.stringify(boughtSkins));
-                localStorage.setItem('skins', JSON.stringify(activeSkins));
-            }
-            
             let clickValue = clickMultiplier;
             if (doubleClickActive && Date.now() < doubleClickEnd) clickValue *= 2;
-            clickValue *= getSkinBonusMultiplier('william');
-            
-            updateCombo();
-            const comboMult = getComboMultiplier();
-            clickValue = Math.floor(clickValue * comboMult);
-            
             addPoints(clickValue);
             totalClicks++;
             updateUI();
-
+            
             const img = document.querySelector('.william-img');
             if (img) {
                 img.style.transform = 'scale(0.96)';
                 setTimeout(() => { if(img) img.style.transform = ''; }, 100);
-                const rect = img.getBoundingClientRect();
-                spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, '✨');
-                showScorePopup(rect.left + rect.width / 2, rect.top, clickValue);
             }
         });
 
-        // ========== UPGRADES ==========
-        document.getElementById('buyClickBtn').addEventListener('click', (e) => {
+        // Upgrade knapper
+        document.getElementById('buyClickBtn').addEventListener('click', () => {
             const cost = 8 + (clickMultiplier - 1) * 5;
-            if (infiniteMoney || points >= cost) { if (!infiniteMoney) points -= cost; clickMultiplier++; updateUI(); saveGame(); }
+            if (infiniteMoney || points >= cost) {
+                if (!infiniteMoney) points -= cost;
+                clickMultiplier++;
+                updateUI();
+                saveGame();
+            }
         });
-        document.getElementById('buyGoatBtn').addEventListener('click', () => { if (!hasGoat && (infiniteMoney || points >= 40)) { if (!infiniteMoney) points -= 40; hasGoat = true; startGoatInterval(); updateUI(); saveGame(); } });
-        document.getElementById('buyCarlBtn').addEventListener('click', () => { if (!hasCarl && (infiniteMoney || points >= 750)) { if (!infiniteMoney) points -= 750; hasCarl = true; startCarlInterval(); updateUI(); saveGame(); } });
-        document.getElementById('buySalehBtn').addEventListener('click', () => { if (!hasSaleh && (infiniteMoney || points >= 7500)) { if (!infiniteMoney) points -= 7500; hasSaleh = true; startSalehInterval(); updateUI(); saveGame(); } });
-        document.getElementById('buyJohannesBtn').addEventListener('click', () => { if (!hasJohannes && (infiniteMoney || points >= 40000)) { if (!infiniteMoney) points -= 40000; hasJohannes = true; startJohannesInterval(); updateUI(); saveGame(); } });
-        document.getElementById('buyMarcusBtn').addEventListener('click', () => { if (!hasMarcus && (infiniteMoney || points >= 50000)) { if (!infiniteMoney) points -= 50000; hasMarcus = true; updateUI(); saveGame(); showToast('🏦 Marcus Bankier købt!'); } });
-        document.getElementById('buyAdvisorBtn').addEventListener('click', () => { if (!hasAdvisor && (infiniteMoney || points >= 65000)) { if (!infiniteMoney) points -= 65000; hasAdvisor = true; updateUI(); saveGame(); showToast('🤐 Anonym Advisor købt!'); } });
+        document.getElementById('buyGoatBtn').addEventListener('click', () => {
+            if (!hasGoat && (infiniteMoney || points >= 40)) {
+                if (!infiniteMoney) points -= 40;
+                hasGoat = true;
+                startGoatInterval();
+                updateUI();
+                saveGame();
+            }
+        });
+        document.getElementById('buyCarlBtn').addEventListener('click', () => {
+            if (!hasCarl && (infiniteMoney || points >= 750)) {
+                if (!infiniteMoney) points -= 750;
+                hasCarl = true;
+                startCarlInterval();
+                updateUI();
+                saveGame();
+            }
+        });
+        document.getElementById('buySalehBtn').addEventListener('click', () => {
+            if (!hasSaleh && (infiniteMoney || points >= 7500)) {
+                if (!infiniteMoney) points -= 7500;
+                hasSaleh = true;
+                startSalehInterval();
+                updateUI();
+                saveGame();
+            }
+        });
+        document.getElementById('buyJohannesBtn').addEventListener('click', () => {
+            if (!hasJohannes && (infiniteMoney || points >= 40000)) {
+                if (!infiniteMoney) points -= 40000;
+                hasJohannes = true;
+                startJohannesInterval();
+                updateUI();
+                saveGame();
+            }
+        });
+        document.getElementById('buyMarcusBtn').addEventListener('click', () => {
+            if (!hasMarcus && (infiniteMoney || points >= 50000)) {
+                if (!infiniteMoney) points -= 50000;
+                hasMarcus = true;
+                updateUI();
+                saveGame();
+                showToast('🏦 Marcus Bankier købt!');
+            }
+        });
+        document.getElementById('buyAdvisorBtn').addEventListener('click', () => {
+            if (!hasAdvisor && (infiniteMoney || points >= 65000)) {
+                if (!infiniteMoney) points -= 65000;
+                hasAdvisor = true;
+                updateUI();
+                saveGame();
+                showToast('🤐 Anonym Advisor købt!');
+            }
+        });
 
-        // ========== POWER-UPS ==========
-        document.getElementById('powerupDoubleBtn').addEventListener('click', () => { if (!doubleClickActive && points >= 4000) { points -= 4000; doubleClickActive = true; doubleClickEnd = Date.now() + 30000; powerupsUsed++; showToast('💪 2x Klik aktiveret!'); updateUI(); saveGame(); setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000); } });
-        document.getElementById('powerupAutoBtn').addEventListener('click', () => { if (!autoClickActive && points >= 15000) { points -= 15000; autoClickActive = true; autoClickEnd = Date.now() + 60000; powerupsUsed++; showToast('🤖 Auto-klikker aktiveret!'); updateUI(); saveGame(); autoClickInterval = setInterval(() => { if (autoClickActive && Date.now() < autoClickEnd) { let cv = clickMultiplier; if (doubleClickActive) cv *= 2; addPoints(cv * getSkinBonusMultiplier('william')); totalClicks++; updateUI(); } else { clearInterval(autoClickInterval); autoClickActive = false; } }, 100); setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000); } });
-        document.getElementById('powerupMultiBtn').addEventListener('click', () => { if (!multiPointsActive && points >= 30000) { points -= 30000; multiPointsActive = true; multiPointsEnd = Date.now() + 45000; powerupsUsed++; showToast('✨ 3x Point aktiveret!'); updateUI(); saveGame(); setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000); } });
-        document.getElementById('powerupBoostBtn').addEventListener('click', () => { if (!boostActive && points >= 25000) { points -= 25000; boostActive = true; boostEnd = Date.now() + 60000; powerupsUsed++; showToast('🚀 Boost aktiveret!'); updateUI(); saveGame(); setTimeout(() => { boostActive = false; updateUI(); }, 60000); } });
-        document.getElementById('powerupComboBtn').addEventListener('click', () => { if (!comboFreezeActive && points >= 20000) { points -= 20000; comboFreezeActive = true; comboFreezeEnd = Date.now() + 30000; powerupsUsed++; showToast('🔥 Combo Freeze aktiveret!'); updateUI(); saveGame(); setTimeout(() => { comboFreezeActive = false; updateUI(); }, 30000); } });
-        document.getElementById('powerupRainBtn').addEventListener('click', () => { if (!moneyRainActive && points >= 28000) { points -= 28000; moneyRainActive = true; moneyRainEnd = Date.now() + 40000; powerupsUsed++; showToast('💰 Money Rain!'); updateUI(); saveGame(); const rainInterval = setInterval(() => { if (moneyRainActive && Date.now() < moneyRainEnd) spawnGoldenWilliam(); else clearInterval(rainInterval); }, 5000); setTimeout(() => { moneyRainActive = false; updateUI(); }, 40000); } });
+        // Power-ups
+        document.getElementById('powerupDoubleBtn').addEventListener('click', () => {
+            if (!doubleClickActive && (infiniteMoney || points >= 3000)) {
+                if (!infiniteMoney) points -= 3000;
+                doubleClickActive = true;
+                doubleClickEnd = Date.now() + 30000;
+                powerupsUsed++;
+                showToast('💪 2x Klik aktiveret!');
+                updateUI();
+                saveGame();
+                setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000);
+            }
+        });
+        document.getElementById('powerupAutoBtn').addEventListener('click', () => {
+            if (!autoClickActive && (infiniteMoney || points >= 12000)) {
+                if (!infiniteMoney) points -= 12000;
+                autoClickActive = true;
+                autoClickEnd = Date.now() + 60000;
+                powerupsUsed++;
+                showToast('🤖 Auto-klikker aktiveret!');
+                updateUI();
+                saveGame();
+                autoClickInterval = setInterval(() => {
+                    if (autoClickActive && Date.now() < autoClickEnd) {
+                        let cv = clickMultiplier;
+                        if (doubleClickActive) cv *= 2;
+                        addPoints(cv);
+                        totalClicks++;
+                        updateUI();
+                    } else {
+                        clearInterval(autoClickInterval);
+                        autoClickActive = false;
+                    }
+                }, 100);
+                setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000);
+            }
+        });
+        document.getElementById('powerupMultiBtn').addEventListener('click', () => {
+            if (!multiPointsActive && (infiniteMoney || points >= 30000)) {
+                if (!infiniteMoney) points -= 30000;
+                multiPointsActive = true;
+                multiPointsEnd = Date.now() + 45000;
+                powerupsUsed++;
+                showToast('✨ 3x Point aktiveret!');
+                updateUI();
+                saveGame();
+                setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000);
+            }
+        });
+        document.getElementById('powerupBoostBtn').addEventListener('click', () => {
+            if (!boostActive && (infiniteMoney || points >= 25000)) {
+                if (!infiniteMoney) points -= 25000;
+                boostActive = true;
+                boostEnd = Date.now() + 30000;
+                powerupsUsed++;
+                showToast('🚀 Boost aktiveret!');
+                updateUI();
+                saveGame();
+                setTimeout(() => { boostActive = false; updateUI(); }, 30000);
+            }
+        });
+        document.getElementById('powerupComboBtn').addEventListener('click', () => {
+            if (!comboFreezeActive && (infiniteMoney || points >= 20000)) {
+                if (!infiniteMoney) points -= 20000;
+                comboFreezeActive = true;
+                comboFreezeEnd = Date.now() + 60000;
+                powerupsUsed++;
+                showToast('🔥 Combo Freeze aktiveret!');
+                updateUI();
+                saveGame();
+                setTimeout(() => { comboFreezeActive = false; updateUI(); }, 60000);
+            }
+        });
+        document.getElementById('powerupRainBtn').addEventListener('click', () => {
+            if (!moneyRainActive && (infiniteMoney || points >= 28000)) {
+                if (!infiniteMoney) points -= 28000;
+                moneyRainActive = true;
+                moneyRainEnd = Date.now() + 30000;
+                powerupsUsed++;
+                showToast('💰 Money Rain!');
+                updateUI();
+                saveGame();
+                const rainInterval = setInterval(() => {
+                    if (moneyRainActive && Date.now() < moneyRainEnd) spawnGoldenWilliam();
+                    else clearInterval(rainInterval);
+                }, 5000);
+                setTimeout(() => { moneyRainActive = false; updateUI(); }, 30000);
+            }
+        });
 
-        // ========== GULD WILLIAM ==========
+        // Golden William
         function spawnGoldenWilliam() {
-            const golden = document.createElement('div'); golden.className = 'golden-william';
-            golden.style.left = (10 + Math.random() * 70) + '%'; golden.style.top = (10 + Math.random() * 70) + '%';
+            const golden = document.createElement('div');
+            golden.className = 'golden-william';
+            golden.style.left = (10 + Math.random() * 70) + '%';
+            golden.style.top = (10 + Math.random() * 70) + '%';
             golden.innerHTML = `<img class="golden-william-img" src="${WILLIAM_IMG_URL}" alt="Guld William">`;
             let timeLeft = 15;
-            const timer = setInterval(() => { timeLeft--; if (timeLeft <= 0) { clearInterval(timer); golden.remove(); scheduleGolden(); } }, 1000);
-            golden.onclick = () => { 
+            const timer = setInterval(() => {
+                timeLeft--;
+                if (timeLeft <= 0) { clearInterval(timer); golden.remove(); scheduleGolden(); }
+            }, 1000);
+            golden.onclick = () => {
                 let bonus = Math.max(1000, Math.floor(points * 0.05));
                 if (multiPointsActive) bonus *= 3;
                 if (hasAdvisor) bonus *= 2;
-                points += bonus; 
-                updateUI(); saveGame(); 
-                showToast('🥇 GULD WILLIAM! +' + bonus.toLocaleString() + ' point!'); 
-                clearInterval(timer); golden.remove(); scheduleGolden(); 
+                points += bonus;
+                updateUI();
+                saveGame();
+                showToast('🥇 GULD WILLIAM! +' + bonus.toLocaleString() + ' point!');
+                clearInterval(timer);
+                golden.remove();
+                scheduleGolden();
             };
             document.body.appendChild(golden);
         }
-        function scheduleGolden() { if (goldenTimeout) clearTimeout(goldenTimeout); goldenTimeout = setTimeout(spawnGoldenWilliam, 20000 + Math.random() * 25000); }
-
-        // ========== PRESTIGE ==========
-        function getPrestigeRequirement() { return 150000 * Math.pow(prestigeLevel + 1, 2); }
-        document.getElementById('prestigeToggle').addEventListener('click', () => {
-            document.getElementById('prestigeCurrentPoints').innerText = Math.floor(points).toLocaleString();
-            document.getElementById('prestigeLevel').innerText = prestigeLevel;
-            document.getElementById('prestigeBonusText').innerText = '+' + ((prestigeLevel + 1) * 5) + '% Point Bonus';
-            document.getElementById('prestigeRequirementText').innerText = getPrestigeRequirement().toLocaleString();
-            document.getElementById('prestigeConfirm').disabled = points < getPrestigeRequirement();
-            document.getElementById('prestigeModal').classList.add('active');
-        });
-        document.getElementById('prestigeCancel').addEventListener('click', () => document.getElementById('prestigeModal').classList.remove('active'));
-        document.getElementById('prestigeConfirm').addEventListener('click', () => {
-            if (points < getPrestigeRequirement()) return;
-            prestigeLevel++;
-            prestigeMultiplier = 1 + (prestigeLevel * 0.05);
-            points = 0; totalClicks = 0; clickMultiplier = 1;
-            hasGoat = hasCarl = hasSaleh = hasJohannes = hasMarcus = hasAdvisor = false;
-            if (goatInterval) clearInterval(goatInterval); if (carlInterval) clearInterval(carlInterval);
-            if (salehInterval) clearInterval(salehInterval); if (johannesInterval) clearInterval(johannesInterval);
-            updateUI(); saveGame();
-            document.getElementById('prestigeModal').classList.remove('active');
-            showToast('👑 PRESTIGE ' + prestigeLevel + '! +' + (prestigeLevel * 5) + '% bonus!');
-        });
-
-        // ========== BANK ==========
-        function updateBankDisplay() {
-            document.getElementById('bankBalance').innerText = marcusBankBalance.toLocaleString();
-            if (marcusBankReturnTime && Date.now() < marcusBankReturnTime) {
-                const remaining = Math.ceil((marcusBankReturnTime - Date.now()) / 1000);
-                document.getElementById('bankCountdown').innerText = `${Math.floor(remaining/60)}:${(remaining%60).toString().padStart(2,'0')}`;
-                document.getElementById('bankTimerDisplay').style.display = 'block';
-                document.getElementById('bankWithdrawBtn').style.display = 'none';
-            } else if (marcusBankReturnTime && Date.now() >= marcusBankReturnTime) {
-                document.getElementById('bankTimerDisplay').style.display = 'none';
-                document.getElementById('bankWithdrawBtn').style.display = 'block';
-            } else {
-                document.getElementById('bankTimerDisplay').style.display = 'none';
-                document.getElementById('bankWithdrawBtn').style.display = 'none';
-            }
-        }
-        
-        document.querySelectorAll('.bank-option-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (!hasMarcus) { showToast('Køb Marcus Bankier først!'); return; }
-                if (marcusBankReturnTime && Date.now() < marcusBankReturnTime) { showToast('Du har allerede penge i banken!'); return; }
-                const percent = parseInt(btn.dataset.percent);
-                const amount = Math.floor(points * (percent / 100));
-                if (amount < 100) { showToast('Ikke nok point!'); return; }
-                points -= amount;
-                marcusBankBalance = amount;
-                let minutes, returnPercent;
-                if (percent === 10) { minutes = 1; returnPercent = 15; }
-                else if (percent === 25) { minutes = 3; returnPercent = 40; }
-                else if (percent === 50) { minutes = 5; returnPercent = 75; }
-                else if (percent === 75) { minutes = 7; returnPercent = 125; }
-                else { minutes = 10; returnPercent = 200; }
-                bankReturnAmount = Math.floor(amount * (returnPercent / 100));
-                marcusBankReturnTime = Date.now() + (minutes * 60 * 1000);
-                updateUI(); saveGame(); updateBankDisplay();
-                showToast(`💰 ${amount.toLocaleString()} sat i banken! Får ${bankReturnAmount.toLocaleString()} om ${minutes} min!`);
-            });
-        });
-        
-        document.getElementById('bankWithdrawBtn').addEventListener('click', () => {
-            if (marcusBankReturnTime && Date.now() >= marcusBankReturnTime) {
-                points += bankReturnAmount;
-                marcusBankBalance = 0; marcusBankReturnTime = 0; bankReturnAmount = 0;
-                updateUI(); saveGame(); updateBankDisplay();
-                showToast(`✅ Hævede ${bankReturnAmount.toLocaleString()}!`);
-            }
-        });
-
-        // ========== BOSS FIGHT ==========
-        function startBossFight() {
-            if (bossActive) return;
-            bossActive = true;
-            bossHealth = bossMaxHealth;
-            bossTimer = 180;
-            document.body.classList.add('boss-active');
-            document.getElementById('bossContainer').classList.add('active');
-            updateBossUI();
-            
-            bossTimerInterval = setInterval(() => {
-                bossTimer--;
-                document.getElementById('bossTimer').innerText = `⏱️ ${Math.floor(bossTimer/60)}:${(bossTimer%60).toString().padStart(2,'0')}`;
-                if (bossTimer <= 0) { defeatBoss(false); }
-            }, 1000);
-            
-            bossAttackInterval = setInterval(() => {
-                if (!bossActive) return;
-                const attack = Math.random();
-                if (attack < 0.33) {
-                    const stolen = Math.floor(points * 0.05);
-                    points = Math.max(0, points - stolen);
-                    document.getElementById('bossAttackWarning').innerText = `😈 Rasmus stjal ${stolen.toLocaleString()} point!`;
-                } else if (attack < 0.66) {
-                    document.getElementById('bossAttackWarning').innerText = '❄️ Dine power-ups er frosset i 5 sek!';
-                } else {
-                    document.getElementById('bossAttackWarning').innerText = '💔 Din klikkraft er halveret i 10 sek!';
-                }
-                setTimeout(() => document.getElementById('bossAttackWarning').innerText = '', 2000);
-            }, 10000);
-            
-            showToast('👹 RASMUS PRANGE ER ANKOMMET! BESEJR HAM!');
-        }
-        
-        function updateBossUI() {
-            const percent = (bossHealth / bossMaxHealth) * 100;
-            document.getElementById('bossHealthFill').style.width = percent + '%';
-            document.getElementById('bossHealthText').innerText = `❤️ ${Math.floor(bossHealth).toLocaleString()} / ${bossMaxHealth.toLocaleString()}`;
-        }
-        
-        function defeatBoss(won = true) {
-            bossActive = false;
-            clearInterval(bossTimerInterval);
-            clearInterval(bossAttackInterval);
-            document.body.classList.remove('boss-active');
-            document.getElementById('bossContainer').classList.remove('active');
-            
-            if (won) {
-                points += 50000;
-                prestigeLevel++;
-                showToast('🏆 DU BESEJREDE RASMUS! +50.000 point +1 Prestige!');
-            } else {
-                showToast('💀 Tiden løb ud! Rasmus slap væk...');
-            }
-            nextBossSpawn = Date.now() + 600000;
-            updateUI(); saveGame();
-        }
-        
-        document.getElementById('bossImg').addEventListener('click', (e) => {
-            if (!bossActive) return;
-            let damage = clickMultiplier * getSkinBonusMultiplier('william');
-            if (doubleClickActive) damage *= 2;
-            bossHealth -= damage;
-            updateBossUI();
-            
-            const rect = e.target.getBoundingClientRect();
-            showScorePopup(rect.left + rect.width/2, rect.top, '-' + damage);
-            spawnParticles(rect.left + rect.width/2, rect.top + rect.height/2, '💥');
-            
-            if (bossHealth <= 0) defeatBoss(true);
-        });
-        
-        setInterval(() => {
-            if (!bossActive && Date.now() >= nextBossSpawn) startBossFight();
-        }, 1000);
-
-        // ========== LEADERBOARD ==========
-        function formatTimeElapsed(ms) {
-            let seconds = Math.floor(ms / 1000), minutes = Math.floor(seconds / 60), hours = Math.floor(minutes / 60);
-            seconds %= 60; minutes %= 60;
-            if (hours > 0) return `${hours}h ${minutes}m`;
-            if (minutes > 0) return `${minutes}m ${seconds}s`;
-            return `${seconds}s`;
+        function scheduleGolden() {
+            if (goldenTimeout) clearTimeout(goldenTimeout);
+            goldenTimeout = setTimeout(spawnGoldenWilliam, 20000 + Math.random() * 25000);
         }
 
-        function saveScoreToFirebase() {
-            const playerName = document.getElementById('playerName').value.trim();
-            if (!playerName) { alert('Skriv dit navn!'); return; }
-            db.ref('scores/money').push({ name: playerName, score: Math.floor(points) });
-            db.ref('scores/time').push({ name: playerName, score: Date.now() - gameStartTime, displayScore: formatTimeElapsed(Date.now() - gameStartTime) });
-            db.ref('scores/clicks').push({ name: playerName, score: totalClicks }).then(() => { showToast('✅ Score gemt!'); loadLeaderboard(currentLeaderboardCategory); });
-        }
-
-        function loadLeaderboard(category = 'money') {
-            currentLeaderboardCategory = category;
-            db.ref(`scores/${category}`).orderByChild('score').limitToLast(100).once('value', (snapshot) => {
-                let scores = []; snapshot.forEach(c => scores.push(c.val()));
-                scores.sort((a, b) => b.score - a.score); scores = scores.slice(0, 10);
-                const listHTML = scores.map((e, i) => {
-                    let rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
-                    let displayScore = category === 'time' ? (e.displayScore || formatTimeElapsed(e.score)) : e.score.toLocaleString();
-                    return `<div class="leaderboard-entry ${rankClass}"><span class="entry-rank">${i<3?['🥇','🥈','🥉'][i]:i+1}</span><span class="entry-name">${e.name}</span><span class="entry-score">${displayScore}</span></div>`;
-                }).join('');
-                document.getElementById('leaderboardList').innerHTML = listHTML || '<p>Ingen scores</p>';
-            });
-        }
-
-        document.querySelectorAll('.tab-btn-lb').forEach(btn => btn.addEventListener('click', function() {
-            document.querySelectorAll('.tab-btn-lb').forEach(b => b.classList.remove('active'));
-            this.classList.add('active'); loadLeaderboard(this.dataset.category);
-        }));
-        document.getElementById('saveScoreBtn').addEventListener('click', saveScoreToFirebase);
-        document.getElementById('closeLeaderboard').addEventListener('click', () => document.getElementById('leaderboardModal').classList.remove('active'));
-
-        // ========== RESET & EASTER EGG ==========
+        // Reset
         document.getElementById('resetBtn').addEventListener('click', () => {
-            if (confirm('Nulstil ALT?')) { localStorage.clear(); location.reload(); }
-        });
-        easterEggTitle.addEventListener('click', () => {
-            easterEggClicks++;
-            if (easterEggClicks >= 5 && !infiniteMoney) { infiniteMoney = true; showToast('🔓 UENDELIGE PENGE!'); }
-            setTimeout(() => easterEggClicks = 0, 1000);
+            if (confirm('Nulstil ALT? Spillet vil starte forfra!')) {
+                localStorage.clear();
+                location.reload();
+            }
         });
 
-        // ========== AUTO-BUY ==========
+        // Menu og modals (forenklet)
+        const burgerBtn = document.getElementById('burgerMenuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+        const sideMenuOverlay = document.getElementById('sideMenuOverlay');
+        burgerBtn.onclick = () => { sideMenu.classList.add('active'); sideMenuOverlay.classList.add('active'); };
+        sideMenuOverlay.onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); };
+        
+        document.getElementById('menuLeaderboard').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('leaderboardModal').classList.add('active'); };
+        document.getElementById('menuAchievements').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('achievementsModal').classList.add('active'); };
+        document.getElementById('menuChallenges').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('challengesModal').classList.add('active'); };
+        document.getElementById('menuPrestigeUpgrades').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('prestigeUpgradesModal').classList.add('active'); };
+        document.getElementById('menuSkins').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('skinsModal').classList.add('active'); };
+        document.getElementById('menuBank').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); if (hasMarcus) { document.getElementById('bankModal').classList.add('active'); } else { showToast('🏦 Køb Marcus Bankier først!'); } };
+        
+        document.querySelectorAll('.close-modal').forEach(btn => {
+            btn.onclick = () => { btn.closest('.modal').classList.remove('active'); };
+        });
+
+        // Auto-buy
         document.getElementById('autoPowerToggle').addEventListener('change', e => { autoPowerBuyEnabled = e.target.checked; saveGame(); });
         document.getElementById('autoClickToggle').addEventListener('change', e => { autoClickBuyEnabled = e.target.checked; saveGame(); });
         
         setInterval(() => {
-            if (autoClickBuyEnabled) { const cost = 8 + (clickMultiplier - 1) * 5; while (points >= cost) { points -= cost; clickMultiplier++; } }
+            if (autoClickBuyEnabled && hasAdvisor) {
+                const cost = 8 + (clickMultiplier - 1) * 5;
+                while ((infiniteMoney || points >= cost) && clickMultiplier < 100) {
+                    if (!infiniteMoney) points -= cost;
+                    clickMultiplier++;
+                }
+            }
             if (autoPowerBuyEnabled && hasAdvisor) {
-                if (!multiPointsActive && points >= 35000) { points -= 35000; multiPointsActive = true; multiPointsEnd = Date.now() + 45000; setTimeout(() => multiPointsActive = false, 45000); }
-                if (!autoClickActive && points >= 15000) { points -= 15000; autoClickActive = true; autoClickEnd = Date.now() + 60000; setTimeout(() => autoClickActive = false, 60000); }
-                if (!doubleClickActive && points >= 4000) { points -= 4000; doubleClickActive = true; doubleClickEnd = Date.now() + 30000; setTimeout(() => doubleClickActive = false, 30000); }
+                if (!multiPointsActive && (infiniteMoney || points >= 30000)) {
+                    if (!infiniteMoney) points -= 30000;
+                    multiPointsActive = true;
+                    multiPointsEnd = Date.now() + 45000;
+                    setTimeout(() => multiPointsActive = false, 45000);
+                }
+                if (!autoClickActive && (infiniteMoney || points >= 12000)) {
+                    if (!infiniteMoney) points -= 12000;
+                    autoClickActive = true;
+                    autoClickEnd = Date.now() + 60000;
+                    setTimeout(() => autoClickActive = false, 60000);
+                }
+                if (!doubleClickActive && (infiniteMoney || points >= 3000)) {
+                    if (!infiniteMoney) points -= 3000;
+                    doubleClickActive = true;
+                    doubleClickEnd = Date.now() + 30000;
+                    setTimeout(() => doubleClickActive = false, 30000);
+                }
             }
             updateUI();
-            checkChallenges();
         }, 500);
 
-        // ========== START ==========
+        // Tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab === 'upgrades' ? 'upgradesTab' : 'powerupsTab').classList.add('active');
+            });
+        });
+
+        // Start spil
         loadGame();
         scheduleGolden();
     });
