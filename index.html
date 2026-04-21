@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>William Clicker ✨ med Carl Smart & Pizza Saleh</title>
+    <title>William Clicker ✨ Auto Power-ups & Marcus Bank</title>
     <style>
         * {
             user-select: none;
@@ -17,37 +17,34 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Segoe UI', 'Quicksand', system-ui, 'Poppins', sans-serif;
+            font-family: 'Segoe UI', 'Quicksand', system-ui, sans-serif;
             margin: 0;
             padding: 20px;
         }
 
-        /* Ny hovedcontainer med flex til venstre/højre */
         .main-dashboard {
             display: flex;
             flex-wrap: wrap;
             gap: 24px;
-            max-width: 1300px;
+            max-width: 1400px;
             width: 100%;
             justify-content: center;
             align-items: flex-start;
         }
 
-        /* Venstre side: spilomrde */
         .game-left {
             flex: 2;
-            min-width: 280px;
+            min-width: 300px;
             background: rgba(10, 14, 23, 0.65);
             backdrop-filter: blur(4px);
             border-radius: 65px;
             padding: 20px 24px 30px;
-            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 30px 40px rgba(0, 0, 0, 0.5);
         }
 
-        /* Hjre side: upgrades med scroll */
         .upgrades-right {
             flex: 1.2;
-            min-width: 280px;
+            min-width: 320px;
             background: rgba(10, 14, 23, 0.75);
             backdrop-filter: blur(8px);
             border-radius: 55px;
@@ -56,28 +53,26 @@
             border: 1px solid #f3aa4a66;
             display: flex;
             flex-direction: column;
-            max-height: 85vh;
+            max-height: 90vh;
         }
 
         .upgrades-header {
             text-align: center;
-            font-size: 1.7rem;
+            font-size: 1.5rem;
             font-weight: bold;
             background: #00000055;
             border-radius: 60px;
             padding: 10px;
-            margin-bottom: 18px;
+            margin-bottom: 15px;
             color: #ffdd99;
-            letter-spacing: 1px;
         }
 
-        /* Scrollbar container */
         .upgrades-scroll-list {
             overflow-y: auto;
             padding-right: 8px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px;
             flex: 1;
         }
 
@@ -95,38 +90,26 @@
 
         .upgrade-card {
             background: linear-gradient(115deg, #262b3f, #191e2f);
-            border-radius: 50px;
-            padding: 12px 18px;
+            border-radius: 20px;
+            padding: 12px 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             border: 1px solid #f6b55766;
             transition: 0.1s;
-            cursor: pointer;
         }
-        .upgrade-card:hover {
-            background: #323a55;
-            transform: scale(1.01);
+        .upgrade-card.active-powerup {
+            border: 2px solid #00ff88;
+            box-shadow: 0 0 10px #00ff8855;
         }
-
         .upgrade-info {
             flex: 2;
         }
         .upgrade-name {
             font-weight: bold;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 1rem;
             color: #ffe1ae;
-        }
-        .mini-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1px solid gold;
-            object-fit: cover;
         }
         .upgrade-desc {
             font-size: 0.7rem;
@@ -135,29 +118,43 @@
         .upgrade-cost {
             font-weight: bold;
             background: #1a1208;
-            padding: 6px 15px;
+            padding: 5px 12px;
             border-radius: 50px;
-            font-family: monospace;
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: #ffcf7a;
-            margin-right: 12px;
+            margin-right: 10px;
+        }
+        .timer-badge {
+            font-size: 0.7rem;
+            background: #000000aa;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-top: 4px;
+            display: inline-block;
         }
         button.buy-btn {
             background: #e48f2b;
             border: none;
             font-weight: bold;
-            padding: 8px 18px;
+            padding: 6px 14px;
             border-radius: 40px;
             color: #201c10;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: 0.07s linear;
-            box-shadow: 0 3px 0 #784a1a;
-            font-family: inherit;
+            box-shadow: 0 2px 0 #784a1a;
         }
         button.buy-btn:active {
             transform: translateY(2px);
-            box-shadow: 0 1px 0 #784a1a;
+            box-shadow: 0 0px 0 #784a1a;
+        }
+        button.buy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        button.active-btn {
+            background: #2ecc71;
+            color: white;
         }
 
         .score-panel {
@@ -166,7 +163,6 @@
             padding: 12px 20px;
             margin-bottom: 20px;
             text-align: center;
-            box-shadow: inset 0 1px 4px #00000055, 0 10px 20px rgba(0, 0, 0, 0.3);
             border: 1px solid #f3b33d88;
         }
         .score-value {
@@ -189,21 +185,15 @@
             color: #ffdaa5;
         }
 
-        /* William klik område med relativ container til Saleh på skulder */
         .click-area {
             display: flex;
             justify-content: center;
-            margin: 15px 0 15px;
+            margin: 15px 0;
             cursor: pointer;
-            transition: transform 0.05s linear;
             position: relative;
         }
         .click-area:active {
             transform: scale(0.97);
-        }
-        .william-container {
-            position: relative;
-            display: inline-block;
         }
         .william-base {
             width: 260px;
@@ -211,82 +201,21 @@
             object-fit: cover;
             border-radius: 50%;
             box-shadow: 0 18px 30px rgba(0, 0, 0, 0.6), 0 0 0 6px #f9b23f, 0 0 0 12px #d95b00;
-            transition: filter 0.05s;
             background: #2a2e40;
             display: block;
         }
 
-        /* Saleh på skulderen (placeret oven på William) */
-        .saleh-shoulder {
+        .mouth-overlay {
             position: absolute;
-            top: 15%;
-            right: 5%;
-            z-index: 25;
-            cursor: pointer;
-            filter: drop-shadow(0 6px 8px rgba(0,0,0,0.5));
-            transition: transform 0.1s;
-            text-align: center;
-        }
-        .saleh-shoulder img {
-            width: 70px;
-            height: 70px;
-            border-radius: 40%;
-            border: 3px solid #ffb347;
-            background: #f4cda6;
-            object-fit: cover;
-            box-shadow: 0 4px 0 #a55317;
-        }
-        .pizza-badge {
-            position: absolute;
-            top: -12px;
-            right: -15px;
-            font-size: 32px;
-            filter: drop-shadow(0 2px 2px black);
-        }
-        .saleh-label {
-            background: #b83b1ecc;
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-            border-radius: 20px;
-            padding: 2px 6px;
-            white-space: nowrap;
-            margin-top: 4px;
+            bottom: 22%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 38px;
+            pointer-events: none;
+            z-index: 15;
         }
 
-        /* Carl Smart boks (under William) */
-        .carl-smart-box {
-            background: #2a401fcc;
-            backdrop-filter: blur(4px);
-            border-radius: 60px;
-            padding: 8px 16px;
-            margin: 12px 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            border: 1px solid #b3a123;
-        }
-        .carl-avatar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .carl-avatar img {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            border: 2px solid #f7b32b;
-        }
-        .carl-action-btn {
-            background: #7c5e2c;
-            border: none;
-            padding: 6px 18px;
-            border-radius: 40px;
-            color: #ffeaac;
-            font-weight: bold;
-            cursor: pointer;
-        }
         .goat-runner {
             display: flex;
             justify-content: center;
@@ -312,9 +241,46 @@
             border: 3px solid #ffbe4d;
             box-shadow: 0 0 0 2px #a45d2e;
         }
+        .goat-label {
+            position: absolute;
+            bottom: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d2418cc;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 50px;
+            white-space: nowrap;
+            color: #ffdd99;
+        }
+
+        .marcus-bank {
+            background: #2c3e2fcc;
+            border-radius: 50px;
+            padding: 10px 15px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #f1c40f;
+        }
+        .marcus-bank span {
+            font-weight: bold;
+            color: #f1c40f;
+        }
+        .bank-btn {
+            background: #27ae60;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
         .reset-area {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
         }
         .reset-btn {
             background: #3e2a24;
@@ -322,7 +288,6 @@
             color: #ffbe89;
             padding: 6px 18px;
             border-radius: 60px;
-            font-weight: bold;
             cursor: pointer;
         }
         footer {
@@ -331,30 +296,6 @@
             margin-top: 12px;
             color: #af9a74;
         }
-        @media (max-width: 850px) {
-            .main-dashboard { flex-direction: column; }
-            .william-base { width: 200px; height: 200px; }
-            .saleh-shoulder img { width: 55px; height: 55px; }
-            .pizza-badge { font-size: 24px; top: -8px; right: -10px; }
-            .goat-orbiting { animation: orbitGoat 5s linear infinite; }
-            @keyframes orbitGoat {
-                0% { transform: rotate(0deg) translateX(85px) rotate(0deg); }
-                100% { transform: rotate(360deg) translateX(85px) rotate(-360deg); }
-            }
-        }
-        .mouth-overlay {
-            position: absolute;
-            bottom: 22%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 38px;
-            pointer-events: none;
-            transition: all 0.07s;
-            z-index: 15;
-        }
-        .mouth-open { content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><path fill="%23442211" stroke="%23b97f44" stroke-width="2" d="M20,15 Q50,45 80,15 Q65,30 35,30 Q20,28 20,15Z" /></svg>'); width: 90px; }
-        .mouth-closed { content: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><path fill="%238B5A2B" stroke="%23c28544" stroke-width="2.2" d="M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z" /></svg>'); width: 85px; }
         .feedback-msg {
             background: #000000aa;
             border-radius: 50px;
@@ -364,11 +305,26 @@
             color: #ffefb0;
             margin-top: 8px;
         }
+        .active-powerup-indicator {
+            background: #00ff8822;
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 10px;
+        }
+
+        @media (max-width: 850px) {
+            .main-dashboard { flex-direction: column; }
+            .william-base { width: 200px; height: 200px; }
+            .goat-orbiting { animation: orbitGoat 5s linear infinite; }
+            @keyframes orbitGoat {
+                0% { transform: rotate(0deg) translateX(85px) rotate(0deg); }
+                100% { transform: rotate(360deg) translateX(85px) rotate(-360deg); }
+            }
+        }
     </style>
 </head>
 <body>
 <div class="main-dashboard">
-    <!-- VENSTRE: Hovedspil -->
     <div class="game-left">
         <div class="score-panel">
             <div class="score-value" id="scoreDisplay">0</div>
@@ -376,317 +332,522 @@
                 <span>👆 KRAFT PR. KLIK:</span>
                 <span id="clickPowerSpan">1</span>
             </div>
+            <div class="per-click-row">
+                <span>🤖 AUTO-KLIKKER:</span>
+                <span id="autoClickerSpan">0</span>
+                <span>/sek</span>
+            </div>
+            <div class="per-click-row">
+                <span>📈 AKTIVE BOOSTS:</span>
+                <span id="activeBoostsSpan">0</span>
+            </div>
         </div>
 
-        <!-- William klikområde med Saleh på skulderen -->
         <div class="click-area" id="williamClicker">
-            <div class="william-container">
-                <img class="william-base" id="williamImg" src="https://media-prod.aula.dk/profile-pictures/9096069.jpg?response-content-disposition=attachment%3Bfilename%3D%229096069.jpg%22&amp;Expires=1776416400&amp;Signature=dKDS1BMZd7D3xhJurPS2rLfjpqEUYBgPWa67aQKs1xK-wBkPrZ1hW0dYoPRm-phg-6k9w4gihq3x2Dgyp4FVSSnWdtCElHQO8R2CuT1aj0PAk75rLV92RK1UqQ97b1mXK3AhrwV9DDYfDs3PPv11qzR~ghjwWDREwdoECdEdvfriVS6Mz-3zIPXJ9AJLz~2HdgNWBBSETbeaXnJBilDJ~qNkPd0PqDdGbFk057AbRsN6zwSbS0BmgJ9mOQahsWxQ~GqSYOXZatH9rDxGRIuNPgB217fctBKb7FXdM7phOSP9mniLQv9aAV0SOqpqhdD2UbMSL-Pqvxwo~1iX~rn2jg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="William Noah Hald">
-                <div class="mouth-overlay mouth-closed" id="mouthState"></div>
-                <!-- SALEH PÅ SKULDER med pizza -->
-                <div class="saleh-shoulder" id="salehOnShoulder">
-                    <img src="https://media-prod.aula.dk/profile-pictures/9802623_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%229802623_400x400.jpg%22&amp;Expires=1776420000&amp;Signature=fP4Na-KK-Cf1OesXmpeUT9bPDTEgN9CxkodQAB7GUb1eNZMIRAXlXCMl7BOCPyLEoxnwos66glSR2SyN6sMgAuGg11qbcV6geBejSIat302FgCMs7PPqzuNP95GJ5l7b5OxwNOUjiz9zFafw9EtvzZVd8H125k2oMax3VmHoZR8nGT6T-~rN~uhfakC5iGBIsP1oWl3btwCkK1eo8HQ8~eRMRz0oRPymbbmucnZVoVmZlWQCdVoDPiL0gSKI7NXMeRXZRvshMbXVildC6Hlt-AztQHTC8r8nLae4ocmm0aQuBiGsOv9JvB1Fl6jWLfVI78Y32aI1pZM9cdMdNuJJkA__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="Saleh">
-                    <div class="pizza-badge">🍕🔥</div>
-                    <div class="saleh-label">Pizza Saleh</div>
-                </div>
+            <div class="william-container" style="position: relative; display: inline-block;">
+                <img class="william-base" src="https://media-prod.aula.dk/profile-pictures/9096069.jpg?response-content-disposition=attachment%3Bfilename%3D%229096069.jpg%22&amp;Expires=1776416400&amp;Signature=dKDS1BMZd7D3xhJurPS2rLfjpqEUYBgPWa67aQKs1xK-wBkPrZ1hW0dYoPRm-phg-6k9w4gihq3x2Dgyp4FVSSnWdtCElHQO8R2CuT1aj0PAk75rLV92RK1UqQ97b1mXK3AhrwV9DDYfDs3PPv11qzR~ghjwWDREwdoECdEdvfriVS6Mz-3zIPXJ9AJLz~2HdgNWBBSETbeaXnJBilDJ~qNkPd0PqDdGbFk057AbRsN6zwSbS0BmgJ9mOQahsWxQ~GqSYOXZatH9rDxGRIuNPgB217fctBKb7FXdM7phOSP9mniLQv9aAV0SOqpqhdD2UbMSL-Pqvxwo~1iX~rn2jg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="William">
+                <div class="mouth-overlay" id="mouthState"></div>
             </div>
         </div>
 
-        <!-- CARL SMART (bonde / farmer) -->
-        <div class="carl-smart-box" id="carlSmartBox">
-            <div class="carl-avatar">
-                <img src="https://media-prod.aula.dk/profile-pictures/9139073_400x400.jpg?response-content-disposition=attachment%3Bfilename%3D%229139073_400x400.jpg%22&amp;Expires=1776420000&amp;Signature=BoRnzFfD2nwzJiYO6a59BE02bz2ZzLAh~YdrnltXvLuXfdwjydeR59r~znKkN1Ed1wYZjfr63kOH8f3Xd3JzSN2c8ICPL-eQTbh0xvO3SPB37q-IZfXt89uY4GeLYPfXW79Sp0vYzTyaCXuhhHylPJVTNIb36SZPjKm16xx6VXEn5fu9fYtorgVGMLh7HdznzHolTGV~AtL-dxtg~tPfQSy6I24Vkav8ZJmfKQ69LPF86KLFEA~NWeHA8iJu7~zGBOY2TRUeIKiL99ocrUhUi5ApvZG3-tbU-9~1sRvfrmz3iQKc5fzN8-NHraulzgzcaKxurLT43EFODCvRGORmQA__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="Carl Smart">
-                <span style="font-weight:bold; color:#ffe1aa;">🌾 Carl Smart</span>
-            </div>
-            <button class="carl-action-btn" id="carlFarmBtn">🚜 FARM BONUS (+8)</button>
+        <!-- Marcus Bank -->
+        <div class="marcus-bank">
+            <span>🏦 MARCUS BANK</span>
+            <span>Rente: <span id="bankInterest">5</span>%</span>
+            <button class="bank-btn" id="bankBtn">💵 HÆV RENTE</button>
         </div>
 
-        <!-- Aksel the goat (cirkulerende) -->
-        <div class="goat-runner" id="goatOrbitZone">
+        <div class="goat-runner">
             <div id="goatWrapper" style="display: none;">
                 <div class="goat-orbiting">
-                    <img class="goat-img" id="akselGoatImg" src="https://media-prod.aula.dk/profile-pictures/9155257.jpg?response-content-disposition=attachment%3Bfilename%3D%229155257.jpg%22&amp;Expires=1776416400&amp;Signature=E-g0wFe4oUNEvMmVf3R6BEw6JoyuLwEKv6vhXArP5AMVjvYjpfD5uQVSB~IgCwZg3lv0pK38q4wpzqYITnkErNWDOG7nU3d2Zub3f07VMRFuhjMaRWCRY5oj8Jp2HpYvQWW8SCA~u946n5WU0uxfNHJNiUmHNJXVqtW0AtZ~A94tnZGta9tU35vhAEYdExwTR5sqhT1b2UKrpy1IL8H8clylIlNt0TOaS9ruQdvyH7rJqE9Ju1KNKJYAmrqJesqKzvBvRFL2aSi9Gc67l-4Oo4bKOXjr6F5vRyD-x0~wi1bnweivpavJQuTyO3QkPxWXFvvHpLjK4ElFDDng4RYECg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="Aksel">
-                    <div class="goat-label" style="position:absolute; bottom:-22px; left:50%; transform:translateX(-50%); background:#2d2418cc; font-size:0.7rem; padding:2px 8px; border-radius:50px; white-space:nowrap;">🐐 Aksel</div>
+                    <img class="goat-img" src="https://media-prod.aula.dk/profile-pictures/9155257.jpg?response-content-disposition=attachment%3Bfilename%3D%229155257.jpg%22&amp;Expires=1776416400&amp;Signature=E-g0wFe4oUNEvMmVf3R6BEw6JoyuLwEKv6vhXArP5AMVjvYjpfD5uQVSB~IgCwZg3lv0pK38q4wpzqYITnkErNWDOG7nU3d2Zub3f07VMRFuhjMaRWCRY5oj8Jp2HpYvQWW8SCA~u946n5WU0uxfNHJNiUmHNJXVqtW0AtZ~A94tnZGta9tU35vhAEYdExwTR5sqhT1b2UKrpy1IL8H8clylIlNt0TOaS9ruQdvyH7rJqE9Ju1KNKJYAmrqJesqKzvBvRFL2aSi9Gc67l-4Oo4bKOXjr6F5vRyD-x0~wi1bnweivpavJQuTyO3QkPxWXFvvHpLjK4ElFDDng4RYECg__&amp;Key-Pair-Id=APKAILBPECUQMHIBROXQ" alt="Aksel">
+                    <div class="goat-label">🐐 Aksel</div>
                 </div>
             </div>
         </div>
-        <div class="feedback-msg" id="globalFeedback">Klik på William, Carl eller Saleh!</div>
+
+        <div class="feedback-msg" id="globalFeedback">Klik på William! Køb power-ups!</div>
         <div class="reset-area">
             <button class="reset-btn" id="resetBtn">🔄 Nulstil spil</button>
         </div>
-        <footer>🍕 Saleh på skulderen laver pizza · Carl Smart passer marker</footer>
+        <footer>⚡ Power-ups varer i tid · Marcus betaler renter hvert minut</footer>
     </div>
 
-    <!-- HØJRE SIDE: UPGRADES MED SCROLL -->
     <div class="upgrades-right">
-        <div class="upgrades-header">⚡ UPGRADES ⚡</div>
-        <div class="upgrades-scroll-list" id="upgradeScrollList">
-            <!-- Upgrade 1: Klikkraft -->
-            <div class="upgrade-card" id="upgradeClickCard">
+        <div class="upgrades-header">⚡ AUTO-KØB POWER-UPS ⚡</div>
+        <div class="upgrades-scroll-list" id="powerupList">
+            <!-- 2x Klik Kraft -->
+            <div class="upgrade-card" id="powerup_2x">
                 <div class="upgrade-info">
-                    <div class="upgrade-name">💪 Stærkere Klik</div>
-                    <div class="upgrade-desc">+1 point per klik (nuværende: <span id="clickLevel">1</span>)</div>
+                    <div class="upgrade-name">⚡ 2x Klik Kraft</div>
+                    <div class="upgrade-desc">30 sekunder · Dobbelt klikkraft</div>
+                    <div class="timer-badge" id="timer_2x"></div>
                 </div>
-                <div class="upgrade-cost" id="clickCostSpan">10</div>
-                <button class="buy-btn" id="buyClickBtn">KØB</button>
+                <div class="upgrade-cost" id="cost_2x">3.000</div>
+                <button class="buy-btn" id="btn_2x">AKTIVER</button>
             </div>
-            <!-- Upgrade 2: Aksel the goat passiv -->
-            <div class="upgrade-card" id="upgradeGoatCard">
+            <!-- Auto-Klikker -->
+            <div class="upgrade-card" id="powerup_auto">
                 <div class="upgrade-info">
-                    <div class="upgrade-name">🐐 Aksel the GOAT</div>
-                    <div class="upgrade-desc">Går rundt om William: +1/sek</div>
+                    <div class="upgrade-name">🤖 Auto-Klikker</div>
+                    <div class="upgrade-desc">10 klik/sek i 60 sekunder</div>
+                    <div class="timer-badge" id="timer_auto"></div>
                 </div>
-                <div class="upgrade-cost" id="goatCostSpan">50</div>
-                <button class="buy-btn" id="buyGoatBtn">KØB</button>
+                <div class="upgrade-cost" id="cost_auto">12.000</div>
+                <button class="buy-btn" id="btn_auto">AKTIVER</button>
             </div>
-            <!-- Upgrade 3: Pizzaovn (Saleh bonus) -->
-            <div class="upgrade-card" id="pizzaOvenCard">
+            <!-- 3x Point -->
+            <div class="upgrade-card" id="powerup_3x">
                 <div class="upgrade-info">
-                    <div class="upgrade-name">🍕 Salehs Pizzaovn</div>
-                    <div class="upgrade-desc">Hvert klik giver +2 ekstra mønter</div>
+                    <div class="upgrade-name">🔷 3x Point</div>
+                    <div class="upgrade-desc">45 sekunder · Tripel klikkraft</div>
+                    <div class="timer-badge" id="timer_3x"></div>
                 </div>
-                <div class="upgrade-cost" id="pizzaCostSpan">80</div>
-                <button class="buy-btn" id="buyPizzaBtn">KØB</button>
+                <div class="upgrade-cost" id="cost_3x">30.000</div>
+                <button class="buy-btn" id="btn_3x">AKTIVER</button>
             </div>
-            <!-- Upgrade 4: Carls Gulerodsmark -->
-            <div class="upgrade-card" id="carrotFieldCard">
+            <!-- Boost +50% -->
+            <div class="upgrade-card" id="powerup_boost50">
                 <div class="upgrade-info">
-                    <div class="upgrade-name">🥕 Carls Gulerodsmark</div>
-                    <div class="upgrade-desc">Carl farmer giver +3 ekstra pr klik</div>
+                    <div class="upgrade-name">📈 Boost</div>
+                    <div class="upgrade-desc">+50% indkomst i 30 sekunder</div>
+                    <div class="timer-badge" id="timer_boost50"></div>
                 </div>
-                <div class="upgrade-cost" id="carrotCostSpan">120</div>
-                <button class="buy-btn" id="buyCarrotBtn">KØB</button>
+                <div class="upgrade-cost" id="cost_boost50">25.000</div>
+                <button class="buy-btn" id="btn_boost50">AKTIVER</button>
             </div>
-            <!-- Upgrade 5: Traktorboost -->
-            <div class="upgrade-card" id="tractorCard">
+            <!-- Combo Freeze -->
+            <div class="upgrade-card" id="powerup_freeze">
                 <div class="upgrade-info">
-                    <div class="upgrade-name">🚜 Traktor Boost</div>
-                    <div class="upgrade-desc">Fordobler alle møntgevinster!</div>
+                    <div class="upgrade-name">❄️ Combo Freeze</div>
+                    <div class="upgrade-desc">Fryser combo i 60 sekunder</div>
+                    <div class="timer-badge" id="timer_freeze"></div>
                 </div>
-                <div class="upgrade-cost" id="tractorCostSpan">200</div>
-                <button class="buy-btn" id="buyTractorBtn">KØB</button>
+                <div class="upgrade-cost" id="cost_freeze">20.000</div>
+                <button class="buy-btn" id="btn_freeze">AKTIVER</button>
+            </div>
+            <!-- Money Rain -->
+            <div class="upgrade-card" id="powerup_rain">
+                <div class="upgrade-info">
+                    <div class="upgrade-name">💰 Money Rain</div>
+                    <div class="upgrade-desc">Guld William regner i 30 sekunder</div>
+                    <div class="timer-badge" id="timer_rain"></div>
+                </div>
+                <div class="upgrade-cost" id="cost_rain">28.000</div>
+                <button class="buy-btn" id="btn_rain">AKTIVER</button>
             </div>
         </div>
-        <div style="text-align:center; font-size:11px; margin-top:12px; color:#bc9a5a;">⬇️ Scroll for flere upgrades ⬇️</div>
+        <div style="text-align:center; font-size:11px; margin-top:12px; color:#bc9a5a;">⬇️ Scroll for flere power-ups ⬇️</div>
     </div>
 </div>
 
 <script>
-    // Spil data
-    let points = 0;
-    let clickMultiplier = 1;      // base per klik
+    // ============ SPIL VARIABLER ============
+    let points = 1000; // Start med lidt så man kan prøve
+    let clickMultiplier = 1;
     let hasGoat = false;
     let goatInterval = null;
-    let pizzaBonus = 0;            // +2 ekstra per klik
-    let carrotBonus = 0;           // +3 ekstra pr klik
-    let tractorMultiplier = 1;     // 1 eller 2
-
+    
+    // Power-up states
+    let activePowerups = {
+        x2: { active: false, timer: null, endTime: 0 },
+        auto: { active: false, timer: null, endTime: 0, autoInterval: null },
+        x3: { active: false, timer: null, endTime: 0 },
+        boost50: { active: false, timer: null, endTime: 0 },
+        freeze: { active: false, timer: null, endTime: 0 },
+        rain: { active: false, timer: null, endTime: 0, rainInterval: null }
+    };
+    
+    let combo = 0;
+    let lastClickTime = 0;
+    let comboFreezeActive = false;
+    
+    // Marcus Bank
+    let bankInterest = 5;
+    let lastInterestTime = Date.now();
+    
     // DOM elementer
     const scoreDisplay = document.getElementById('scoreDisplay');
     const clickPowerSpan = document.getElementById('clickPowerSpan');
-    const clickLevelSpan = document.getElementById('clickLevel');
-    const clickCostSpan = document.getElementById('clickCostSpan');
-    const goatCostSpan = document.getElementById('goatCostSpan');
-    const pizzaCostSpan = document.getElementById('pizzaCostSpan');
-    const carrotCostSpan = document.getElementById('carrotCostSpan');
-    const tractorCostSpan = document.getElementById('tractorCostSpan');
-
-    const buyClickBtn = document.getElementById('buyClickBtn');
-    const buyGoatBtn = document.getElementById('buyGoatBtn');
-    const buyPizzaBtn = document.getElementById('buyPizzaBtn');
-    const buyCarrotBtn = document.getElementById('buyCarrotBtn');
-    const buyTractorBtn = document.getElementById('buyTractorBtn');
-    const resetBtn = document.getElementById('resetBtn');
+    const autoClickerSpan = document.getElementById('autoClickerSpan');
+    const activeBoostsSpan = document.getElementById('activeBoostsSpan');
     const williamArea = document.getElementById('williamClicker');
     const mouthElement = document.getElementById('mouthState');
     const goatWrapperDiv = document.getElementById('goatWrapper');
-    const carlFarmBtn = document.getElementById('carlFarmBtn');
-    const salehShoulder = document.getElementById('salehOnShoulder');
+    const resetBtn = document.getElementById('resetBtn');
     const feedbackSpan = document.getElementById('globalFeedback');
-
+    const bankBtn = document.getElementById('bankBtn');
+    const bankInterestSpan = document.getElementById('bankInterest');
+    
+    // Power-up priser
+    const prices = {
+        x2: 3000,
+        auto: 12000,
+        x3: 30000,
+        boost50: 25000,
+        freeze: 20000,
+        rain: 28000
+    };
+    
+    // ============ HJÆLPEFUNKTIONER ============
     function showMessage(msg) {
         feedbackSpan.innerText = msg;
-        setTimeout(() => { if(feedbackSpan.innerText === msg) feedbackSpan.innerText = "Klik på William, Carl eller Saleh!"; }, 1800);
+        setTimeout(() => {
+            if (feedbackSpan.innerText === msg) 
+                feedbackSpan.innerText = "Klik på William! Køb power-ups!";
+        }, 2000);
     }
-
-    function updateUI() {
-        scoreDisplay.innerText = Math.floor(points);
-        let totalPerClick = clickMultiplier + (pizzaBonus ? 2 : 0) + (carrotBonus ? 3 : 0);
-        totalPerClick = totalPerClick * tractorMultiplier;
-        clickPowerSpan.innerText = totalPerClick;
-        clickLevelSpan.innerText = clickMultiplier;
-
-        let clickCost = 10 + (clickMultiplier-1)*8;
-        clickCostSpan.innerText = clickCost;
-        goatCostSpan.innerText = 50;
-        pizzaCostSpan.innerText = 80;
-        carrotCostSpan.innerText = 120;
-        tractorCostSpan.innerText = 200;
-
-        buyClickBtn.disabled = !(points >= clickCost);
-        buyGoatBtn.disabled = (hasGoat || points < 50);
-        buyPizzaBtn.disabled = (pizzaBonus >= 1 || points < 80);
-        buyCarrotBtn.disabled = (carrotBonus >= 1 || points < 120);
-        buyTractorBtn.disabled = (tractorMultiplier >= 2 || points < 200);
-
-        if(hasGoat) buyGoatBtn.innerText = '🐐 AKTIV';
-        else buyGoatBtn.innerText = 'KØB';
-        if(pizzaBonus) buyPizzaBtn.innerText = '🍕 AKTIV';
-        if(carrotBonus) buyCarrotBtn.innerText = '🥕 AKTIV';
-        if(tractorMultiplier>=2) buyTractorBtn.innerText = '🚜 AKTIV';
+    
+    function getCurrentMultiplier() {
+        let mult = clickMultiplier;
+        if (activePowerups.x2.active) mult *= 2;
+        if (activePowerups.x3.active) mult *= 3;
+        if (activePowerups.boost50.active) mult = Math.floor(mult * 1.5);
+        return mult;
     }
-
+    
     function addPoints(amount) {
         points += amount;
-        if(points<0) points=0;
+        if (points < 0) points = 0;
         updateUI();
-        syncGoatVisual();
     }
-
-    function getClickGain() {
-        let base = clickMultiplier;
-        let extra = (pizzaBonus ? 2 : 0) + (carrotBonus ? 3 : 0);
-        let total = (base + extra) * tractorMultiplier;
-        return total;
-    }
-
+    
     function onClickWilliam() {
-        let gain = getClickGain();
+        let now = Date.now();
+        if (!comboFreezeActive && now - lastClickTime < 3000) {
+            combo++;
+        } else if (!comboFreezeActive) {
+            combo = 1;
+        }
+        lastClickTime = now;
+        
+        let gain = getCurrentMultiplier();
+        
+        // Money rain bonus
+        if (activePowerups.rain.active) {
+            gain = Math.floor(gain * 1.5);
+        }
+        
         addPoints(gain);
         animateMouth();
+        
         const img = document.querySelector('.william-base');
-        if(img) { img.style.transform = 'scale(0.98)'; setTimeout(() => { if(img) img.style.transform = ''; }, 100); }
-        showMessage(`+${gain} point!`);
+        if (img) {
+            img.style.transform = 'scale(0.98)';
+            setTimeout(() => { if (img) img.style.transform = ''; }, 100);
+        }
+        
+        // Combo display
+        if (combo > 1) {
+            showMessage(`🔥 ${combo} COMBO! +${gain} point!`);
+        } else {
+            showMessage(`+${gain} point!`);
+        }
     }
-
-    let mouthTimeout = null;
+    
     function animateMouth() {
-        if(mouthTimeout) clearTimeout(mouthTimeout);
-        mouthElement.classList.remove('mouth-closed');
-        mouthElement.classList.add('mouth-open');
         mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 50\"><path fill=\"%23442211\" stroke=\"%23b97f44\" stroke-width=\"2\" d=\"M20,15 Q50,45 80,15 Q65,30 35,30 Q20,28 20,15Z\" /></svg>')";
-        mouthTimeout = setTimeout(() => {
-            if(mouthElement) {
-                mouthElement.classList.remove('mouth-open');
-                mouthElement.classList.add('mouth-closed');
-                mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
-            }
+        setTimeout(() => {
+            mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
         }, 180);
     }
-
-    function buyClickUpgrade() {
-        let cost = 10 + (clickMultiplier-1)*8;
-        if(points >= cost) {
-            points -= cost;
-            clickMultiplier++;
-            updateUI();
-            showMessage(`Klikkraft steg til +${clickMultiplier}`);
+    
+    // ============ POWER-UP FUNKTIONER ============
+    function activatePowerup(type, duration, cost) {
+        if (points < cost) {
+            showMessage(`❌ Mangler ${cost - points} mønter!`);
+            return false;
         }
-    }
-    function buyGoatUpgrade() {
-        if(hasGoat) return;
-        if(points >= 50) {
-            points -= 50;
-            hasGoat = true;
-            if(goatInterval) clearInterval(goatInterval);
-            goatInterval = setInterval(() => {
-                if(hasGoat) { addPoints(1); }
-            }, 1000);
-            syncGoatVisual();
-            updateUI();
-            showMessage("Aksel the GOAT løber rundt og giver +1/sek!");
+        
+        points -= cost;
+        
+        // Deaktiver eksisterende af samme type
+        if (activePowerups[type].timer) {
+            clearTimeout(activePowerups[type].timer);
+            if (type === 'auto' && activePowerups[type].autoInterval) {
+                clearInterval(activePowerups[type].autoInterval);
+            }
+            if (type === 'rain' && activePowerups[type].rainInterval) {
+                clearInterval(activePowerups[type].rainInterval);
+            }
         }
-    }
-    function buyPizzaBonus() {
-        if(pizzaBonus) return;
-        if(points >= 80) {
-            points -= 80;
-            pizzaBonus = 1;
-            updateUI();
-            showMessage("🍕 Salehs pizzaovn giver +2 mønter per klik!");
+        
+        activePowerups[type].active = true;
+        activePowerups[type].endTime = Date.now() + duration * 1000;
+        
+        // Specifik logik for auto-klikker
+        if (type === 'auto') {
+            activePowerups[type].autoInterval = setInterval(() => {
+                if (activePowerups[type].active) {
+                    let autoGain = 10 * getCurrentMultiplier();
+                    addPoints(autoGain);
+                    // Visuel feedback
+                    const img = document.querySelector('.william-base');
+                    if (img) {
+                        img.style.transform = 'scale(0.99)';
+                        setTimeout(() => { if (img) img.style.transform = ''; }, 50);
+                    }
+                }
+            }, 100);
         }
-    }
-    function buyCarrotBonus() {
-        if(carrotBonus) return;
-        if(points >= 120) {
-            points -= 120;
-            carrotBonus = 1;
-            updateUI();
-            showMessage("🥕 Carls gulerodsmark giver +3 mønter per klik!");
+        
+        // Money rain visuel effekt
+        if (type === 'rain') {
+            activePowerups[type].rainInterval = setInterval(() => {
+                if (activePowerups[type].active) {
+                    createGoldEffect();
+                }
+            }, 500);
         }
-    }
-    function buyTractorBoost() {
-        if(tractorMultiplier >= 2) return;
-        if(points >= 200) {
-            points -= 200;
-            tractorMultiplier = 2;
+        
+        // Timer til at deaktivere
+        activePowerups[type].timer = setTimeout(() => {
+            activePowerups[type].active = false;
+            if (type === 'auto' && activePowerups[type].autoInterval) {
+                clearInterval(activePowerups[type].autoInterval);
+                activePowerups[type].autoInterval = null;
+            }
+            if (type === 'rain' && activePowerups[type].rainInterval) {
+                clearInterval(activePowerups[type].rainInterval);
+                activePowerups[type].rainInterval = null;
+            }
             updateUI();
-            showMessage("🚜 TRAKTOR BOOST! Alle mønter fordobles!");
-        }
-    }
-
-    // Carl Smart unik handling (FARM) – giver bonus
-    function carlFarmAction() {
-        let farmGain = 8 + (carrotBonus ? 5 : 0);
-        addPoints(farmGain);
-        showMessage(`🌾 Carl passer markerne! +${farmGain} mønter`);
-        const carlBox = document.getElementById('carlSmartBox');
-        carlBox.style.transform = 'scale(0.98)';
-        setTimeout(() => { if(carlBox) carlBox.style.transform = ''; }, 120);
-    }
-
-    // Saleh laver pizza (unik handling)
-    function salehMakePizza() {
-        let pizzaGain = 12 + (pizzaBonus ? 8 : 0);
-        addPoints(pizzaGain);
-        showMessage(`🍕🔥 SALEH laver en kæmpe pizza! +${pizzaGain} mønter!`);
-        const salehDiv = document.getElementById('salehOnShoulder');
-        salehDiv.style.transform = 'scale(1.1) rotate(5deg)';
-        setTimeout(() => { if(salehDiv) salehDiv.style.transform = ''; }, 200);
-        // ekstra effekt
-        const pizzaFly = document.createElement('div');
-        pizzaFly.innerText = '🍕';
-        pizzaFly.style.position = 'fixed';
-        pizzaFly.style.fontSize = '28px';
-        pizzaFly.style.left = '70%';
-        pizzaFly.style.bottom = '40%';
-        pizzaFly.style.pointerEvents = 'none';
-        pizzaFly.style.transition = 'all 0.6s ease';
-        document.body.appendChild(pizzaFly);
-        setTimeout(() => { pizzaFly.style.transform = 'translateY(-100px) rotate(30deg)'; pizzaFly.style.opacity = '0'; setTimeout(() => pizzaFly.remove(), 600); }, 10);
-    }
-
-    function syncGoatVisual() {
-        if(hasGoat) goatWrapperDiv.style.display = 'block';
-        else goatWrapperDiv.style.display = 'none';
-    }
-
-    function resetGame() {
-        points = 0;
-        clickMultiplier = 1;
-        if(hasGoat) { if(goatInterval) clearInterval(goatInterval); goatInterval = null; }
-        hasGoat = false;
-        pizzaBonus = 0;
-        carrotBonus = 0;
-        tractorMultiplier = 1;
+            showMessage(`⏰ ${getPowerupName(type)} er udløbet!`);
+            updatePowerupButton(type);
+        }, duration * 1000);
+        
         updateUI();
-        syncGoatVisual();
+        updatePowerupButton(type);
+        showMessage(`✨ ${getPowerupName(type)} AKTIVERET i ${duration} sekunder!`);
+        return true;
+    }
+    
+    function getPowerupName(type) {
+        const names = {
+            x2: '2x Klik Kraft',
+            auto: 'Auto-Klikker',
+            x3: '3x Point',
+            boost50: 'Boost',
+            freeze: 'Combo Freeze',
+            rain: 'Money Rain'
+        };
+        return names[type];
+    }
+    
+    function updatePowerupButton(type) {
+        const btn = document.getElementById(`btn_${type}`);
+        const card = document.getElementById(`powerup_${type}`);
+        const timerSpan = document.getElementById(`timer_${type}`);
+        
+        if (activePowerups[type].active) {
+            btn.innerText = 'AKTIV';
+            btn.disabled = true;
+            btn.classList.add('active-btn');
+            card.classList.add('active-powerup');
+            
+            let remaining = Math.max(0, Math.floor((activePowerups[type].endTime - Date.now()) / 1000));
+            timerSpan.innerText = `${remaining} sek tilbage`;
+            
+            // Opdater timer hvert sekund
+            if (activePowerups[type].timer) {
+                const interval = setInterval(() => {
+                    if (activePowerups[type].active) {
+                        let rem = Math.max(0, Math.floor((activePowerups[type].endTime - Date.now()) / 1000));
+                        timerSpan.innerText = `${rem} sek tilbage`;
+                        if (rem <= 0) clearInterval(interval);
+                    } else {
+                        clearInterval(interval);
+                    }
+                }, 1000);
+            }
+        } else {
+            btn.innerText = 'AKTIVER';
+            btn.disabled = false;
+            btn.classList.remove('active-btn');
+            card.classList.remove('active-powerup');
+            timerSpan.innerText = '';
+        }
+    }
+    
+    function createGoldEffect() {
+        const gold = document.createElement('div');
+        gold.innerText = '💰';
+        gold.style.position = 'fixed';
+        gold.style.fontSize = '24px';
+        gold.style.left = Math.random() * 80 + 10 + '%';
+        gold.style.top = '30%';
+        gold.style.pointerEvents = 'none';
+        gold.style.zIndex = '999';
+        gold.style.transition = 'all 1s ease';
+        document.body.appendChild(gold);
+        setTimeout(() => {
+            gold.style.transform = 'translateY(200px) rotate(20deg)';
+            gold.style.opacity = '0';
+            setTimeout(() => gold.remove(), 1000);
+        }, 10);
+    }
+    
+    // ============ MARCUS BANK ============
+    function collectInterest() {
+        let interest = Math.floor(points * (bankInterest / 100));
+        if (interest > 0) {
+            points += interest;
+            showMessage(`🏦 Marcus Bank betalte ${interest} renter!`);
+            updateUI();
+        }
+    }
+    
+    function upgradeBank() {
+        let cost = 5000;
+        if (points >= cost && bankInterest < 25) {
+            points -= cost;
+            bankInterest += 2;
+            bankInterestSpan.innerText = bankInterest;
+            showMessage(`🏦 Marcus Bank rente steget til ${bankInterest}%!`);
+            updateUI();
+        } else if (bankInterest >= 25) {
+            showMessage(`🏦 Maks rente nået!`);
+        } else {
+            showMessage(`❌ Mangler ${cost - points} mønter til bank upgrade!`);
+        }
+    }
+    
+    // ============ AUTO RENTE HVERT MINUT ============
+    setInterval(() => {
+        let now = Date.now();
+        if (now - lastInterestTime >= 60000) {
+            collectInterest();
+            lastInterestTime = now;
+        }
+    }, 1000);
+    
+    // ============ AKSEL GOAT ============
+    function buyGoat() {
+        if (hasGoat) return;
+        if (points >= 500) {
+            points -= 500;
+            hasGoat = true;
+            goatInterval = setInterval(() => {
+                if (hasGoat) addPoints(1);
+            }, 1000);
+            goatWrapperDiv.style.display = 'block';
+            updateUI();
+            showMessage("🐐 Aksel the GOAT løber rundt og giver +1/sek!");
+        } else {
+            showMessage(`❌ Mangler ${500 - points} mønter til Aksel!`);
+        }
+    }
+    
+    // ============ UI OPDATERING ============
+    function updateUI() {
+        scoreDisplay.innerText = Math.floor(points);
+        clickPowerSpan.innerText = getCurrentMultiplier();
+        
+        let autoActive = activePowerups.auto.active ? 10 : 0;
+        autoClickerSpan.innerText = autoActive;
+        
+        let activeCount = Object.values(activePowerups).filter(p => p.active).length;
+        activeBoostsSpan.innerText = activeCount;
+        
+        // Opdater priser i UI
+        document.getElementById('cost_2x').innerHTML = prices.x2.toLocaleString();
+        document.getElementById('cost_auto').innerHTML = prices.auto.toLocaleString();
+        document.getElementById('cost_3x').innerHTML = prices.x3.toLocaleString();
+        document.getElementById('cost_boost50').innerHTML = prices.boost50.toLocaleString();
+        document.getElementById('cost_freeze').innerHTML = prices.freeze.toLocaleString();
+        document.getElementById('cost_rain').innerHTML = prices.rain.toLocaleString();
+        
+        // Disable knapper hvis ikke nok penge
+        document.getElementById('btn_2x').disabled = activePowerups.x2.active || points < prices.x2;
+        document.getElementById('btn_auto').disabled = activePowerups.auto.active || points < prices.auto;
+        document.getElementById('btn_3x').disabled = activePowerups.x3.active || points < prices.x3;
+        document.getElementById('btn_boost50').disabled = activePowerups.boost50.active || points < prices.boost50;
+        document.getElementById('btn_freeze').disabled = activePowerups.freeze.active || points < prices.freeze;
+        document.getElementById('btn_rain').disabled = activePowerups.rain.active || points < prices.rain;
+    }
+    
+    function resetGame() {
+        points = 1000;
+        clickMultiplier = 1;
+        combo = 0;
+        
+        // Stop alle power-ups
+        for (let type in activePowerups) {
+            if (activePowerups[type].timer) {
+                clearTimeout(activePowerups[type].timer);
+                activePowerups[type].timer = null;
+            }
+            if (activePowerups[type].autoInterval) {
+                clearInterval(activePowerups[type].autoInterval);
+                activePowerups[type].autoInterval = null;
+            }
+            if (activePowerups[type].rainInterval) {
+                clearInterval(activePowerups[type].rainInterval);
+                activePowerups[type].rainInterval = null;
+            }
+            activePowerups[type].active = false;
+        }
+        
+        if (goatInterval) {
+            clearInterval(goatInterval);
+            goatInterval = null;
+        }
+        hasGoat = false;
+        goatWrapperDiv.style.display = 'none';
+        comboFreezeActive = false;
+        bankInterest = 5;
+        bankInterestSpan.innerText = bankInterest;
+        
+        updateUI();
+        for (let type of ['x2', 'auto', 'x3', 'boost50', 'freeze', 'rain']) {
+            updatePowerupButton(type);
+        }
         showMessage("Spillet er nulstillet!");
     }
-
+    
+    // ============ EVENT LISTENERS ============
     williamArea.addEventListener('click', onClickWilliam);
-    buyClickBtn.addEventListener('click', buyClickUpgrade);
-    buyGoatBtn.addEventListener('click', buyGoatUpgrade);
-    buyPizzaBtn.addEventListener('click', buyPizzaBonus);
-    buyCarrotBtn.addEventListener('click', buyCarrotBonus);
-    buyTractorBtn.addEventListener('click', buyTractorBoost);
     resetBtn.addEventListener('click', resetGame);
-    carlFarmBtn.addEventListener('click', carlFarmAction);
-    salehShoulder.addEventListener('click', (e) => { e.stopPropagation(); salehMakePizza(); });
-
-    updateUI();
-    syncGoatVisual();
+    bankBtn.addEventListener('click', upgradeBank);
+    
+    // Power-up knapper
+    document.getElementById('btn_2x').addEventListener('click', () => activatePowerup('x2', 30, prices.x2));
+    document.getElementById('btn_auto').addEventListener('click', () => activatePowerup('auto', 60, prices.auto));
+    document.getElementById('btn_3x').addEventListener('click', () => activatePowerup('x3', 45, prices.x3));
+    document.getElementById('btn_boost50').addEventListener('click', () => activatePowerup('boost50', 30, prices.boost50));
+    document.getElementById('btn_freeze').addEventListener('click', () => {
+        if (points >= prices.freeze && !activePowerups.freeze.active) {
+            points -= prices.freeze;
+            comboFreezeActive = true;
+            setTimeout(() => { comboFreezeActive = false; showMessage("❄️ Combo Freeze udløbet!"); }, 60000);
+            updateUI();
+            showMessage("❄️ Combo Freeze aktiv i 60 sekunder!");
+            updatePowerupButton('freeze');
+        } else if (activePowerups.freeze.active) {
+            showMessage("Combo Freeze er allerede aktiv!");
+        } else {
+            showMessage(`❌ Mangler ${prices.freeze - points} mønter!`);
+        }
+    });
+    document.getElementById('btn_rain').addEventListener('click', () => activatePowerup('rain', 30, prices.rain));
+    
+    // Tilføj Aksel som upgrade (gemt i bunden)
+    const goatCard = document.createElement('div');
+    goatCard.className = 'upgrade-card';
+    goatCard.innerHTML = `
+        <div class="upgrade-info">
+            <div class="upgrade-name">🐐 Aksel the GOAT</div>
+            <div class="upgrade-desc">Går rundt om William: +1/sek permanent</div>
+        </div>
+        <div class="upgrade-cost">500</div>
+        <button class="buy-btn" id="buyGoatBtn">KØB</button>
+    `;
+    document.getElementById('powerupList').appendChild(goatCard);
+    document.getElementById('buyGoatBtn').addEventListener('click', buyGoat);
+    
+    // Initial setup
     mouthElement.style.content = "url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 30\"><path fill=\"%238B5A2B\" stroke=\"%23c28544\" stroke-width=\"2.2\" d=\"M25,18 Q50,8 75,18 Q55,12 45,12 Q30,14 25,18Z\" /></svg>')";
+    updateUI();
 </script>
 </body>
 </html>
