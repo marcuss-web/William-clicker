@@ -75,6 +75,21 @@
             -webkit-background-clip: text;
             color: transparent;
             line-height: 1;
+            display: inline-block;
+            position: relative;
+        }
+
+        .infinity-symbol {
+            font-size: 2rem;
+            color: #ffd700;
+            margin-left: 10px;
+            display: inline-block;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
         }
 
         .per-second-stats {
@@ -110,7 +125,6 @@
             transform: scale(0.97);
         }
 
-        /* William billede - ingen beskæring nødvendig, da baggrunden allerede er fjernet */
         .william-img {
             width: 210px;
             height: 210px;
@@ -788,6 +802,7 @@
                 </label>
             </div>
             
+            <!-- KØB ALLE POWER-UPS KNAP - KUN ÉN, ØVERST -->
             <button class="buy-all-btn" id="buyAllPowerupsBtn">⚡ KØB ALLE POWER-UPS ⚡</button>
             
             <div class="upgrade-card">
@@ -869,7 +884,7 @@
 </div>
 
 <script>
-    // BILLEDER - OPDATERET!
+    // BILLEDER
     const WILLIAM_IMG_URL = "https://i.imgur.com/fVQ99Zm.png";
     const AKSEL_IMG_URL = "https://i.imgur.com/OmHtfXO.png";
     const CARL_IMG_URL = "https://i.imgur.com/KOC0f86.png";
@@ -942,6 +957,22 @@
     const totalClicksSpan = document.getElementById('totalClicks');
     const williamArea = document.getElementById('williamClicker');
 
+    // Funktion til at opdatere infinity symbol
+    function updateInfinitySymbol() {
+        let scoreElement = document.querySelector('.score-value');
+        if (infiniteMoney) {
+            if (!document.querySelector('.infinity-symbol')) {
+                let infinitySpan = document.createElement('span');
+                infinitySpan.className = 'infinity-symbol';
+                infinitySpan.innerHTML = '∞';
+                scoreElement.appendChild(infinitySpan);
+            }
+        } else {
+            let infinitySpan = document.querySelector('.infinity-symbol');
+            if (infinitySpan) infinitySpan.remove();
+        }
+    }
+
     function showToast(msg) {
         const toast = document.createElement('div');
         toast.className = 'easter-toast';
@@ -962,6 +993,8 @@
 
     function updateUI() {
         scoreDisplay.innerText = Math.floor(points).toLocaleString();
+        updateInfinitySymbol();
+        
         let power = clickMultiplier;
         if (doubleClickActive && Date.now() < doubleClickEnd) power *= 2;
         if (multiPointsActive && Date.now() < multiPointsEnd) power *= 3;
@@ -1237,23 +1270,24 @@
         }
     });
     
-    // KØB ALLE POWER-UPS KNAP
+    // KØB ALLE POWER-UPS KNAP - KØBER ALLE 6 POWER-UPS
     document.getElementById('buyAllPowerupsBtn').addEventListener('click', () => {
         const totalCost = 3000 + 12000 + 30000 + 25000 + 20000 + 28000;
         if (infiniteMoney || points >= totalCost) {
             if (!infiniteMoney) points -= totalCost;
+            const now = Date.now();
             
-            // Aktivér 2x klik
-            if (!doubleClickActive || Date.now() >= doubleClickEnd) {
+            // 2x Klik Kraft
+            if (!doubleClickActive || now >= doubleClickEnd) {
                 doubleClickActive = true;
-                doubleClickEnd = Date.now() + 30000;
+                doubleClickEnd = now + 30000;
                 setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000);
             }
             
-            // Aktivér auto-klikker
-            if (!autoClickActive || Date.now() >= autoClickEnd) {
+            // Auto-Klikker
+            if (!autoClickActive || now >= autoClickEnd) {
                 autoClickActive = true;
-                autoClickEnd = Date.now() + 60000;
+                autoClickEnd = now + 60000;
                 if (autoClickInterval) clearInterval(autoClickInterval);
                 autoClickInterval = setInterval(() => {
                     if (autoClickActive && Date.now() < autoClickEnd) {
@@ -1271,31 +1305,31 @@
                 setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000);
             }
             
-            // Aktivér 3x point
-            if (!multiPointsActive || Date.now() >= multiPointsEnd) {
+            // 3x Point
+            if (!multiPointsActive || now >= multiPointsEnd) {
                 multiPointsActive = true;
-                multiPointsEnd = Date.now() + 45000;
+                multiPointsEnd = now + 45000;
                 setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000);
             }
             
-            // Aktivér boost
-            if (!boostActive || Date.now() >= boostEnd) {
+            // Boost
+            if (!boostActive || now >= boostEnd) {
                 boostActive = true;
-                boostEnd = Date.now() + 30000;
+                boostEnd = now + 30000;
                 setTimeout(() => { boostActive = false; updateUI(); }, 30000);
             }
             
-            // Aktivér combo freeze
-            if (!comboFreezeActive || Date.now() >= comboFreezeEnd) {
+            // Combo Freeze
+            if (!comboFreezeActive || now >= comboFreezeEnd) {
                 comboFreezeActive = true;
-                comboFreezeEnd = Date.now() + 60000;
+                comboFreezeEnd = now + 60000;
                 setTimeout(() => { comboFreezeActive = false; updateUI(); }, 60000);
             }
             
-            // Aktivér money rain
-            if (!moneyRainActive || Date.now() >= moneyRainEnd) {
+            // Money Rain
+            if (!moneyRainActive || now >= moneyRainEnd) {
                 moneyRainActive = true;
-                moneyRainEnd = Date.now() + 30000;
+                moneyRainEnd = now + 30000;
                 const rainInterval = setInterval(() => {
                     if (moneyRainActive && Date.now() < moneyRainEnd) spawnGoldenWilliam();
                     else clearInterval(rainInterval);
@@ -1306,7 +1340,7 @@
             powerupsUsed += 6;
             updateUI();
             saveGame();
-            showToast('⚡ Alle power-ups aktiveret!');
+            showToast('⚡ Alle 6 power-ups aktiveret!');
         } else {
             showToast(`💰 Du mangler ${(totalCost - points).toLocaleString()} point!`);
         }
@@ -1344,12 +1378,12 @@
         goldenTimeout = setTimeout(spawnGoldenWilliam, 20000 + Math.random() * 25000);
     }
 
-    // Cheat kode: Klik på UPGRADES titlen 5 gange
+    // Cheat kode: Klik på UPGRADES titlen 5 gange - VISER ∞ SYMBOL
     document.getElementById('easterEggTitle').addEventListener('click', () => {
         easterEggClicks++;
         if (easterEggClicks >= 5 && !infiniteMoney) {
             infiniteMoney = true;
-            showToast('🔓 UENDELIGE PENGE AKTIVERET!');
+            showToast('🔓 UENDELIGE PENGE AKTIVERET! ∞');
             updateUI();
         }
         setTimeout(() => easterEggClicks = 0, 1000);
@@ -1512,7 +1546,7 @@
     document.getElementById('autoClickToggle').addEventListener('change', e => { autoClickBuyEnabled = e.target.checked; saveGame(); });
     
     setInterval(() => {
-        // Auto-køb Stærkere Klik - FIXET!
+        // Auto-køb Stærkere Klik
         if (autoClickBuyEnabled && hasAdvisor) {
             const cost = 8 + (clickMultiplier - 1) * 5;
             while ((infiniteMoney || points >= cost) && clickMultiplier < 100) {
