@@ -3,79 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>William Clicker ⚡ Corvette Kasper · Alle Skins</title>
+    <title>William Clicker ⚡ Corvette Kasper</title>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     
     <style>
         * { user-select: none; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        body { background: linear-gradient(145deg, #2d1b0e, #1a0f07); min-height: 100vh; font-family: 'Segoe UI', 'Quicksand', 'Poppins', system-ui, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; overflow-x: hidden; overflow-y: auto; }
-        .game-layout { max-width: 1300px; width: 100%; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .game-left { flex: 2; min-width: 280px; background: rgba(10,14,23,0.6); backdrop-filter: blur(5px); border-radius: 50px; padding: 15px 15px 25px 15px; box-shadow: 0 20px 35px rgba(0,0,0,0.4); border: 1px solid #ffb34766; position: relative; }
-        .upgrade-panel { flex: 1.2; min-width: 260px; max-height: 85vh; overflow-y: auto; background: #0b0e16cc; backdrop-filter: blur(8px); border-radius: 50px; padding: 15px 15px; border: 1px solid #f3aa4a88; box-shadow: 0 10px 25px black; }
+        body { background: linear-gradient(145deg, #2d1b0e, #1a0f07); min-height: 100vh; font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; }
+        .game-layout { max-width: 1200px; width: 100%; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .game-left { flex: 2; min-width: 280px; background: rgba(10,14,23,0.6); border-radius: 50px; padding: 15px; box-shadow: 0 20px 35px rgba(0,0,0,0.4); border: 1px solid #ffb34766; }
+        .upgrade-panel { flex: 1.2; min-width: 260px; max-height: 85vh; overflow-y: auto; background: #0b0e16cc; border-radius: 50px; padding: 15px; border: 1px solid #f3aa4a88; }
         .score-panel { background: #03050ce6; border-radius: 60px; padding: 8px 15px; margin-bottom: 15px; text-align: center; }
-        .score-value { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #ffdd99, #ffaa33); background-clip: text; -webkit-background-clip: text; color: transparent; line-height: 1; display: inline-block; position: relative; }
+        .score-value { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #ffdd99, #ffaa33); background-clip: text; color: transparent; }
         .infinity-symbol { font-size: 1.5rem; color: #ffd700; margin-left: 5px; display: inline-block; animation: pulse 1s infinite; }
-        @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.1); } }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
         .per-second-stats { background: #00000066; border-radius: 30px; padding: 8px; margin: 10px 0; font-size: 0.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; color: #e8d5a8; }
         
-        /* STREAK - under penge, skæv, peger mod William */
-        .streak-container { position: absolute; bottom: 10px; right: 20px; transform: skewX(-10deg); background: linear-gradient(135deg, #333, #1a1a2e); padding: 6px 15px; border-radius: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-left: 4px solid #ffd700; }
-        .streak-text { font-size: 0.8rem; font-weight: bold; color: #ffd700; font-family: monospace; }
-        .streak-bonus { font-size: 0.7rem; color: #aaa; }
-        
-        .central-area { position: relative; display: flex; justify-content: center; align-items: center; min-height: 260px; margin: 10px 0; }
-        
-        /* MINDRE FLAMME - passer til William */
-        .mega-flame { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; border-radius: 50%; pointer-events: none; z-index: 0; }
-        .mega-flame::before { content: "🔥"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 9rem; filter: drop-shadow(0 0 20px currentColor); animation: flameFlicker 0.3s infinite alternate; }
-        @keyframes flameFlicker { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } }
-        .mega-flame-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 220px; height: 220px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, rgba(255,100,0,0.2) 0%, rgba(255,0,0,0) 70%); }
-        
-        /* CORVETTE KASPER */
-        .corvette-car { position: fixed; z-index: 1000; width: 70px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
-        .corvette-car img { width: 100%; border-radius: 50%; border: 2px solid #ffd700; object-fit: cover; background: #2c2e3e; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
-        .corvette-car .car-label { font-size: 0.5rem; background: #000000aa; padding: 2px 5px; border-radius: 12px; margin-top: 3px; color: #ffd700; }
-        
+        .central-area { position: relative; display: flex; justify-content: center; align-items: center; min-height: 200px; margin: 10px 0; }
         .william-container { position: relative; display: inline-block; cursor: pointer; z-index: 10; }
         .william-container:active { transform: scale(0.97); }
-        .william-img { width: 130px; height: 130px; object-fit: cover; object-position: center; border-radius: 50%; background: #2c2e3e; transition: all 0.2s ease; display: block; }
-        .hat { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 1.8rem; pointer-events: none; z-index: 15; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3)); }
+        .william-img { width: 130px; height: 130px; object-fit: cover; border-radius: 50%; background: #2c2e3e; display: block; }
+        .hat { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 1.8rem; pointer-events: none; }
         
-        /* ALLE KARAKTERER SAMLET */
-        .characters-row { display: flex; justify-content: space-around; align-items: center; margin-top: 15px; flex-wrap: wrap; gap: 10px; }
+        .characters-row { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 15px; flex-wrap: wrap; }
         .char-card { background: #231f1acc; border-radius: 40px; padding: 5px 12px; display: flex; align-items: center; gap: 8px; border: 2px solid #ffaa55; }
         .char-img { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
         .char-name { color: #ffd700; font-size: 0.7rem; }
         .char-card.not-owned { filter: grayscale(1); opacity: 0.5; }
         
-        .aksel-orbit { display: none; }
+        /* CORVETTE KASPER - BILLEDE KØRER */
+        .corvette-car { position: fixed; z-index: 1000; width: 80px; pointer-events: none; }
+        .corvette-car img { width: 100%; border-radius: 50%; border: 2px solid #ffd700; object-fit: cover; box-shadow: 0 0 10px gold; }
         
         .burger-menu-btn { position: fixed; top: 20px; right: 20px; width: 45px; height: 45px; background: #8B6914; border: 3px solid #ffd700; border-radius: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; cursor: pointer; z-index: 3000; }
         .burger-line { width: 22px; height: 3px; background: #ffd700; border-radius: 3px; }
-        .side-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: rgba(10,14,23,0.98); backdrop-filter: blur(10px); border-left: 3px solid #ffd700; z-index: 2500; transition: right 0.3s ease; padding: 70px 15px 20px; overflow-y: auto; }
+        .side-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: rgba(10,14,23,0.98); border-left: 3px solid #ffd700; z-index: 2500; transition: right 0.3s; padding: 70px 15px 20px; overflow-y: auto; }
         .side-menu.active { right: 0; }
         .side-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2400; display: none; }
         .side-menu-overlay.active { display: block; }
         .side-menu-btn { width: 100%; padding: 12px; margin-bottom: 8px; background: #1a1208; border: 2px solid #8B6914; border-radius: 15px; color: #ffd700; font-weight: bold; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         
-        .upgrade-card { background: linear-gradient(115deg, #262b3f, #191e2f); border-radius: 40px; padding: 8px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #f6b55766; }
+        .upgrade-card { background: linear-gradient(115deg, #262b3f, #191e2f); border-radius: 40px; padding: 8px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .upgrade-info { flex: 2; }
         .upgrade-name { font-weight: bold; color: #ffe1ae; font-size: 0.85rem; }
         .upgrade-desc { font-size: 0.65rem; color: #cfbc8f; }
         .upgrade-cost { font-weight: bold; background: #1a1208; padding: 3px 10px; border-radius: 40px; color: #ffcf7a; margin-right: 8px; font-size: 0.8rem; }
-        button.buy-btn { background: #e48f2b; border: none; font-weight: bold; padding: 4px 12px; border-radius: 30px; cursor: pointer; box-shadow: 0 2px 0 #784a1a; font-size: 0.8rem; }
+        button.buy-btn { background: #e48f2b; border: none; font-weight: bold; padding: 4px 12px; border-radius: 30px; cursor: pointer; font-size: 0.8rem; }
         button.buy-btn:disabled { opacity: 0.6; cursor: not-allowed; }
         .tab-container { display: flex; gap: 5px; margin-bottom: 12px; }
-        .tab-btn { flex: 1; background: #1a1208; border: 2px solid #8B6914; color: #c8a86e; padding: 6px; border-radius: 30px; cursor: pointer; font-weight: bold; text-align: center; font-size: 0.8rem; }
+        .tab-btn { flex: 1; background: #1a1208; border: 2px solid #8B6914; color: #c8a86e; padding: 6px; border-radius: 30px; cursor: pointer; text-align: center; font-size: 0.8rem; }
         .tab-btn.active { background: #8B6914; color: #ffd700; border-color: #ffd700; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .reset-btn { background: #3e2a24; border: none; color: #ffbe89; padding: 6px 15px; border-radius: 50px; margin-top: 12px; width: 100%; cursor: pointer; font-size: 0.8rem; }
-        .prestige-btn { background: linear-gradient(135deg, #9b59b6, #c71585); border: none; color: white; padding: 8px 15px; border-radius: 30px; cursor: pointer; margin-top: 12px; width: 100%; font-size: 0.8rem; }
+        .reset-btn { background: #3e2a24; border: none; color: #ffbe89; padding: 6px 15px; border-radius: 50px; margin-top: 12px; width: 100%; cursor: pointer; }
+        .prestige-btn { background: linear-gradient(135deg, #9b59b6, #c71585); border: none; color: white; padding: 8px 15px; border-radius: 30px; cursor: pointer; margin-top: 12px; width: 100%; }
         
-        .golden-william { position: fixed; cursor: pointer; z-index: 1000; animation: goldenFloat 0.5s infinite alternate; filter: drop-shadow(0 0 15px gold); width: 55px; }
+        .golden-william { position: fixed; cursor: pointer; z-index: 1000; animation: goldenFloat 0.5s infinite alternate; width: 55px; }
         @keyframes goldenFloat { from { transform: translateY(0); } to { transform: translateY(-12px); } }
         .golden-william-img { width: 55px; height: 55px; border-radius: 50%; border: 3px solid #ffd700; object-fit: cover; }
         
@@ -93,29 +77,13 @@
         .boss-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid #ff0000; object-fit: cover; cursor: pointer; }
         .boss-health-bar { width: 100%; height: 15px; background: #1a0000; border-radius: 10px; margin: 12px 0; border: 2px solid #ff0000; overflow: hidden; }
         .boss-health-fill { height: 100%; background: linear-gradient(90deg, #ff4444, #ff0000); border-radius: 8px; transition: width 0.1s; }
-        .boss-name { color: #ff4444; font-size: 1.5rem; font-weight: bold; }
         
         .active-power-badge { display: inline-block; background: #00ff00; color: #000; padding: 2px 6px; border-radius: 15px; font-size: 0.6rem; margin-left: 8px; }
         footer { text-align: center; margin-top: 15px; color: #ffcf7a; font-size: 0.7rem; }
-        .bank-balance-box { background: rgba(255,183,71,0.1); padding: 12px; border-radius: 15px; margin-bottom: 12px; color: #ffd700; }
-        .bank-option-btn { width: 100%; padding: 8px; margin: 4px 0; background: #1a1208; border: 2px solid #8B6914; border-radius: 10px; color: #ffcf7a; cursor: pointer; font-size: 0.8rem; }
-        .bank-withdraw-btn { width: 100%; padding: 8px; background: #4CAF50; border: none; border-radius: 10px; color: white; cursor: pointer; }
-        .prestige-info { background: rgba(38,20,60,0.8); border-radius: 25px; padding: 15px; margin: 15px 0; border: 2px solid #9b59b6; }
-        .prestige-bonus { color: #ffd700; font-weight: bold; }
-        .prestige-actions { display: flex; gap: 10px; }
-        .prestige-confirm { flex: 1; background: #c71585; border: none; color: white; padding: 8px; border-radius: 30px; cursor: pointer; }
-        .prestige-cancel { flex: 1; background: #3e2a24; border: none; color: #ffbe89; padding: 8px; border-radius: 30px; cursor: pointer; }
-        
-        .skin-card, .boss-skin-card { transition: all 0.2s; cursor: pointer; }
-        .skin-card:hover, .boss-skin-card:hover { transform: scale(1.02); }
-        
-        .leaderboard-entry { padding: 6px; border-bottom: 1px solid #555; display: flex; justify-content: space-between; font-size: 0.8rem; }
-        .achievement-card, .challenge-card { background: rgba(38,43,63,0.8); border-radius: 12px; padding: 10px; margin-bottom: 8px; text-align: left; font-size: 0.8rem; }
-        
         .auto-section { background: #1a1208; border-radius: 25px; padding: 8px; margin-bottom: 12px; }
         .auto-section label { color: #ffcf7a; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.8rem; }
         
-        .kasper-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #1a0f2e, #2d1b4e); border: 4px solid #ff0000; border-radius: 25px; padding: 20px; z-index: 10000; text-align: center; box-shadow: 0 0 80px rgba(255,0,0,0.5); max-width: 350px; width: 90%; }
+        .kasper-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #1a0f2e, #2d1b4e); border: 4px solid #ff0000; border-radius: 25px; padding: 20px; z-index: 10000; text-align: center; max-width: 350px; width: 90%; }
         .kasper-popup img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #ff0000; object-fit: cover; margin-bottom: 10px; }
         .kasper-popup h2 { color: #ff4444; font-size: 1.3rem; margin: 5px 0; }
         .kasper-popup p { color: #ffcf7a; margin: 5px 0; font-size: 0.9rem; }
@@ -129,14 +97,14 @@
 <div class="burger-menu-btn" id="burgerMenuBtn"><div class="burger-line"></div><div class="burger-line"></div><div class="burger-line"></div></div>
 <div class="side-menu-overlay" id="sideMenuOverlay"></div>
 <div class="side-menu" id="sideMenu">
-    <h3 style="color:#ffd700; text-align:center; font-size:1.2rem;">📋 MENU</h3>
+    <h3 style="color:#ffd700; text-align:center;">📋 MENU</h3>
     <button class="side-menu-btn" id="menuLeaderboard">🏆 Scoreboard</button>
     <button class="side-menu-btn" id="menuAchievements">🎖️ Achievements</button>
     <button class="side-menu-btn" id="menuChallenges">🎯 Challenges</button>
     <button class="side-menu-btn" id="menuPrestigeUpgrades">✨ Prestige Upgrades</button>
     <button class="side-menu-btn" id="menuSkins">🎨 Skins</button>
     <button class="side-menu-btn" id="menuBank">🏦 Marcus Bank</button>
-    <button class="side-menu-btn" id="adminMenuBtn" style="display:none; background:#ff00ff; border-color:#ff00ff;">👑 ADMIN MENU (1000x MODE)</button>
+    <button class="side-menu-btn" id="adminMenuBtn" style="display:none; background:#ff00ff;">👑 ADMIN MENU</button>
 </div>
 
 <div class="game-layout">
@@ -150,22 +118,14 @@
             </div>
         </div>
         
-        <!-- STREAK - under penge, skæv, peger mod William -->
-        <div class="streak-container">
-            <div class="streak-text" id="comboCounterSmall">🔥 0x COMBO!</div>
-            <div class="streak-bonus" id="comboBonusSmall">Bonus: 1x</div>
-        </div>
-        
         <div class="central-area">
-            <div class="mega-flame-glow" id="megaFlameGlow"></div>
-            <div class="mega-flame" id="megaFlame">🔥</div>
             <div class="william-container" id="williamClicker">
                 <img class="william-img" id="williamImg">
                 <div class="hat" id="williamHat"></div>
             </div>
         </div>
         
-        <!-- ALLE KARAKTERER SAMLET -->
+        <!-- ALLE KARAKTERER TÆT SAMMEN -->
         <div class="characters-row">
             <div class="char-card" id="akselChar">
                 <img class="char-img" id="akselImg">
@@ -185,10 +145,10 @@
             </div>
         </div>
         
-        <footer>👇 Klik på William! 👉 Hold streak for kæmpe bonus! 🔥</footer>
+        <footer>👇 Klik på William!</footer>
     </div>
     <div class="upgrade-panel">
-        <h3 style="color:#ffcf7a; margin-top:0; font-size:1rem;">✨ UPGRADES ✨</h3>
+        <h3 style="color:#ffcf7a; margin-top:0;">✨ UPGRADES ✨</h3>
         <div class="tab-container"><div class="tab-btn active" data-tab="upgrades">🏆 Upgrades</div><div class="tab-btn" data-tab="powerups">⚡ Power-ups</div></div>
         <div id="upgradesTab" class="tab-content active">
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">💪 Stærkere Klik</div><div class="upgrade-desc">+1 point pr. klik (nuværende: <span id="clickLevel">1</span>)</div></div><div class="upgrade-cost" id="clickCostSpan">30</div><button class="buy-btn" id="buyClickBtn">KØB</button></div>
@@ -198,7 +158,7 @@
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">👨‍🌾 Johannes på Gris</div><div class="upgrade-desc">Giver +10.000/sek</div></div><div class="upgrade-cost" id="johannesCostSpan">120000</div><button class="buy-btn" id="buyJohannesBtn">KØB</button></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🏦 Marcus Bankier</div><div class="upgrade-desc">Giv point og få renter</div></div><div class="upgrade-cost" id="marcusCostSpan">150000</div><button class="buy-btn" id="buyMarcusBtn">KØB</button></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🤐 Anonym Advisor</div><div class="upgrade-desc">Unlocker Auto-Buy</div></div><div class="upgrade-cost" id="advisorCostSpan">200000</div><button class="buy-btn" id="buyAdvisorBtn">KØB</button></div>
-            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🏎️ Corvette Kasper</div><div class="upgrade-desc">⭐ Kører henover skærmen! Giver +500.000/sek. Pas på - han stjæler dine penge!</div></div><div class="upgrade-cost" id="kasperCostSpan">2500000</div><button class="buy-btn" id="buyKasperBtn">KØB</button></div>
+            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🏎️ Corvette Kasper</div><div class="upgrade-desc">⭐ Kører på Corvette! Giver +500.000/sek. Pas på - han stjæler dine penge!</div></div><div class="upgrade-cost" id="kasperCostSpan">2500000</div><button class="buy-btn" id="buyKasperBtn">KØB</button></div>
         </div>
         <div id="powerupsTab" class="tab-content">
             <div class="auto-section" id="autoPowerSection" style="display:none;"><label><input type="checkbox" id="autoPowerToggle"> 🤖 Auto-køb Power-ups</label></div>
@@ -214,15 +174,14 @@
         <button class="prestige-btn" id="prestigeToggle">👑 PRESTIGE 👑</button>
     </div>
 </div>
-<div id="comboCounter" style="display:none;">🔥 0x COMBO!</div>
 
 <!-- Modals -->
-<div class="modal" id="leaderboardModal"><div class="modal-content"><h2>🏆 LEADERBOARD</h2><div id="leaderboardList"><p>Indlæser...</p></div><input type="text" id="playerName" placeholder="Dit navn..." style="margin:10px; padding:8px; border-radius:20px; border:none;"><button id="saveScoreBtn" style="background:#e48f2b; border:none; padding:6px 12px; border-radius:20px; cursor:pointer;">GEM SCORE</button><button class="close-modal" style="margin-top:12px;">LUK</button></div></div>
+<div class="modal" id="leaderboardModal"><div class="modal-content"><h2>🏆 LEADERBOARD</h2><div id="leaderboardList"></div><input type="text" id="playerName" placeholder="Dit navn..." style="margin:10px; padding:8px; border-radius:20px;"><button id="saveScoreBtn" style="background:#e48f2b; border:none; padding:6px 12px; border-radius:20px; cursor:pointer;">GEM SCORE</button><button class="close-modal">LUK</button></div></div>
 <div class="modal" id="achievementsModal"><div class="modal-content"><h2>🎖️ ACHIEVEMENTS</h2><div id="achievementsList"></div><button class="close-modal">LUK</button></div></div>
 <div class="modal" id="challengesModal"><div class="modal-content"><h2>🎯 CHALLENGES</h2><div id="challengesList"></div><button class="close-modal">LUK</button></div></div>
 <div class="modal" id="prestigeUpgradesModal"><div class="modal-content"><h2>✨ PRESTIGE UPGRADES</h2><div id="upgradesList"></div><button class="close-modal">LUK</button></div></div>
 <div class="modal" id="skinsModal"><div class="modal-content"><h2>🎨 SKINS</h2><div id="skinsList"></div><button class="close-modal">LUK</button></div></div>
-<div class="modal" id="bankModal"><div class="modal-content"><h2>🏦 MARCUS BANK</h2><div class="bank-balance-box">💰 I banken: <span id="bankBalance">0</span></div><div id="bankTimerDisplay"></div><div><button class="bank-option-btn" data-percent="10">10% (1 min) → 15%</button><button class="bank-option-btn" data-percent="25">25% (3 min) → 40%</button><button class="bank-option-btn" data-percent="50">50% (5 min) → 75%</button><button class="bank-option-btn" data-percent="75">75% (7 min) → 125%</button><button class="bank-option-btn" data-percent="100">100% (10 min) → 200%</button></div><button class="bank-withdraw-btn" id="bankWithdrawBtn" style="display:none;">🏧 Hæv penge</button><button class="close-modal">LUK</button></div></div>
+<div class="modal" id="bankModal"><div class="modal-content"><h2>🏦 MARCUS BANK</h2><div class="bank-balance-box">💰 I banken: <span id="bankBalance">0</span></div><div><button class="bank-option-btn" data-percent="10">10% (1 min) → 15%</button><button class="bank-option-btn" data-percent="25">25% (3 min) → 40%</button><button class="bank-option-btn" data-percent="50">50% (5 min) → 75%</button><button class="bank-option-btn" data-percent="75">75% (7 min) → 125%</button><button class="bank-option-btn" data-percent="100">100% (10 min) → 200%</button></div><button class="bank-withdraw-btn" id="bankWithdrawBtn" style="display:none;">🏧 Hæv penge</button><button class="close-modal">LUK</button></div></div>
 <div class="modal" id="prestigeModal"><div class="modal-content"><h2>👑 PRESTIGE</h2><div class="prestige-info" id="prestigeInfo"></div><div class="prestige-actions"><button class="prestige-confirm" id="prestigeConfirm">PRESTIGE</button><button class="prestige-cancel">ANNULLER</button></div></div></div>
 <div class="boss-container" id="bossContainer"><div class="boss-name">👹 RASMUS PRANGE</div><img class="boss-img" id="bossImg"><div class="boss-health-bar"><div class="boss-health-fill" id="bossHealthFill"></div></div><div id="bossHealthText">❤️ 100.000 / 100.000</div><div class="boss-timer" id="bossTimer">⏱️ 3:00</div></div>
 
@@ -232,8 +191,8 @@
     const WILLIAM_BIRD_URL = "https://i.imgur.com/6BNwHp3.png";
     const WILLIAM_DEVIL_URL = "https://i.imgur.com/9rnywi6.jpg";
     const WILLIAM_GHOST_URL = "https://i.imgur.com/ZQsFg2Q.jpg";
-    const KASPER_IMG_URL = "https://i.postimg.cc/502x28Nt/9085981-400x400.jpg";
-    const CORVETTE_URL = "https://i.postimg.cc/vTSDs3rc/download-(4).jpg";
+    // KASPER PÅ CORVETTE - ET BILLEDE
+    const KASPER_CORVETTE_URL = "https://i.postimg.cc/502x28Nt/9085981-400x400.jpg";
     const AKSEL_IMG_URL = "https://i.imgur.com/OmHtfXO.png";
     const CARL_IMG_URL = "https://i.imgur.com/KOC0f86.png";
     const SALEH_IMG_URL = "https://i.imgur.com/JsdtT0Q.png";
@@ -266,39 +225,8 @@
     let comboCount = 0, lastClickTime = 0, comboTimeout = null;
     let bossActive = false, bossHealth = 100000, bossMaxHealth = 100000, bossTimer = 180, bossTimerInterval = null, bossAttackInterval = null, nextBossSpawn = Date.now() + 1200000;
     let goatInterval = null, carlInterval = null, salehInterval = null, johannesInterval = null;
-    let unlockedBossSkins = [], activeSkins = { william: 'default', aksel: 'default', carl: 'default', saleh: 'default', johannes: 'default', kasper: 'default' };
+    let unlockedBossSkins = [], activeSkins = { william: 'default' };
     let boughtSkins = [];
-    
-    // NORMALE SKINS
-    const NORMAL_SKINS = {
-        william: [
-            { id: 'default', name: 'Normal William', hat: '👨', cost: 0, bonus: 1 },
-            { id: 'ghost', name: 'Spøgelse William', hat: '👻', cost: 2500000, bonus: 2 },
-            { id: 'bird', name: 'Fugle William', hat: '🐦', cost: 3000000, bonus: 2.5 },
-            { id: 'devil', name: 'Djævle William', hat: '👿', cost: 5000000, bonus: 3 }
-        ],
-        aksel: [{ id: 'default', name: 'Normal Aksel', hat: '🐐', cost: 0, bonus: 1 }],
-        carl: [{ id: 'default', name: 'Normal Carl', hat: '🐄', cost: 0, bonus: 1 }],
-        saleh: [{ id: 'default', name: 'Normal Saleh', hat: '🍕', cost: 0, bonus: 1 }],
-        johannes: [{ id: 'default', name: 'Normal Johannes', hat: '👨‍🌾', cost: 0, bonus: 1 }],
-        kasper: [{ id: 'default', name: 'Normal Kasper', hat: '🏎️', cost: 0, bonus: 1 }]
-    };
-    
-    const BOSS_SKINS_DATA = {
-        william: [{ rarity: "Almindelig", bonus: 1.5, name: "Almindelig Rasmus William" }, { rarity: "Sjælden", bonus: 2, name: "Sjælden Rasmus William" }, { rarity: "Episk", bonus: 3, name: "Episk Rasmus William" }, { rarity: "Legendarisk", bonus: 4, name: "Legendarisk Rasmus William" }, { rarity: "Admin", bonus: 8, name: "Admin Rasmus William" }, { rarity: "Guddommelig", bonus: 15, name: "Guddommelig Rasmus William" }],
-        aksel: [{ rarity: "Almindelig", bonus: 1.5, name: "Almindelig Rasmus Aksel" }, { rarity: "Sjælden", bonus: 2, name: "Sjælden Rasmus Aksel" }, { rarity: "Episk", bonus: 3, name: "Episk Rasmus Aksel" }, { rarity: "Legendarisk", bonus: 4, name: "Legendarisk Rasmus Aksel" }, { rarity: "Admin", bonus: 8, name: "Admin Rasmus Aksel" }, { rarity: "Guddommelig", bonus: 15, name: "Guddommelig Rasmus Aksel" }],
-        carl: [{ rarity: "Almindelig", bonus: 1.5, name: "Almindelig Rasmus Carl" }, { rarity: "Sjælden", bonus: 2, name: "Sjælden Rasmus Carl" }, { rarity: "Episk", bonus: 3, name: "Episk Rasmus Carl" }, { rarity: "Legendarisk", bonus: 4, name: "Legendarisk Rasmus Carl" }, { rarity: "Admin", bonus: 8, name: "Admin Rasmus Carl" }, { rarity: "Guddommelig", bonus: 15, name: "Guddommelig Rasmus Carl" }],
-        saleh: [{ rarity: "Almindelig", bonus: 1.5, name: "Almindelig Rasmus Saleh" }, { rarity: "Sjælden", bonus: 2, name: "Sjælden Rasmus Saleh" }, { rarity: "Episk", bonus: 3, name: "Episk Rasmus Saleh" }, { rarity: "Legendarisk", bonus: 4, name: "Legendarisk Rasmus Saleh" }, { rarity: "Admin", bonus: 8, name: "Admin Rasmus Saleh" }, { rarity: "Guddommelig", bonus: 15, name: "Guddommelig Rasmus Saleh" }],
-        johannes: [{ rarity: "Almindelig", bonus: 1.5, name: "Almindelig Rasmus Johannes" }, { rarity: "Sjælden", bonus: 2, name: "Sjælden Rasmus Johannes" }, { rarity: "Episk", bonus: 3, name: "Episk Rasmus Johannes" }, { rarity: "Legendarisk", bonus: 4, name: "Legendarisk Rasmus Johannes" }, { rarity: "Admin", bonus: 8, name: "Admin Rasmus Johannes" }, { rarity: "Guddommelig", bonus: 15, name: "Guddommelig Rasmus Johannes" }],
-        kasper: [{ rarity: "BOSS", bonus: 5, name: "BOSS Kasper" }]
-    };
-    
-    function getSkinBonus(character) {
-        let activeId = activeSkins[character];
-        let bossSkin = unlockedBossSkins.find(s => s.character === character && s.skinId === activeId);
-        if (bossSkin) return bossSkin.bonus;
-        return 1;
-    }
     
     function updateCharacterVisuals() {
         document.getElementById('akselChar').classList.toggle('not-owned', !hasGoat);
@@ -311,7 +239,7 @@
     function showKasperPopup() {
         let popup = document.createElement('div');
         popup.className = 'kasper-popup';
-        popup.innerHTML = `<img src="${KASPER_IMG_URL}" onerror="this.src='${CORVETTE_URL}'"><h2>⚠️ JØDE KASPER ⚠️</h2><p>Han stjal alle dine penge!</p><p>Du havde: ${Math.floor(points + kasperEarnedSinceLastSteal).toLocaleString()} points</p><p style="color:#ff0000;">💰 0 points tilbage 💰</p><div><button class="forgive-btn" id="kasperForgiveBtn">🙏 LAD GÅ 🙏</button><button class="shoot-btn" id="kasperShootBtn">🔫 SKYD HAM! 🔫</button></div>`;
+        popup.innerHTML = `<img src="${KASPER_CORVETTE_URL}"><h2>⚠️ JØDE KASPER ⚠️</h2><p>Han stjal alle dine penge!</p><p>Du havde: ${Math.floor(points + kasperEarnedSinceLastSteal).toLocaleString()} points</p><p style="color:#ff0000;">💰 0 points tilbage 💰</p><div><button class="forgive-btn" id="kasperForgiveBtn">🙏 LAD GÅ 🙏</button><button class="shoot-btn" id="kasperShootBtn">🔫 SKYD HAM! 🔫</button></div>`;
         document.body.appendChild(popup);
         document.getElementById('kasperForgiveBtn').onclick = () => { popup.remove(); kasperEarnedSinceLastSteal = 0; showToast('🙏 Du lod Kasper gå... Han vil stjæle igen når du tjener 100k mere!'); };
         document.getElementById('kasperShootBtn').onclick = () => { 
@@ -321,7 +249,7 @@
         };
     }
     
-    // KASPER ANIMATION
+    // KASPER ANIMATION - KØRER PÅ CORVETTE
     let kasperAnimationInterval = null;
     function startKasperAnimation() {
         if (kasperAnimationInterval) clearInterval(kasperAnimationInterval);
@@ -332,7 +260,7 @@
             car.className = 'corvette-car';
             let randomY = 5 + Math.random() * 85;
             car.style.bottom = randomY + '%';
-            car.innerHTML = `<img src="${KASPER_IMG_URL}" onerror="this.src='${CORVETTE_URL}'"><div class="car-label">🏎️ Kasper</div>`;
+            car.innerHTML = `<img src="${KASPER_CORVETTE_URL}">`;
             if (direction === 'rightToLeft') {
                 car.style.right = '-120px';
                 car.style.transition = 'right 3s linear';
@@ -343,305 +271,4 @@
                 car.style.left = '-120px';
                 car.style.transition = 'left 3s linear';
                 document.body.appendChild(car);
-                setTimeout(() => { if(car) car.style.left = '100%'; }, 50);
-                setTimeout(() => { if(car) car.remove(); direction = 'rightToLeft'; }, 3000);
-            }
-        }
-        animateCar();
-        kasperAnimationInterval = setInterval(animateCar, 6000);
-    }
-    
-    function checkKasperSteal() {
-        if (!hasKasper || kasperRemoved) return;
-        if (kasperEarnedSinceLastSteal >= 100000) {
-            kasperEarnedSinceLastSteal = 0;
-            showKasperPopup();
-            points = 0;
-            updateUI();
-            saveGame();
-        }
-    }
-    
-    // STREAK SYSTEM
-    const streakLevels = [
-        { min: 100, mult: 2, name: "100 - Sølv", color: "#c0c0c0" }, { min: 200, mult: 3, name: "200 - Guld", color: "#ffd700" }, { min: 300, mult: 4, name: "300 - Platin", color: "#e5e4e2" }, { min: 400, mult: 5, name: "400 - Diamant", color: "#00ffff" }, { min: 500, mult: 6, name: "500 - Rubin", color: "#ff4444" }, { min: 600, mult: 7, name: "600 - Smaragd", color: "#50c878" }, { min: 700, mult: 8, name: "700 - Ametyst", color: "#aa80ff" }, { min: 800, mult: 9, name: "800 - Safir", color: "#0000cd" }, { min: 900, mult: 10, name: "900 - Opal", color: "#b9f2ff" }, { min: 1000, mult: 12, name: "1000 - Legendarisk", color: "#ff8c00" }, { min: 1100, mult: 13, name: "1100 - Mytisk", color: "#ff00ff" }, { min: 1200, mult: 14, name: "1200 - Kosmisk", color: "#6a0dad" }, { min: 1300, mult: 15, name: "1300 - Uendelig", color: "#ff1493" }, { min: 1400, mult: 16, name: "1400 - Evig", color: "#00ff7f" }, { min: 1500, mult: 18, name: "1500 - Guddommelig", color: "#ffd700" }, { min: 1600, mult: 19, name: "1600 - Æterisk", color: "#e0ffff" }, { min: 1700, mult: 20, name: "1700 - Transcendent", color: "#da70d6" }, { min: 1800, mult: 22, name: "1800 - Almægtig", color: "#ff4500" }, { min: 1900, mult: 24, name: "1900 - Ufattelig", color: "#9400d3" }, { min: 2000, mult: 30, name: "2000 - GUDDOMMELIG MAX", color: "#ff00ff" }
-    ];
-    function getStreakLevel() { for (let i=streakLevels.length-1; i>=0; i--) if (comboCount >= streakLevels[i].min) return streakLevels[i]; return {mult:1, name:"Normal", color:"#fff"}; }
-    function getComboMultiplier() { return getStreakLevel().mult; }
-    
-    function updateComboVisuals() {
-        let level = getStreakLevel();
-        let williamImg = document.querySelector('.william-img');
-        let comboElSmall = document.getElementById('comboCounterSmall');
-        let bonusSmall = document.getElementById('comboBonusSmall');
-        if (comboCount >= 5) {
-            comboElSmall.innerHTML = `🔥 ${comboCount}x COMBO! (${level.name}) 🔥`;
-            bonusSmall.innerHTML = `Bonus: ${level.mult}x`;
-            comboElSmall.style.color = level.color;
-        } else {
-            comboElSmall.innerHTML = `🔥 ${comboCount}x COMBO!`;
-            bonusSmall.innerHTML = `Bonus: 1x`;
-            comboElSmall.style.color = '#ffd700';
-        }
-        williamImg.style.boxShadow = `0 10px 20px black, 0 0 0 4px ${level.color}, 0 0 0 7px #daa520, 0 0 10px ${level.color}`;
-        document.getElementById('comboBonusSmall').innerHTML = `Bonus: ${level.mult}x`;
-    }
-    
-    function updateCombo() {
-        let now = Date.now();
-        if (comboFreezeActive && now < comboFreezeEnd) { comboCount++; lastClickTime=now; updateComboVisuals(); return; }
-        if (now - lastClickTime > 2000) comboCount = 1; else comboCount++;
-        lastClickTime = now; updateComboVisuals();
-        clearTimeout(comboTimeout); comboTimeout = setTimeout(() => { if (!comboFreezeActive) { comboCount=0; updateComboVisuals(); } }, 2000);
-    }
-    
-    function showToast(msg) { let t=document.createElement('div'); t.className='easter-toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
-    
-    function updateUI() {
-        document.getElementById('scoreDisplay').innerHTML = Math.floor(points).toLocaleString() + (infiniteMoney ? '<span class="infinity-symbol">∞</span>' : '');
-        let power = clickMultiplier; if (doubleClickActive && Date.now()<doubleClickEnd) power*=2; if (multiPointsActive && Date.now()<multiPointsEnd) power*=3;
-        if (adminMode) power *= 1000;
-        power *= getSkinBonus('william');
-        document.getElementById('clickPowerSpan').innerText = Math.floor(power);
-        document.getElementById('clickLevel').innerText = clickMultiplier;
-        document.getElementById('totalClicks').innerText = totalClicks;
-        
-        let clickCost = 30 + (clickMultiplier-1)*15;
-        document.getElementById('clickCostSpan').innerText = clickCost;
-        document.getElementById('buyClickBtn').disabled = !infiniteMoney && points < clickCost;
-        document.getElementById('buyGoatBtn').disabled = hasGoat || (!infiniteMoney && points < 150);
-        document.getElementById('buyCarlBtn').disabled = hasCarl || (!infiniteMoney && points < 3000);
-        document.getElementById('buySalehBtn').disabled = hasSaleh || (!infiniteMoney && points < 30000);
-        document.getElementById('buyJohannesBtn').disabled = hasJohannes || (!infiniteMoney && points < 120000);
-        document.getElementById('buyMarcusBtn').disabled = hasMarcus || (!infiniteMoney && points < 150000);
-        document.getElementById('buyAdvisorBtn').disabled = hasAdvisor || (!infiniteMoney && points < 200000);
-        document.getElementById('buyKasperBtn').disabled = hasKasper || kasperRemoved || (!infiniteMoney && points < 2500000);
-        
-        document.getElementById('autoPowerSection').style.display = hasAdvisor ? 'block' : 'none';
-        document.getElementById('autoBuySection').style.display = hasAdvisor ? 'block' : 'none';
-        
-        let total = (hasGoat?10:0)+(hasCarl?100:0)+(hasSaleh?1000:0)+(hasJohannes?10000:0)+((hasKasper && !kasperRemoved)?500000:0);
-        if (multiPointsActive && Date.now()<multiPointsEnd) total*=3; if (boostActive && Date.now()<boostEnd) total*=1.5;
-        if (adminMode) total *= 1000;
-        document.getElementById('totalPtsPerSec').innerText = Math.floor(total);
-        
-        updateCharacterVisuals();
-        
-        let now = Date.now();
-        document.getElementById('doubleActiveBadge').style.display = (doubleClickActive && now < doubleClickEnd) ? 'inline-block' : 'none';
-        document.getElementById('autoActiveBadge').style.display = (autoClickActive && now < autoClickEnd) ? 'inline-block' : 'none';
-        document.getElementById('multiActiveBadge').style.display = (multiPointsActive && now < multiPointsEnd) ? 'inline-block' : 'none';
-        document.getElementById('boostActiveBadge').style.display = (boostActive && now < boostEnd) ? 'inline-block' : 'none';
-        document.getElementById('freezeActiveBadge').style.display = (comboFreezeActive && now < comboFreezeEnd) ? 'inline-block' : 'none';
-        document.getElementById('rainActiveBadge').style.display = (moneyRainActive && now < moneyRainEnd) ? 'inline-block' : 'none';
-    }
-    
-    function addPoints(amt) { 
-        let f=amt; 
-        if(multiPointsActive && Date.now()<multiPointsEnd) f*=3; 
-        if(boostActive && Date.now()<boostEnd) f*=1.5; 
-        f*=prestigeMultiplier; 
-        if(adminMode) f*=1000; 
-        if (hasKasper && !kasperRemoved) kasperEarnedSinceLastSteal += f;
-        points+=f; 
-        updateUI(); 
-        saveGame(); 
-        checkKasperSteal();
-    }
-    
-    function saveGame() { 
-        localStorage.setItem('williamClickerV23', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
-    }
-    
-    function loadGame() { 
-        let s=localStorage.getItem('williamClickerV23'); 
-        if(s){ let d=JSON.parse(s); points=d.points||0; totalClicks=d.totalClicks||0; clickMultiplier=d.clickMultiplier||1; hasGoat=d.hasGoat||false; hasCarl=d.hasCarl||false; hasSaleh=d.hasSaleh||false; hasJohannes=d.hasJohannes||false; hasMarcus=d.hasMarcus||false; hasAdvisor=d.hasAdvisor||false; hasKasper=d.hasKasper||false; kasperRemoved=d.kasperRemoved||false; kasperEarnedSinceLastSteal=d.kasperEarnedSinceLastSteal||0; prestigeLevel=d.prestigeLevel||0; prestigeMultiplier=d.prestigeMultiplier||1; autoPowerBuyEnabled=d.autoPowerBuyEnabled||false; autoClickBuyEnabled=d.autoClickBuyEnabled||false; marcusBankBalance=d.marcusBankBalance||0; marcusBankReturnTime=d.marcusBankReturnTime||0; bankReturnAmount=d.bankReturnAmount||0; comboCount=d.comboCount||0; lastClickTime=d.lastClickTime||0; if(d.unlockedBossSkins) unlockedBossSkins=d.unlockedBossSkins; if(d.activeSkins) activeSkins=d.activeSkins; if(d.boughtSkins) boughtSkins=d.boughtSkins; }
-        if(hasGoat) startGoatInterval(); if(hasCarl) startCarlInterval(); if(hasSaleh) startSalehInterval(); if(hasJohannes) startJohannesInterval();
-        if(hasKasper && !kasperRemoved) startKasperAnimation();
-        updateUI();
-    }
-    
-    function startGoatInterval() { if(goatInterval) clearInterval(goatInterval); goatInterval=setInterval(()=>{ if(hasGoat) addPoints(10 * getSkinBonus('aksel')); },1000); }
-    function startCarlInterval() { if(carlInterval) clearInterval(carlInterval); carlInterval=setInterval(()=>{ if(hasCarl) addPoints(100 * getSkinBonus('carl')); },1000); }
-    function startSalehInterval() { if(salehInterval) clearInterval(salehInterval); salehInterval=setInterval(()=>{ if(hasSaleh) addPoints(1000 * getSkinBonus('saleh')); },1000); }
-    function startJohannesInterval() { if(johannesInterval) clearInterval(johannesInterval); johannesInterval=setInterval(()=>{ if(hasJohannes) addPoints(10000 * getSkinBonus('johannes')); },1000); }
-    
-    document.getElementById('williamClicker').addEventListener('click', () => { updateCombo(); let val=clickMultiplier; if(doubleClickActive && Date.now()<doubleClickEnd) val*=2; val*=getComboMultiplier(); val*=getSkinBonus('william'); addPoints(val); totalClicks++; updateUI(); let img=document.querySelector('.william-img'); if(img){ img.style.transform='scale(0.96)'; setTimeout(()=>{if(img) img.style.transform='';},100); } });
-    
-    document.getElementById('buyClickBtn').onclick=()=>{ let cost=30+(clickMultiplier-1)*15; if(infiniteMoney||points>=cost){ if(!infiniteMoney) points-=cost; clickMultiplier++; updateUI(); saveGame(); } };
-    document.getElementById('buyGoatBtn').onclick=()=>{ if(!hasGoat && (infiniteMoney||points>=150)){ if(!infiniteMoney) points-=150; hasGoat=true; startGoatInterval(); updateUI(); saveGame(); showToast('🐐 Aksel købt!'); } };
-    document.getElementById('buyCarlBtn').onclick=()=>{ if(!hasCarl && (infiniteMoney||points>=3000)){ if(!infiniteMoney) points-=3000; hasCarl=true; startCarlInterval(); updateUI(); saveGame(); showToast('🐄 Carl købt!'); } };
-    document.getElementById('buySalehBtn').onclick=()=>{ if(!hasSaleh && (infiniteMoney||points>=30000)){ if(!infiniteMoney) points-=30000; hasSaleh=true; startSalehInterval(); updateUI(); saveGame(); showToast('🍕 Saleh købt!'); } };
-    document.getElementById('buyJohannesBtn').onclick=()=>{ if(!hasJohannes && (infiniteMoney||points>=120000)){ if(!infiniteMoney) points-=120000; hasJohannes=true; startJohannesInterval(); updateUI(); saveGame(); showToast('👨‍🌾 Johannes købt!'); } };
-    document.getElementById('buyMarcusBtn').onclick=()=>{ if(!hasMarcus && (infiniteMoney||points>=150000)){ if(!infiniteMoney) points-=150000; hasMarcus=true; updateUI(); saveGame(); showToast('🏦 Marcus Bankier købt!'); } };
-    document.getElementById('buyAdvisorBtn').onclick=()=>{ if(!hasAdvisor && (infiniteMoney||points>=200000)){ if(!infiniteMoney) points-=200000; hasAdvisor=true; updateUI(); saveGame(); showToast('🤐 Anonym Advisor købt!'); } };
-    document.getElementById('buyKasperBtn').onclick=()=>{ if(!hasKasper && !kasperRemoved && (infiniteMoney||points>=2500000)){ if(!infiniteMoney) points-=2500000; hasKasper=true; kasperEarnedSinceLastSteal=0; startKasperAnimation(); updateUI(); saveGame(); showToast('🏎️ Corvette Kasper købt! Pas på!'); } };
-    
-    // POWER-UPS
-    function activatePowerup(cost, cb) { if(infiniteMoney || points >= cost) { if(!infiniteMoney) points -= cost; cb(); updateUI(); saveGame(); return true; } else { showToast(`💰 Du mangler ${(cost - points).toLocaleString()} point!`); return false; } }
-    
-    document.getElementById('powerupDoubleBtn').onclick = () => { if (!doubleClickActive || Date.now() >= doubleClickEnd) { activatePowerup(3000, () => { doubleClickActive = true; doubleClickEnd = Date.now() + 30000; showToast('💪 2x Klik aktiveret i 30 sek!'); setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000); updateUI(); }); } else { showToast('💪 2x Klik er allerede aktivt!'); } };
-    document.getElementById('powerupAutoBtn').onclick = () => { if (!autoClickActive || Date.now() >= autoClickEnd) { activatePowerup(12000, () => { autoClickActive = true; autoClickEnd = Date.now() + 60000; showToast('🤖 Auto-klikker aktiveret i 60 sek!'); if (autoClickInterval) clearInterval(autoClickInterval); autoClickInterval = setInterval(() => { if (autoClickActive && Date.now() < autoClickEnd) { let cv = clickMultiplier; if (doubleClickActive && Date.now() < doubleClickEnd) cv *= 2; cv *= getComboMultiplier(); cv *= getSkinBonus('william'); addPoints(cv); totalClicks++; updateUI(); } else { clearInterval(autoClickInterval); autoClickActive = false; updateUI(); } }, 100); setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000); updateUI(); }); } else { showToast('🤖 Auto-klikker er allerede aktiv!'); } };
-    document.getElementById('powerupMultiBtn').onclick = () => { if (!multiPointsActive || Date.now() >= multiPointsEnd) { activatePowerup(30000, () => { multiPointsActive = true; multiPointsEnd = Date.now() + 45000; showToast('✨ 3x Point aktiveret i 45 sek!'); setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000); updateUI(); }); } else { showToast('✨ 3x Point er allerede aktiv!'); } };
-    document.getElementById('powerupBoostBtn').onclick = () => { if (!boostActive || Date.now() >= boostEnd) { activatePowerup(25000, () => { boostActive = true; boostEnd = Date.now() + 30000; showToast('🚀 Boost aktiveret! +50% indkomst i 30 sek!'); setTimeout(() => { boostActive = false; updateUI(); }, 30000); updateUI(); }); } else { showToast('🚀 Boost er allerede aktiv!'); } };
-    document.getElementById('powerupComboBtn').onclick = () => { if (!comboFreezeActive || Date.now() >= comboFreezeEnd) { activatePowerup(20000, () => { comboFreezeActive = true; comboFreezeEnd = Date.now() + 60000; showToast('🔥 Combo Freeze aktiveret i 60 sek!'); setTimeout(() => { comboFreezeActive = false; updateUI(); }, 60000); updateUI(); }); } else { showToast('🔥 Combo Freeze er allerede aktiv!'); } };
-    document.getElementById('powerupRainBtn').onclick = () => { if (!moneyRainActive || Date.now() >= moneyRainEnd) { activatePowerup(28000, () => { moneyRainActive = true; moneyRainEnd = Date.now() + 30000; maxGoldenWilliams = 4; showToast('💰 Money Rain aktiveret! Flere Guld William!'); let rainInterval = setInterval(() => { if (moneyRainActive && Date.now() < moneyRainEnd) spawnGoldenWilliam(); else clearInterval(rainInterval); }, 4000); setTimeout(() => { moneyRainActive = false; maxGoldenWilliams = 2; updateUI(); }, 30000); updateUI(); }); } else { showToast('💰 Money Rain er allerede aktiv!'); } };
-    
-    function spawnGoldenWilliam() { if(activeGoldenWilliams>=maxGoldenWilliams) return; activeGoldenWilliams++; let g=document.createElement('div'); g.className='golden-william'; g.style.left=(10+Math.random()*70)+'%'; g.style.top=(10+Math.random()*70)+'%'; g.innerHTML=`<img class="golden-william-img" src="${WILLIAM_DEFAULT_URL}">`; let t=15,ti=setInterval(()=>{ t--; if(t<=0){ clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); } },1000); g.onclick=()=>{ let bonus = Math.max(1000, Math.floor(points * 0.05)); if(multiPointsActive) bonus*=3; if(hasAdvisor) bonus*=2; points+=bonus; updateUI(); saveGame(); showToast('🥇 GULD WILLIAM! +'+bonus.toLocaleString()+' point!'); clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); }; document.body.appendChild(g); }
-    function scheduleGolden(){ if(goldenTimeout) clearTimeout(goldenTimeout); goldenTimeout=setTimeout(spawnGoldenWilliam,20000+Math.random()*25000); }
-    
-    // AUTO-BUY
-    document.getElementById('autoClickToggle').addEventListener('change', (e) => { autoClickBuyEnabled = e.target.checked; saveGame(); });
-    setInterval(() => { if (autoClickBuyEnabled && hasAdvisor) { let cost = 30 + (clickMultiplier - 1) * 15; while ((infiniteMoney || points >= cost) && clickMultiplier < 100) { if (!infiniteMoney) points -= cost; clickMultiplier++; cost = 30 + (clickMultiplier - 1) * 15; } updateUI(); } }, 500);
-    
-    document.getElementById('autoPowerToggle').addEventListener('change', (e) => { autoPowerBuyEnabled = e.target.checked; saveGame(); });
-    setInterval(() => { if (autoPowerBuyEnabled && hasAdvisor) { let now = Date.now(); if ((!doubleClickActive || now >= doubleClickEnd) && (infiniteMoney || points >= 3000)) { if (!infiniteMoney) points -= 3000; doubleClickActive = true; doubleClickEnd = now + 30000; setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000); updateUI(); } if ((!autoClickActive || now >= autoClickEnd) && (infiniteMoney || points >= 12000)) { if (!infiniteMoney) points -= 12000; autoClickActive = true; autoClickEnd = now + 60000; if (autoClickInterval) clearInterval(autoClickInterval); autoClickInterval = setInterval(() => { if (autoClickActive && Date.now() < autoClickEnd) { let cv = clickMultiplier; if (doubleClickActive && Date.now() < doubleClickEnd) cv *= 2; cv *= getComboMultiplier(); cv *= getSkinBonus('william'); addPoints(cv); totalClicks++; updateUI(); } else { clearInterval(autoClickInterval); autoClickActive = false; updateUI(); } }, 100); setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000); updateUI(); } if ((!multiPointsActive || now >= multiPointsEnd) && (infiniteMoney || points >= 30000)) { if (!infiniteMoney) points -= 30000; multiPointsActive = true; multiPointsEnd = now + 45000; setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000); updateUI(); } if ((!boostActive || now >= boostEnd) && (infiniteMoney || points >= 25000)) { if (!infiniteMoney) points -= 25000; boostActive = true; boostEnd = now + 30000; setTimeout(() => { boostActive = false; updateUI(); }, 30000); updateUI(); } if ((!comboFreezeActive || now >= comboFreezeEnd) && (infiniteMoney || points >= 20000)) { if (!infiniteMoney) points -= 20000; comboFreezeActive = true; comboFreezeEnd = now + 60000; setTimeout(() => { comboFreezeActive = false; updateUI(); }, 60000); updateUI(); } if ((!moneyRainActive || now >= moneyRainEnd) && (infiniteMoney || points >= 28000)) { if (!infiniteMoney) points -= 28000; moneyRainActive = true; moneyRainEnd = now + 30000; maxGoldenWilliams = 4; let rainInterval = setInterval(() => { if (moneyRainActive && Date.now() < moneyRainEnd) spawnGoldenWilliam(); else clearInterval(rainInterval); }, 4000); setTimeout(() => { moneyRainActive = false; maxGoldenWilliams = 2; updateUI(); }, 30000); updateUI(); } } }, 3000);
-    
-    // BOSS
-    function startBossFight(){ if(bossActive) return; bossActive=true; bossHealth=bossMaxHealth; bossTimer=180; document.getElementById('bossContainer').classList.add('active'); updateBossUI(); bossTimerInterval=setInterval(()=>{ bossTimer--; document.getElementById('bossTimer').innerText=`⏱️ ${Math.floor(bossTimer/60)}:${(bossTimer%60).toString().padStart(2,'0')}`; if(bossTimer<=0) defeatBoss(false); },1000); bossAttackInterval=setInterval(()=>{ if(bossActive){ let dps=(hasGoat?10:0)+(hasCarl?100:0)+(hasSaleh?1000:0)+(hasJohannes?10000:0)+((hasKasper && !kasperRemoved)?500000:0); if(adminMode) dps*=1000; if(dps>0){ bossHealth-=dps; updateBossUI(); if(bossHealth<=0) defeatBoss(true); } } },1000); showToast('👹 RASMUS PRANGE ER ANKOMMET!'); }
-    function updateBossUI(){ let p=Math.max(0,(bossHealth/bossMaxHealth)*100); document.getElementById('bossHealthFill').style.width=p+'%'; document.getElementById('bossHealthText').innerText=`❤️ ${Math.floor(bossHealth).toLocaleString()} / ${bossMaxHealth.toLocaleString()}`; }
-    
-    function getRandomBossSkin() { let chars = ['william', 'aksel', 'carl', 'saleh', 'johannes', 'kasper']; let randomChar = chars[Math.floor(Math.random() * chars.length)]; let skins = BOSS_SKINS_DATA[randomChar]; let rand = Math.random(); let cumulative = 0; for (let skin of skins) { cumulative += (randomChar === 'kasper' ? 1 : 1/6); if (rand <= cumulative) return { character: randomChar, skin: skin }; } return { character: randomChar, skin: skins[0] }; }
-    
-    function defeatBoss(won){ 
-        bossActive=false; clearInterval(bossTimerInterval); if(bossAttackInterval) clearInterval(bossAttackInterval); document.getElementById('bossContainer').classList.remove('active'); 
-        if(won){ 
-            let old=points; points*=2; showToast(`🏆 DU BESEJREDE RASMUS! +${old.toLocaleString()} point! (Points fordoblet!)`); 
-            let {character, skin} = getRandomBossSkin(); let skinId = `${skin.rarity}_${character}`; 
-            if(!unlockedBossSkins.some(s=>s.character===character && s.skinId===skinId)){ 
-                unlockedBossSkins.push({character:character, skinId:skinId, skinName:skin.name, bonus:skin.bonus}); 
-                localStorage.setItem('unlockedBossSkins',JSON.stringify(unlockedBossSkins)); 
-                activeSkins[character]=skinId; 
-                localStorage.setItem('skins',JSON.stringify(activeSkins)); 
-                showToast(`🎉 INKLUSIVT SKIN: ${skin.name} (+${skin.bonus}x bonus)!`); 
-            } else { points+=50000; showToast(`🎁 Du har allerede ${skin.name}! +50.000 ekstra point!`); } 
-            updateUI(); saveGame(); 
-        } else showToast('💀 Tiden løb ud! Rasmus slap væk...'); 
-        nextBossSpawn=Date.now()+1200000; updateUI(); 
-    }
-    
-    document.getElementById('bossImg').addEventListener('click',()=>{ if(!bossActive) return; let dmg=clickMultiplier; if(doubleClickActive && Date.now()<doubleClickEnd) dmg*=2; dmg*=getComboMultiplier(); dmg*=getSkinBonus('william'); if(adminMode) dmg*=1000; bossHealth-=dmg; updateBossUI(); if(bossHealth<=0) defeatBoss(true); });
-    setInterval(()=>{ if(!bossActive && Date.now()>=nextBossSpawn) startBossFight(); },1000);
-    
-    // PRESTIGE
-    function getPrestigeReq(){ return 500000 * Math.pow(prestigeLevel+1, 2); }
-    document.getElementById('prestigeToggle').onclick=()=>{ let req=getPrestigeReq(); document.getElementById('prestigeInfo').innerHTML=`<p>Level: ${prestigeLevel}</p><p>Bonus: +${prestigeLevel*5}%</p><p>Næste: +${(prestigeLevel+1)*5}%</p><p>Kræver: ${req.toLocaleString()} point</p><p>Dine point: ${Math.floor(points).toLocaleString()}</p>`; document.getElementById('prestigeConfirm').disabled=points<req; document.getElementById('prestigeModal').classList.add('active'); };
-    document.querySelector('.prestige-cancel').onclick=()=>document.getElementById('prestigeModal').classList.remove('active');
-    document.getElementById('prestigeConfirm').onclick=()=>{ if(points<getPrestigeReq()) return; prestigeLevel++; prestigeMultiplier=1+(prestigeLevel*0.05); points=0; totalClicks=0; clickMultiplier=1; hasGoat=hasCarl=hasSaleh=hasJohannes=hasMarcus=hasAdvisor=hasKasper=false; kasperRemoved=false; kasperEarnedSinceLastSteal=0; if(goatInterval) clearInterval(goatInterval); if(carlInterval) clearInterval(carlInterval); if(salehInterval) clearInterval(salehInterval); if(johannesInterval) clearInterval(johannesInterval); updateUI(); saveGame(); document.getElementById('prestigeModal').classList.remove('active'); showToast(`👑 PRESTIGE ${prestigeLevel}! +${prestigeLevel*5}% bonus!`); };
-    
-    // CHEAT KODER
-    let cheatBuffer = '';
-    document.addEventListener('keydown', (e) => { cheatBuffer += e.key; cheatBuffer = cheatBuffer.slice(-20); if (cheatBuffer.includes('cheats123')) { infiniteMoney = true; showToast('🔓 CHEAT AKTIVERET! UENDELIGE PENGE ∞'); updateUI(); cheatBuffer = ''; } if (cheatBuffer.includes('67admin')) { adminMode = true; document.getElementById('adminMenuBtn').style.display = 'block'; showToast('👑 ADMIN MODE AKTIVERET! 1000x BONUS!'); updateUI(); cheatBuffer = ''; } });
-    document.getElementById('adminMenuBtn').onclick = () => { adminMode = !adminMode; showToast(adminMode ? '✨ 1000x MODE AKTIVERET! ✨' : '❌ 1000x MODE DEAKTIVERET! ❌'); updateUI(); };
-    
-    // SKINS MENU
-    function renderSkins(){
-        let list=document.getElementById('skinsList'); if(!list) return;
-        let html = '';
-        html += '<h3 style="color:#ffd700;">William Skins</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:20px;">';
-        [...NORMAL_SKINS.william].sort((a,b)=>a.cost-b.cost).forEach(s=>{ let owned=boughtSkins.includes(s.id+'_william')||s.id==='default'; let active=activeSkins.william===s.id; let imgUrl = s.id==='bird'?WILLIAM_BIRD_URL:s.id==='devil'?WILLIAM_DEVIL_URL:s.id==='ghost'?WILLIAM_GHOST_URL:WILLIAM_DEFAULT_URL; html+=`<div class="skin-card" data-char="william" data-id="${s.id}" data-url="${imgUrl}" style="background:rgba(255,107,157,0.1); border:2px solid ${active?'#ffd700':(owned?'#00ff00':'#ff6b9d')}; border-radius:12px; padding:10px; text-align:center; cursor:pointer;"><div style="font-size:1.8rem;">${s.hat}</div><div style="color:#ffcf7a; font-size:0.7rem;">${s.name}</div><div style="color:#00ff88; font-size:0.7rem;">${s.bonus}x</div><div style="color:#ffd700; font-size:0.7rem;">${s.cost>0?s.cost.toLocaleString():'GRATIS'}</div><div style="color:${active?'#00ff00':(owned?'#ffaa00':'#ff6b9d')}; font-size:0.65rem;">${active?'✓ AKTIV':(owned?'EJET':'KØB')}</div></div>`; });
-        html+='</div><h3 style="color:#ff00ff;">⭐ INKLUSIVE BOSS SKINS (kun fra Rasmus) ⭐</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;">';
-        let chars = ['william', 'aksel', 'carl', 'saleh', 'johannes', 'kasper'];
-        chars.forEach(char=>{
-            let skins = BOSS_SKINS_DATA[char];
-            skins.forEach(skin=>{
-                let unlocked = unlockedBossSkins.some(s=>s.character===char && s.skinId===`${skin.rarity}_${char}`);
-                let active = activeSkins[char] === `${skin.rarity}_${char}`;
-                html+=`<div class="boss-skin-card" data-char="${char}" data-id="${skin.rarity}_${char}" style="background:rgba(255,0,255,0.15); border:2px solid ${active?'#ffd700':(unlocked?'#00ff00':'#ff00ff')}; border-radius:12px; padding:10px; text-align:center; ${!unlocked ? 'filter: grayscale(0.5);' : 'cursor:pointer;'}"><div style="font-size:1.8rem;">👑</div><div style="color:#ffcf7a; font-size:0.7rem;">${skin.name}</div><div style="color:#00ff88; font-size:0.7rem;">${skin.bonus}x bonus</div><div style="color:${active?'#00ff00':(unlocked?'#ffaa00':'#ff8888')}; font-size:0.65rem;">${active?'✓ AKTIV':(unlocked?'EJET':'🔒 DRÆB RASMUS')}</div></div>`;
-            });
-        });
-        html+='</div>';
-        list.innerHTML = html;
-        document.querySelectorAll('.skin-card').forEach(card=>{
-            card.onclick=()=>{
-                let char=card.dataset.char, id=card.dataset.id, url=card.dataset.url;
-                let skin = NORMAL_SKINS[char].find(s=>s.id===id);
-                if(skin){
-                    let key=id+'_'+char;
-                    if(boughtSkins.includes(key)||id==='default'){
-                        activeSkins[char]=id;
-                        if(char==='william' && url) document.getElementById('williamImg').src=url;
-                        localStorage.setItem('skins',JSON.stringify(activeSkins));
-                        showToast(`✨ ${skin.name} aktiveret!`);
-                        renderSkins();
-                        updateUI();
-                    } else if(infiniteMoney||points>=skin.cost){
-                        if(!infiniteMoney) points-=skin.cost;
-                        boughtSkins.push(key);
-                        localStorage.setItem('boughtSkins',JSON.stringify(boughtSkins));
-                        activeSkins[char]=id;
-                        if(char==='william' && url) document.getElementById('williamImg').src=url;
-                        localStorage.setItem('skins',JSON.stringify(activeSkins));
-                        showToast(`🎨 ${skin.name} købt!`);
-                        renderSkins();
-                        updateUI();
-                    } else showToast(`💰 Du mangler ${(skin.cost-points).toLocaleString()} point!`);
-                }
-            };
-        });
-        document.querySelectorAll('.boss-skin-card').forEach(card=>{
-            if(!card.innerHTML.includes('🔒 DRÆB RASMUS')){
-                card.onclick=()=>{
-                    let char=card.dataset.char, id=card.dataset.id;
-                    let skin=unlockedBossSkins.find(s=>s.character===char && s.skinId===id);
-                    if(skin){
-                        activeSkins[char]=id;
-                        localStorage.setItem('skins',JSON.stringify(activeSkins));
-                        showToast(`✨ ${skin.skinName} aktiveret! +${skin.bonus}x bonus!`);
-                        renderSkins();
-                        updateUI();
-                    }
-                };
-            }
-        });
-    }
-    
-    // TAB SYSTEM
-    document.querySelectorAll('.tab-btn').forEach(btn=>{
-        btn.onclick=()=>{
-            document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-            btn.classList.add('active');
-            let tabId = btn.dataset.tab === 'upgrades' ? 'upgradesTab' : 'powerupsTab';
-            document.getElementById(tabId).classList.add('active');
-        };
-    });
-    
-    document.getElementById('resetBtn').onclick=()=>{ if(confirm('Nulstil ALT?')){ localStorage.clear(); location.reload(); } };
-    
-    let burger=document.getElementById('burgerMenuBtn'), side=document.getElementById('sideMenu'), overlay=document.getElementById('sideMenuOverlay');
-    burger.onclick=()=>{ side.classList.add('active'); overlay.classList.add('active'); };
-    overlay.onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); };
-    
-    document.getElementById('menuLeaderboard').onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); document.getElementById('leaderboardModal').classList.add('active'); loadLeaderboard(); };
-    document.getElementById('menuAchievements').onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); document.getElementById('achievementsModal').classList.add('active'); renderAchievements(); };
-    document.getElementById('menuChallenges').onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); document.getElementById('challengesModal').classList.add('active'); renderChallenges(); };
-    document.getElementById('menuPrestigeUpgrades').onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); document.getElementById('prestigeUpgradesModal').classList.add('active'); renderPrestigeUpgrades(); };
-    document.getElementById('menuSkins').onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); document.getElementById('skinsModal').classList.add('active'); renderSkins(); };
-    document.getElementById('menuBank').onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); if(hasMarcus) document.getElementById('bankModal').classList.add('active'); else showToast('🏦 Køb Marcus Bankier først!'); };
-    
-    document.querySelectorAll('.close-modal').forEach(b=>{ b.onclick=()=>b.closest('.modal').classList.remove('active'); });
-    
-    function renderAchievements() { document.getElementById('achievementsList').innerHTML = '<div class="achievement-card">🏆 Kommende achievements</div>'; }
-    function renderChallenges() { document.getElementById('challengesList').innerHTML = '<div class="challenge-card">🎯 Kommende challenges</div>'; }
-    function renderPrestigeUpgrades() { document.getElementById('upgradesList').innerHTML = '<div class="achievement-card">✨ Kommende prestige upgrades</div>'; }
-    
-    function updateBankDisplay(){
-        document.getElementById('bankBalance').innerText = marcusBankBalance.toLocaleString();
-        if(marcusBankReturnTime && Date.now()<marcusBankReturnTime){ let r=Math.ceil((marcusBankReturnTime-Date.now())/1000); document.getElementById('bankTimerDisplay').innerHTML=`⏱️ Returnerer om: ${Math.floor(r/60)}:${(r%60).toString().padStart(2,'0')}`; document.getElementById('bankWithdrawBtn').style.display='none'; }
-        else if(marcusBankReturnTime && Date.now()>=marcusBankReturnTime){ document.getElementById('bankTimerDisplay').innerHTML=''; document.getElementById('bankWithdrawBtn').style.display='block'; }
-        else { document.getElementById('bankTimerDisplay').innerHTML=''; document.getElementById('bankWithdrawBtn').style.display='none'; }
-    }
-    document.querySelectorAll('.bank-option-btn').forEach(btn=>{ btn.onclick=()=>{ if(!hasMarcus){ showToast('Køb Marcus Bankier først!'); return; } if(marcusBankReturnTime && Date.now()<marcusBankReturnTime){ showToast('Du har allerede penge i banken!'); return; } let percent=parseInt(btn.dataset.percent); let amount=Math.floor(points*(percent/100)); if(amount<100){ showToast('Ikke nok point!'); return; } points-=amount; marcusBankBalance=amount; let minutes, returnPercent; if(percent===10){ minutes=1; returnPercent=15; } else if(percent===25){ minutes=3; returnPercent=40; } else if(percent===50){ minutes=5; returnPercent=75; } else if(percent===75){ minutes=7; returnPercent=125; } else { minutes=10; returnPercent=200; } bankReturnAmount=Math.floor(amount*(returnPercent/100)); marcusBankReturnTime=Date.now()+(minutes*60*1000); updateUI(); saveGame(); updateBankDisplay(); showToast(`💰 ${amount.toLocaleString()} sat i banken! Får ${bankReturnAmount.toLocaleString()} om ${minutes} min!`); }; });
-    document.getElementById('bankWithdrawBtn').onclick=()=>{ if(marcusBankReturnTime && Date.now()>=marcusBankReturnTime){ points+=bankReturnAmount; marcusBankBalance=0; marcusBankReturnTime=0; bankReturnAmount=0; updateUI(); saveGame(); updateBankDisplay(); showToast(`✅ Hævede ${bankReturnAmount.toLocaleString()}!`); } };
-    
-    function loadLeaderboard(){ db.ref('scores/money').orderByChild('score').limitToLast(10).once('value',(snapshot)=>{ let scores=[]; snapshot.forEach(c=>scores.push(c.val())); scores.sort((a,b)=>b.score-a.score); let html=scores.map((e,i)=>`<div class="leaderboard-entry"><span>${i+1}. ${e.name}</span><span>${e.score.toLocaleString()}</span></div>`).join(''); document.getElementById('leaderboardList').innerHTML=html||'<p>Ingen scores</p>'; }); }
-    document.getElementById('saveScoreBtn').onclick=()=>{ let name=document.getElementById('playerName').value.trim(); if(name) db.ref('scores/money').push({name,score:Math.floor(points)}); loadLeaderboard(); showToast('✅ Score gemt!'); };
-    loadLeaderboard();
-    
-    loadGame();
-    scheduleGolden();
-    renderSkins();
-</script>
-</body>
-</html>
+                setTimeout
