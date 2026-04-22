@@ -28,7 +28,7 @@
         
         /* CORVETTE KASPER - med billede */
         .corvette-car { position: fixed; z-index: 1000; width: 80px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
-        .corvette-car img { width: 100%; border-radius: 50%; border: 2px solid #ffd700; object-fit: cover; background: #2c2e3e; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .corvette-car img { width: 100%; border-radius: 15%; border: 2px solid #ffd700; object-fit: cover; background: #2c2e3e; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .corvette-car .car-label { font-size: 0.6rem; background: #000000aa; padding: 2px 6px; border-radius: 15px; margin-top: 3px; color: #ffd700; }
         
         .william-container { position: relative; display: inline-block; cursor: pointer; z-index: 10; }
@@ -126,7 +126,7 @@
         .auto-section label { color: #ffcf7a; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.8rem; }
         
         .kasper-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #1a0f2e, #2d1b4e); border: 4px solid #ff0000; border-radius: 25px; padding: 20px; z-index: 10000; text-align: center; box-shadow: 0 0 80px rgba(255,0,0,0.5); max-width: 350px; width: 90%; }
-        .kasper-popup img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #ff0000; object-fit: cover; margin-bottom: 10px; }
+        .kasper-popup img { width: 100px; height: 100px; border-radius: 15%; border: 3px solid #ff0000; object-fit: cover; margin-bottom: 10px; }
         .kasper-popup h2 { color: #ff4444; font-size: 1.3rem; margin: 5px 0; }
         .kasper-popup p { color: #ffcf7a; margin: 5px 0; font-size: 0.9rem; }
         .kasper-popup button { padding: 8px 16px; margin: 8px; border-radius: 25px; font-weight: bold; cursor: pointer; border: none; font-size: 0.9rem; }
@@ -317,16 +317,15 @@
         return 1;
     }
     
-    // KASPER POPUP
-    function showKasperPopup() {
+    // KASPER POPUP - Opdateret med ét samlet beløb
+    function showKasperPopup(stolenAmount) {
         let popup = document.createElement('div');
         popup.className = 'kasper-popup';
         popup.innerHTML = `
             <img src="${CORVETTE_URL}">
-            <h2>⚠️ JØDE KASPER ⚠️</h2>
-            <p>Han stjal alle dine penge!</p>
-            <p>Du havde: ${Math.floor(points + kasperEarnedSinceLastSteal).toLocaleString()} points</p>
-            <p style="color:#ff0000;">💰 0 points tilbage 💰</p>
+            <h2>⚠️ CORVETTE KASPER ⚠️</h2>
+            <p>Han stjal lige <span style="color:#ffaa00; font-weight:bold;">${stolenAmount.toLocaleString()}</span> point fra dig!</p>
+            <p>Dine point: <span style="color:#ff5555;">${Math.floor(points).toLocaleString()}</span> → <span style="color:#ffaa00;">0</span></p>
             <div>
                 <button class="forgive-btn" id="kasperForgiveBtn">🙏 LAD GÅ 🙏</button>
                 <button class="shoot-btn" id="kasperShootBtn">🔫 SKYD HAM! 🔫</button>
@@ -346,6 +345,7 @@
                 popup.remove(); 
                 kasperRemoved = true; 
                 hasKasper = false; 
+                if (kasperAnimationInterval) clearInterval(kasperAnimationInterval);
                 showToast('🔫 Du skød Kasper! Han er væk for altid! 💀'); 
                 updateUI(); 
                 saveGame(); 
@@ -353,7 +353,7 @@
         };
     }
     
-    // KASPER ANIMATION
+    // KASPER ANIMATION - Kører på en Corvette med billede
     let kasperAnimationInterval = null;
     function startKasperAnimation() {
         if (kasperAnimationInterval) clearInterval(kasperAnimationInterval);
@@ -364,7 +364,7 @@
             car.className = 'corvette-car';
             let randomY = 5 + Math.random() * 85;
             car.style.bottom = randomY + '%';
-            car.innerHTML = `<img src="${CORVETTE_URL}"><div class="car-label">🏎️ Kasper</div>`;
+            car.innerHTML = `<img src="${CORVETTE_URL}"><div class="car-label">🏎️ Corvette Kasper</div>`;
             if (direction === 'rightToLeft') {
                 car.style.right = '-120px';
                 car.style.transition = 'right 3s linear';
@@ -385,9 +385,12 @@
     
     function checkKasperSteal() {
         if (!hasKasper || kasperRemoved) return;
-        if (kasperEarnedSinceLastSteal >= 100000) {
+        // Når Kasper stjæler, tager han alt hvad du har tjent siden sidste gang (eller hele saldoen)
+        // Så det er ét samlet beløb
+        let stolenAmount = Math.floor(kasperEarnedSinceLastSteal);
+        if (stolenAmount >= 100000) {
             kasperEarnedSinceLastSteal = 0;
-            showKasperPopup();
+            showKasperPopup(stolenAmount);
             points = 0;
             updateUI();
             saveGame();
@@ -519,7 +522,7 @@
     document.getElementById('autoClickToggle').addEventListener('change', (e) => { autoClickBuyEnabled = e.target.checked; saveGame(); });
     setInterval(() => { if (autoClickBuyEnabled && hasAdvisor) { let cost = 30 + (clickMultiplier - 1) * 15; while ((infiniteMoney || points >= cost) && clickMultiplier < 100) { if (!infiniteMoney) points -= cost; clickMultiplier++; cost = 30 + (clickMultiplier - 1) * 15; } updateUI(); } }, 500);
     
-    // AUTO POWER-UPS - ALLE 6!
+    // AUTO POWER-UPS
     document.getElementById('autoPowerToggle').addEventListener('change', (e) => { autoPowerBuyEnabled = e.target.checked; saveGame(); });
     setInterval(() => { 
         if (autoPowerBuyEnabled && hasAdvisor) { 
