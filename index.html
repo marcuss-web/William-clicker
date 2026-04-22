@@ -26,6 +26,7 @@
         @keyframes flameFlicker { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } }
         .mega-flame-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, rgba(255,100,0,0.25) 0%, rgba(255,0,0,0) 70%); }
         
+        /* CORVETTE KASPER - med billede */
         .corvette-car { position: fixed; z-index: 1000; width: 80px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
         .corvette-car img { width: 100%; border-radius: 50%; border: 2px solid #ffd700; object-fit: cover; background: #2c2e3e; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
         .corvette-car .car-label { font-size: 0.6rem; background: #000000aa; padding: 2px 6px; border-radius: 15px; margin-top: 3px; color: #ffd700; }
@@ -214,11 +215,12 @@
 <div class="boss-container" id="bossContainer"><div class="boss-name">👹 RASMUS PRANGE</div><img class="boss-img" id="bossImg"><div class="boss-health-bar"><div class="boss-health-fill" id="bossHealthFill"></div></div><div id="bossHealthText">❤️ 100.000 / 100.000</div><div class="boss-timer" id="bossTimer">⏱️ 3:00</div></div>
 
 <script>
-    // BILLEDER
+    // BILLEDER - ALLE KORREKTE URL'er
     const WILLIAM_DEFAULT_URL = "https://i.imgur.com/fVQ99Zm.png";
     const WILLIAM_BIRD_URL = "https://i.imgur.com/6BNwHp3.png";
     const WILLIAM_DEVIL_URL = "https://i.imgur.com/9rnywi6.jpg";
     const WILLIAM_GHOST_URL = "https://i.imgur.com/ZQsFg2Q.jpg";
+    // KASPER BILLEDE - brug et working billede
     const CORVETTE_URL = "https://i.imgur.com/xiUYew.jpg";
     const AKSEL_IMG_URL = "https://i.imgur.com/OmHtfXO.png";
     const CARL_IMG_URL = "https://i.imgur.com/KOC0f86.png";
@@ -315,7 +317,7 @@
         return 1;
     }
     
-    // KASPER POPUP - MED VIRKENDE KNAPPER
+    // KASPER POPUP
     function showKasperPopup() {
         let popup = document.createElement('div');
         popup.className = 'kasper-popup';
@@ -473,11 +475,11 @@
     }
     
     function saveGame() { 
-        if(!infiniteMoney) localStorage.setItem('williamClickerV20', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
+        if(!infiniteMoney) localStorage.setItem('williamClickerV21', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
     }
     
     function loadGame() { 
-        let s=localStorage.getItem('williamClickerV20'); 
+        let s=localStorage.getItem('williamClickerV21'); 
         if(s){ let d=JSON.parse(s); points=d.points||0; totalClicks=d.totalClicks||0; clickMultiplier=d.clickMultiplier||1; hasGoat=d.hasGoat||false; hasCarl=d.hasCarl||false; hasSaleh=d.hasSaleh||false; hasJohannes=d.hasJohannes||false; hasMarcus=d.hasMarcus||false; hasAdvisor=d.hasAdvisor||false; hasKasper=d.hasKasper||false; kasperRemoved=d.kasperRemoved||false; kasperEarnedSinceLastSteal=d.kasperEarnedSinceLastSteal||0; prestigeLevel=d.prestigeLevel||0; prestigeMultiplier=d.prestigeMultiplier||1; autoPowerBuyEnabled=d.autoPowerBuyEnabled||false; autoClickBuyEnabled=d.autoClickBuyEnabled||false; marcusBankBalance=d.marcusBankBalance||0; marcusBankReturnTime=d.marcusBankReturnTime||0; bankReturnAmount=d.bankReturnAmount||0; comboCount=d.comboCount||0; lastClickTime=d.lastClickTime||0; if(d.unlockedBossSkins) unlockedBossSkins=d.unlockedBossSkins; if(d.activeSkins) activeSkins=d.activeSkins; if(d.boughtSkins) boughtSkins=d.boughtSkins; }
         if(hasGoat) startGoatInterval(); if(hasCarl) startCarlInterval(); if(hasSaleh) startSalehInterval(); if(hasJohannes) startJohannesInterval();
         if(hasKasper && !kasperRemoved) startKasperAnimation();
@@ -513,7 +515,7 @@
     function spawnGoldenWilliam() { if(activeGoldenWilliams>=maxGoldenWilliams) return; activeGoldenWilliams++; let g=document.createElement('div'); g.className='golden-william'; g.style.left=(10+Math.random()*70)+'%'; g.style.top=(10+Math.random()*70)+'%'; g.innerHTML=`<img class="golden-william-img" src="${WILLIAM_DEFAULT_URL}">`; let t=15,ti=setInterval(()=>{ t--; if(t<=0){ clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); } },1000); g.onclick=()=>{ let bonus = Math.max(1000, Math.floor(points * 0.05)); if(multiPointsActive) bonus*=3; if(hasAdvisor) bonus*=2; points+=bonus; updateUI(); saveGame(); showToast('🥇 GULD WILLIAM! +'+bonus.toLocaleString()+' point!'); clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); }; document.body.appendChild(g); }
     function scheduleGolden(){ if(goldenTimeout) clearTimeout(goldenTimeout); goldenTimeout=setTimeout(spawnGoldenWilliam,20000+Math.random()*25000); }
     
-    // AUTO-BUY CLICKS - FIXED!
+    // AUTO-BUY CLICKS
     document.getElementById('autoClickToggle').addEventListener('change', (e) => { autoClickBuyEnabled = e.target.checked; saveGame(); });
     setInterval(() => { if (autoClickBuyEnabled && hasAdvisor) { let cost = 30 + (clickMultiplier - 1) * 15; while ((infiniteMoney || points >= cost) && clickMultiplier < 100) { if (!infiniteMoney) points -= cost; clickMultiplier++; cost = 30 + (clickMultiplier - 1) * 15; } updateUI(); } }, 500);
     
