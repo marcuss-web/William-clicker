@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>William Clicker ⚡ Skins · Boss Belønning</title>
+    <title>William Clicker ⚡ Skins med Hatte · Mega Flamme</title>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -19,43 +19,205 @@
         .infinity-symbol { font-size: 2rem; color: #ffd700; margin-left: 10px; display: inline-block; animation: pulse 1s infinite; }
         @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.1); } }
         .per-second-stats { background: #00000066; border-radius: 40px; padding: 12px; margin: 15px 0; font-size: 0.9rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; color: #e8d5a8; }
-        .central-area { position: relative; display: flex; justify-content: center; align-items: center; min-height: 400px; margin: 20px 0; }
+        .central-area { position: relative; display: flex; justify-content: center; align-items: center; min-height: 450px; margin: 20px 0; }
         
-        /* Ildring */
-        .fire-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 340px; height: 340px; border-radius: 50%; pointer-events: none; z-index: 0; }
-        .fire-particle { position: absolute; font-size: 1.6rem; pointer-events: none; animation: fireDance 1.2s ease-in-out infinite; filter: drop-shadow(0 0 5px currentColor); }
-        .fire-particle:nth-child(1) { top: 0; left: 50%; transform: translate(-50%, -50%); animation-delay: 0s; }
-        .fire-particle:nth-child(2) { top: 25%; right: 0; transform: translate(50%, -50%); animation-delay: 0.1s; }
-        .fire-particle:nth-child(3) { bottom: 25%; right: 0; transform: translate(50%, 50%); animation-delay: 0.2s; }
-        .fire-particle:nth-child(4) { bottom: 0; left: 50%; transform: translate(-50%, 50%); animation-delay: 0.3s; }
-        .fire-particle:nth-child(5) { bottom: 25%; left: 0; transform: translate(-50%, 50%); animation-delay: 0.4s; }
-        .fire-particle:nth-child(6) { top: 25%; left: 0; transform: translate(-50%, -50%); animation-delay: 0.5s; }
-        .fire-particle:nth-child(7) { top: 8%; left: 18%; transform: translate(-50%, -50%); animation-delay: 0.15s; }
-        .fire-particle:nth-child(8) { top: 8%; right: 18%; transform: translate(50%, -50%); animation-delay: 0.25s; }
-        .fire-particle:nth-child(9) { bottom: 8%; right: 18%; transform: translate(50%, 50%); animation-delay: 0.35s; }
-        .fire-particle:nth-child(10) { bottom: 8%; left: 18%; transform: translate(-50%, 50%); animation-delay: 0.45s; }
-        .fire-particle:nth-child(11) { top: 42%; left: 3%; transform: translate(-50%, -50%); animation-delay: 0.55s; }
-        .fire-particle:nth-child(12) { top: 42%; right: 3%; transform: translate(50%, -50%); animation-delay: 0.65s; }
-        @keyframes fireDance { 0% { transform: translate(var(--tx, 0), var(--ty, 0)) scale(1); opacity: 0.5; } 50% { transform: translate(var(--tx, 0), calc(var(--ty, 0) - 18px)) scale(1.3); opacity: 1; } 100% { transform: translate(var(--tx, 0), var(--ty, 0)) scale(1); opacity: 0.5; } }
+        /* STOR FLAMME BAG WILLIAM */
+        .mega-flame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            transition: all 0.3s ease;
+        }
+        .mega-flame::before {
+            content: "🔥";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18rem;
+            filter: drop-shadow(0 0 30px currentColor);
+            animation: flameFlicker 0.3s infinite alternate;
+        }
+        @keyframes flameFlicker {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; text-shadow: 0 0 20px currentColor; }
+            100% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; text-shadow: 0 0 40px currentColor; }
+        }
+        .mega-flame.bronze { color: #cd7f32; text-shadow: 0 0 30px #cd7f32; }
+        .mega-flame.silver { color: #c0c0c0; text-shadow: 0 0 30px #c0c0c0; }
+        .mega-flame.gold { color: #ffd700; text-shadow: 0 0 40px #ffd700; animation: flameGoldPulse 0.2s infinite alternate; }
+        .mega-flame.platinum { color: #e5e4e2; text-shadow: 0 0 45px #e5e4e2; }
+        .mega-flame.diamond { color: #00ffff; text-shadow: 0 0 50px #00ffff; animation: flameDiamondPulse 0.15s infinite alternate; }
+        .mega-flame.master { color: #ff00ff; text-shadow: 0 0 55px #ff00ff; animation: flameMasterPulse 0.1s infinite alternate; }
+        .mega-flame.legendary { color: #ff4500; text-shadow: 0 0 60px #ff4500; animation: flameLegendaryPulse 0.08s infinite alternate; }
+        .mega-flame.godly { color: #ffd700; text-shadow: 0 0 70px #ffd700; animation: flameGodlyPulse 0.05s infinite alternate, flameColorShift 0.2s infinite; }
+        @keyframes flameGoldPulse { from { text-shadow: 0 0 30px #ffd700; } to { text-shadow: 0 0 60px #ffaa00; } }
+        @keyframes flameDiamondPulse { from { text-shadow: 0 0 40px #00ffff; } to { text-shadow: 0 0 80px #00ccff; } }
+        @keyframes flameMasterPulse { from { text-shadow: 0 0 45px #ff00ff; } to { text-shadow: 0 0 90px #ff69b4; } }
+        @keyframes flameLegendaryPulse { from { text-shadow: 0 0 50px #ff4500; } to { text-shadow: 0 0 100px #ff0000; } }
+        @keyframes flameGodlyPulse { from { text-shadow: 0 0 60px #ffd700; transform: translate(-50%, -50%) scale(1); } to { text-shadow: 0 0 120px #ff00ff; transform: translate(-50%, -50%) scale(1.15); } }
+        @keyframes flameColorShift { 0% { color: #ffd700; } 33% { color: #ff6347; } 66% { color: #ff00ff; } 100% { color: #ffd700; } }
         
-        /* Glød */
-        .william-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px; height: 280px; border-radius: 50%; pointer-events: none; z-index: -1; transition: all 0.3s ease; opacity: 0.7; }
-        .william-glow.bronze { background: radial-gradient(circle, rgba(205,127,50,0.4) 0%, rgba(205,127,50,0) 70%); box-shadow: 0 0 30px rgba(205,127,50,0.5); animation: glowPulse 1s infinite; }
-        .william-glow.silver { background: radial-gradient(circle, rgba(192,192,192,0.4) 0%, rgba(192,192,192,0) 70%); box-shadow: 0 0 30px rgba(192,192,192,0.5); animation: glowPulse 1s infinite; }
-        .william-glow.gold { background: radial-gradient(circle, rgba(255,215,0,0.5) 0%, rgba(255,215,0,0) 70%); box-shadow: 0 0 40px rgba(255,215,0,0.6); animation: glowPulse 0.8s infinite; }
-        .william-glow.platinum { background: radial-gradient(circle, rgba(229,228,226,0.5) 0%, rgba(229,228,226,0) 70%); box-shadow: 0 0 45px rgba(229,228,226,0.6); animation: glowPulse 0.8s infinite; }
-        .william-glow.diamond { background: radial-gradient(circle, rgba(0,255,255,0.5) 0%, rgba(0,255,255,0) 70%); box-shadow: 0 0 50px rgba(0,255,255,0.7); animation: glowPulse 0.6s infinite; }
-        .william-glow.master { background: radial-gradient(circle, rgba(255,0,255,0.5) 0%, rgba(255,0,255,0) 70%); box-shadow: 0 0 60px rgba(255,0,255,0.8); animation: glowPulseMaster 0.5s infinite alternate; }
-        .william-glow.legendary { background: radial-gradient(circle, rgba(255,69,0,0.6) 0%, rgba(255,69,0,0) 70%); box-shadow: 0 0 70px rgba(255,69,0,0.9); animation: glowPulseLegendary 0.3s infinite alternate; }
-        .william-glow.godly { background: radial-gradient(circle, rgba(255,215,0,0.6) 0%, rgba(255,99,71,0.3) 50%, rgba(255,0,255,0) 80%); box-shadow: 0 0 80px rgba(255,215,0,1); animation: glowPulseGodly 0.2s infinite alternate; }
-        @keyframes glowPulse { 0%,100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } 50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); } }
-        @keyframes glowPulseMaster { from { opacity: 0.6; transform: translate(-50%, -50%) scale(1); } to { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } }
-        @keyframes glowPulseLegendary { from { opacity: 0.7; transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 50px rgba(255,69,0,0.7); } to { opacity: 1; transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 0 100px rgba(255,69,0,1); } }
-        @keyframes glowPulseGodly { from { opacity: 0.8; transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 60px gold; } to { opacity: 1; transform: translate(-50%, -50%) scale(1.2); box-shadow: 0 0 120px #ff00ff; } }
+        .mega-flame-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 380px;
+            height: 380px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,100,0,0.3) 0%, rgba(255,0,0,0) 70%);
+            pointer-events: none;
+            z-index: -1;
+            transition: all 0.3s ease;
+        }
+        .mega-flame-glow.bronze { background: radial-gradient(circle, rgba(205,127,50,0.4) 0%, rgba(205,127,50,0) 70%); }
+        .mega-flame-glow.silver { background: radial-gradient(circle, rgba(192,192,192,0.4) 0%, rgba(192,192,192,0) 70%); }
+        .mega-flame-glow.gold { background: radial-gradient(circle, rgba(255,215,0,0.5) 0%, rgba(255,215,0,0) 70%); animation: glowGoldPulse 0.5s infinite alternate; }
+        .mega-flame-glow.platinum { background: radial-gradient(circle, rgba(229,228,226,0.5) 0%, rgba(229,228,226,0) 70%); }
+        .mega-flame-glow.diamond { background: radial-gradient(circle, rgba(0,255,255,0.5) 0%, rgba(0,255,255,0) 70%); animation: glowDiamondPulse 0.4s infinite alternate; }
+        .mega-flame-glow.master { background: radial-gradient(circle, rgba(255,0,255,0.5) 0%, rgba(255,0,255,0) 70%); animation: glowMasterPulse 0.3s infinite alternate; }
+        .mega-flame-glow.legendary { background: radial-gradient(circle, rgba(255,69,0,0.6) 0%, rgba(255,69,0,0) 70%); animation: glowLegendaryPulse 0.2s infinite alternate; }
+        .mega-flame-glow.godly { background: radial-gradient(circle, rgba(255,215,0,0.6) 0%, rgba(255,99,71,0.3) 50%, rgba(255,0,255,0) 80%); animation: glowGodlyPulse 0.15s infinite alternate; }
+        @keyframes glowGoldPulse { from { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } to { opacity: 1; transform: translate(-50%, -50%) scale(1.1); } }
+        @keyframes glowDiamondPulse { from { opacity: 0.5; transform: translate(-50%, -50%) scale(1); } to { opacity: 1; transform: translate(-50%, -50%) scale(1.15); } }
+        @keyframes glowMasterPulse { from { opacity: 0.6; transform: translate(-50%, -50%) scale(1); } to { opacity: 1; transform: translate(-50%, -50%) scale(1.2); } }
+        @keyframes glowLegendaryPulse { from { opacity: 0.7; transform: translate(-50%, -50%) scale(1); } to { opacity: 1; transform: translate(-50%, -50%) scale(1.25); } }
+        @keyframes glowGodlyPulse { from { opacity: 0.8; transform: translate(-50%, -50%) scale(1); } to { opacity: 1; transform: translate(-50%, -50%) scale(1.35); } }
         
-        .william-holder { position: relative; cursor: pointer; display: inline-block; z-index: 10; }
-        .william-holder:active { transform: scale(0.97); }
-        .william-img { width: 210px; height: 210px; object-fit: cover; object-position: center; border-radius: 50%; background: #2c2e3e; transition: all 0.2s ease; position: relative; z-index: 5; }
+        /* William container med hat */
+        .william-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .william-container:active { transform: scale(0.97); }
+        
+        .william-img {
+            width: 210px;
+            height: 210px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 50%;
+            background: #2c2e3e;
+            transition: all 0.2s ease;
+            display: block;
+        }
+        
+        /* Hat element - sidder OVER cirklen (bliver ikke beskåret) */
+        .hat {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            pointer-events: none;
+            z-index: 15;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+            transition: all 0.2s ease;
+        }
+        
+        /* Hat animation når man klikker */
+        .william-container:active .hat {
+            transform: translateX(-50%) translateY(-5px);
+        }
+        
+        /* Aksel container med hat */
+        .aksel-container {
+            position: relative;
+            display: inline-block;
+        }
+        .aksel-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid gold;
+            object-fit: cover;
+        }
+        .aksel-hat {
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.6rem;
+            pointer-events: none;
+            z-index: 15;
+            filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.3));
+        }
+        
+        /* Carl container med hat */
+        .carl-container {
+            position: relative;
+            display: inline-block;
+        }
+        .carl-head-img {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            border: 3px solid #ffc107;
+            object-fit: cover;
+        }
+        .carl-hat {
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            pointer-events: none;
+            z-index: 15;
+            filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.3));
+        }
+        
+        /* Saleh container med hat */
+        .saleh-container {
+            position: relative;
+            display: inline-block;
+        }
+        .saleh-img {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffaa44;
+        }
+        .saleh-hat {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.8rem;
+            pointer-events: none;
+            z-index: 15;
+            filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.3));
+        }
+        
+        /* Johannes container med hat */
+        .johannes-container {
+            position: relative;
+            display: inline-block;
+        }
+        .johannes-img {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: 2px solid #ffd966;
+            object-fit: cover;
+        }
+        .johannes-hat {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.8rem;
+            pointer-events: none;
+            z-index: 15;
+            filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.3));
+        }
         
         /* Combo farver på William's ring */
         .william-img.combo-bronze { box-shadow: 0 15px 25px black, 0 0 0 5px #cd7f32, 0 0 0 9px #8B4513, 0 0 15px #cd7f32; }
@@ -66,26 +228,14 @@
         .william-img.combo-master { box-shadow: 0 15px 25px black, 0 0 0 5px #ff00ff, 0 0 0 9px #8a2be2, 0 0 35px #ff00ff; animation: masterRingPulse 0.5s infinite alternate; }
         .william-img.combo-legendary { box-shadow: 0 15px 25px black, 0 0 0 5px #ff4500, 0 0 0 9px #ff0000, 0 0 40px #ff4500; animation: legendaryRingPulse 0.3s infinite alternate; }
         .william-img.combo-godly { box-shadow: 0 15px 25px black, 0 0 0 5px #ffd700, 0 0 0 9px #ff6347, 0 0 50px #ffd700; animation: godlyRingPulse 0.2s infinite alternate; }
+        
         @keyframes masterRingPulse { from { box-shadow: 0 15px 25px black, 0 0 0 5px #ff00ff, 0 0 0 9px #8a2be2, 0 0 20px #ff00ff; } to { box-shadow: 0 15px 25px black, 0 0 0 5px #ff69b4, 0 0 0 9px #ff00ff, 0 0 50px #ff69b4; } }
         @keyframes legendaryRingPulse { from { box-shadow: 0 15px 25px black, 0 0 0 5px #ff4500, 0 0 0 9px #ff0000, 0 0 30px #ff4500; } to { box-shadow: 0 15px 25px black, 0 0 0 5px #ff0000, 0 0 0 9px #ff4500, 0 0 60px #ff0000; } }
         @keyframes godlyRingPulse { from { box-shadow: 0 15px 25px black, 0 0 0 5px #ffd700, 0 0 0 9px #ff6347, 0 0 40px #ffd700; } to { box-shadow: 0 15px 25px black, 0 0 0 5px #ff00ff, 0 0 0 9px #ffd700, 0 0 80px #ff00ff; } }
         
-        /* Ild farver */
-        .fire-particle.bronze { color: #cd7f32; text-shadow: 0 0 5px #cd7f32; }
-        .fire-particle.silver { color: #c0c0c0; text-shadow: 0 0 5px #c0c0c0; }
-        .fire-particle.gold { color: #ffd700; text-shadow: 0 0 5px #ffd700; }
-        .fire-particle.platinum { color: #e5e4e2; text-shadow: 0 0 5px #e5e4e2; }
-        .fire-particle.diamond { color: #00ffff; text-shadow: 0 0 5px #00ffff; }
-        .fire-particle.master { color: #ff00ff; text-shadow: 0 0 5px #ff00ff; }
-        .fire-particle.legendary { color: #ff4500; text-shadow: 0 0 5px #ff4500; animation: fireColorShift 0.3s infinite alternate; }
-        .fire-particle.godly { color: #ffd700; text-shadow: 0 0 10px #ffd700; animation: fireGodlyShift 0.2s infinite alternate; }
-        @keyframes fireColorShift { from { color: #ff4500; text-shadow: 0 0 5px #ff4500; } to { color: #ff0000; text-shadow: 0 0 15px #ff0000; } }
-        @keyframes fireGodlyShift { from { color: #ffd700; text-shadow: 0 0 5px #ffd700; } to { color: #ff00ff; text-shadow: 0 0 20px #ff00ff; } }
-        
         .saleh-position { position: absolute; right: -50px; top: 50%; transform: translateY(-50%); z-index: 5; }
         .saleh-card { background: #231f1acc; border-radius: 50px; padding: 8px 15px; display: flex; align-items: center; gap: 10px; border: 2px solid #ffaa55; animation: salehFloat 2s ease-in-out infinite; }
         @keyframes salehFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        .saleh-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 3px solid #ffaa44; }
         .pizza-throw { position: absolute; right: 5px; top: -10px; font-size: 2rem; animation: throwPizza 1.5s ease-in-out infinite; pointer-events: none; }
         @keyframes throwPizza { 0% { transform: translate(0, 0) rotate(0deg); opacity: 1; } 100% { transform: translate(-100px, -25px) rotate(360deg); opacity: 0; } }
         
@@ -93,18 +243,15 @@
         .aksel-orbit { position: relative; width: 320px; height: 320px; animation: orbitWilliam 4s linear infinite; }
         @keyframes orbitWilliam { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         .aksel-card { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); background: #231f1acc; border-radius: 50px; padding: 5px 12px; border: 2px solid #ffaa55; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-        .aksel-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid gold; object-fit: cover; }
         
         .carl-on-head { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); z-index: 25; pointer-events: none; animation: hopHop 0.45s infinite ease-in-out; }
         @keyframes hopHop { 0%,100% { transform: translateX(-50%) translateY(0px); } 50% { transform: translateX(-50%) translateY(-14px); } }
-        .carl-head-img { width: 65px; height: 65px; border-radius: 50%; border: 3px solid #ffc107; object-fit: cover; }
         
         .farmer-pig-area { margin-top: 25px; padding: 15px; background: linear-gradient(180deg, #5d8c48, #3d6b2e); border-radius: 50px; border: 2px solid #c9a87b; display: none; }
         .farmer-pig-area.active-field { display: block; }
         .pig-field { background: #8b5e3c; border-radius: 30px; padding: 10px; position: relative; height: 90px; }
         .pig-walk { position: absolute; bottom: 10px; left: 0; animation: walkOnPigField 7s linear infinite; display: flex; flex-direction: column; align-items: center; }
         @keyframes walkOnPigField { 0% { left: -70px; transform: scaleX(1); } 45% { left: calc(100% - 70px); transform: scaleX(1); } 50% { left: calc(100% - 70px); transform: scaleX(-1); } 95% { left: -70px; transform: scaleX(-1); } 100% { left: -70px; transform: scaleX(1); } }
-        .johannes-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #ffd966; object-fit: cover; }
         .pig-emoji { font-size: 2.2rem; margin-top: -8px; }
         
         .burger-menu-btn { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; background: #8B6914; border: 3px solid #ffd700; border-radius: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; cursor: pointer; z-index: 3000; }
@@ -137,7 +284,6 @@
         .easter-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffd966; color: #2c2c2c; padding: 10px 20px; border-radius: 50px; z-index: 9999; animation: fadeOut 2s forwards; }
         @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
         
-        /* Skin unlock popup */
         .skin-unlock-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #2d1b4e, #1a0f2e); border: 3px solid #ffd700; border-radius: 30px; padding: 25px 40px; z-index: 10000; text-align: center; animation: popupBounce 0.5s ease-out, popupFade 3s ease-out forwards; box-shadow: 0 0 50px rgba(255,215,0,0.5); }
         .skin-unlock-popup .skin-icon { font-size: 4rem; display: block; margin-bottom: 10px; animation: iconSpin 0.5s ease-out; }
         .skin-unlock-popup .skin-title { font-size: 1.5rem; color: #ffd700; font-weight: bold; margin-bottom: 5px; }
@@ -172,7 +318,6 @@
         .prestige-confirm { flex: 1; background: #c71585; border: none; color: white; padding: 12px; border-radius: 30px; cursor: pointer; }
         .prestige-cancel { flex: 1; background: #3e2a24; border: none; color: #ffbe89; padding: 12px; border-radius: 30px; cursor: pointer; }
 
-        /* Combo Counter */
         #comboCounter { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 15px 30px; border-radius: 50px; font-weight: bold; font-size: 1.8rem; z-index: 100; box-shadow: 0 0 20px rgba(0,0,0,0.5); pointer-events: none; transition: all 0.2s ease; white-space: nowrap; font-family: monospace; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
         #comboCounter.combo-bronze { background: linear-gradient(135deg, #cd7f32, #8B4513); color: #fff; box-shadow: 0 0 30px #cd7f32; border: 2px solid #cd7f32; }
         #comboCounter.combo-silver { background: linear-gradient(135deg, #c0c0c0, #808080); color: #1a1a1a; box-shadow: 0 0 30px #c0c0c0; border: 2px solid #c0c0c0; }
@@ -216,23 +361,65 @@
         </div>
 
         <div class="central-area">
-            <div class="fire-ring" id="fireRing">
-                <div class="fire-particle">🔥</div><div class="fire-particle">🔥</div><div class="fire-particle">🔥</div>
-                <div class="fire-particle">🔥</div><div class="fire-particle">🔥</div><div class="fire-particle">🔥</div>
-                <div class="fire-particle">🔥</div><div class="fire-particle">🔥</div><div class="fire-particle">🔥</div>
-                <div class="fire-particle">🔥</div><div class="fire-particle">🔥</div><div class="fire-particle">🔥</div>
+            <div class="mega-flame-glow" id="megaFlameGlow"></div>
+            <div class="mega-flame" id="megaFlame">🔥</div>
+            
+            <!-- Aksel (kredser om William) -->
+            <div class="aksel-position" id="akselWrapper" style="display:none;">
+                <div class="aksel-orbit">
+                    <div class="aksel-card">
+                        <div class="aksel-container" id="akselContainer">
+                            <img class="aksel-img" id="akselImg">
+                            <div class="aksel-hat" id="akselHat">🐐</div>
+                        </div>
+                        <span style="color:#ffd700;"> Aksel</span>
+                    </div>
+                </div>
             </div>
-            <div class="william-glow" id="williamGlow"></div>
-            <div class="aksel-position" id="akselWrapper" style="display:none;"><div class="aksel-orbit"><div class="aksel-card"><img class="aksel-img" id="akselImg"><span style="color:#ffd700;">🐐 Aksel</span></div></div></div>
-            <div class="saleh-position" id="salehWrapper" style="display:none;"><div class="saleh-card"><img class="saleh-img" id="salehImg"><span style="color:#ffd700;">🍕 Saleh</span></div><div class="pizza-throw">🍕</div></div>
-            <div class="william-holder" id="williamClicker">
+            
+            <!-- Saleh -->
+            <div class="saleh-position" id="salehWrapper" style="display:none;">
+                <div class="saleh-card">
+                    <div class="saleh-container" id="salehContainer">
+                        <img class="saleh-img" id="salehImg">
+                        <div class="saleh-hat" id="salehHat">🍕</div>
+                    </div>
+                    <span style="color:#ffd700;"> Saleh</span>
+                </div>
+                <div class="pizza-throw">🍕</div>
+            </div>
+            
+            <!-- William med hat container -->
+            <div class="william-container" id="williamClicker">
                 <img class="william-img" id="williamImg">
-                <div id="carlWrapper" style="display:none;"><div class="carl-on-head"><img id="carlHeadImg" class="carl-head-img"></div></div>
+                <div class="hat" id="williamHat">👨</div>
+                
+                <!-- Carl på hovedet -->
+                <div id="carlWrapper" style="display:none;">
+                    <div class="carl-on-head">
+                        <div class="carl-container" id="carlContainer">
+                            <img id="carlHeadImg" class="carl-head-img">
+                            <div class="carl-hat" id="carlHat">🐄</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <!-- Johannes -->
         <div id="johannesArea" class="farmer-pig-area">
-            <div class="pig-field"><div class="pig-walk"><div style="display:flex; flex-direction:column; align-items:center;"><img id="johannesImg" class="johannes-img"><div class="pig-emoji">🐷</div><div style="background:#2c1e0ecc; font-size:0.6rem; padding:2px 8px; border-radius:20px;">👨‍🌾 Johannes</div></div></div></div>
+            <div class="pig-field">
+                <div class="pig-walk">
+                    <div style="display:flex; flex-direction:column; align-items:center;">
+                        <div class="johannes-container" id="johannesContainer">
+                            <img id="johannesImg" class="johannes-img">
+                            <div class="johannes-hat" id="johannesHat">👨‍🌾</div>
+                        </div>
+                        <div class="pig-emoji">🐷</div>
+                        <div style="background:#2c1e0ecc; font-size:0.6rem; padding:2px 8px; border-radius:20px;">👨‍🌾 Johannes</div>
+                    </div>
+                </div>
+            </div>
             <div style="text-align:center; font-size:0.7rem; color:#a5d6a7;">🌾 Rider på gris – giver 10.000/sek 🌾</div>
         </div>
         <footer>👇 Klik på William! 👉 Hold streak for kæmpe bonus! 🔥</footer>
@@ -303,7 +490,7 @@
     document.getElementById('johannesImg').src = JOHANNES_IMG_URL;
     document.getElementById('bossImg').src = RASMUS_IMG_URL;
 
-    // Firebase config
+    // Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyBtWJ7HqkN7VmFe7K6LzX7sL8qK9pZ5nK0",
         projectId: "william-clicker-game",
@@ -358,69 +545,95 @@
     // Intervals
     let goatInterval = null, carlInterval = null, salehInterval = null, johannesInterval = null;
     
-    // Achievements & Skins
-    let unlockedAchievements = JSON.parse(localStorage.getItem('achievements')) || [];
-    let completedChallenges = JSON.parse(localStorage.getItem('challenges')) || {};
-    let boughtUpgrades = JSON.parse(localStorage.getItem('upgrades')) || [];
-    let activeSkins = JSON.parse(localStorage.getItem('skins')) || { william: 'default', aksel: 'default', carl: 'default', saleh: 'default', johannes: 'default' };
-    let boughtSkins = JSON.parse(localStorage.getItem('boughtSkins')) || [];
+    // Skins
     let unlockedBossSkins = JSON.parse(localStorage.getItem('unlockedBossSkins')) || [];
+    let activeSkins = JSON.parse(localStorage.getItem('skins')) || { 
+        william: 'default', aksel: 'default', carl: 'default', saleh: 'default', johannes: 'default' 
+    };
+    let boughtSkins = JSON.parse(localStorage.getItem('boughtSkins')) || [];
 
-    // ========== NORMALE KØBBARE SKINS (ALLE KARAKTERER) ==========
+    // ========== ALLE SKINS MED HATTE/TILBEHØR ==========
     const NORMAL_SKINS = {
         william: [
-            { id: 'default', name: 'Normal William', emoji: '👨', cost: 0, bonus: 1, theme: 'Normal', themeIcon: '👨' },
-            { id: 'devil', name: 'Djævle William', emoji: '😈', cost: 5000000, bonus: 3, theme: 'Djævel', themeIcon: '😈👿', hat: '👿' },
-            { id: 'bird', name: 'Fugle William', emoji: '🐦', cost: 3000000, bonus: 2.5, theme: 'Fugl', themeIcon: '🐦🪶', hat: '🐦' },
-            { id: 'ghost', name: 'Spøgelse William', emoji: '👻', cost: 2500000, bonus: 2, theme: 'Spøgelse', themeIcon: '👻', hat: '👻' },
-            { id: 'robot', name: 'Robot William', emoji: '🤖', cost: 4000000, bonus: 2.8, theme: 'Robot', themeIcon: '🤖⚡', hat: '🤖' }
+            { id: 'default', name: 'Normal William', emoji: '👨', hat: '👨', cost: 0, bonus: 1, theme: 'Normal' },
+            { id: 'devil', name: 'Djævle William', emoji: '😈', hat: '👿', cost: 5000000, bonus: 3, theme: 'Djævel' },
+            { id: 'bird', name: 'Fugle William', emoji: '🐦', hat: '🐦', cost: 3000000, bonus: 2.5, theme: 'Fugl' },
+            { id: 'ghost', name: 'Spøgelse William', emoji: '👻', hat: '👻', cost: 2500000, bonus: 2, theme: 'Spøgelse' },
+            { id: 'robot', name: 'Robot William', emoji: '🤖', hat: '🤖', cost: 4000000, bonus: 2.8, theme: 'Robot' }
         ],
         aksel: [
-            { id: 'default', name: 'Normal Aksel', emoji: '🐐', cost: 0, bonus: 1, theme: 'Normal', themeIcon: '🐐' },
-            { id: 'space', name: 'Rum Aksel', emoji: '🚀', cost: 500000, bonus: 1.5, theme: 'Rum', themeIcon: '🚀👨‍🚀', hat: '🚀' },
-            { id: 'cool', name: 'Cool Aksel', emoji: '😎', cost: 800000, bonus: 2, theme: 'Cool', themeIcon: '😎🕶️', hat: '🕶️' },
-            { id: 'wizard', name: 'Troldmand Aksel', emoji: '🧙', cost: 1200000, bonus: 2.2, theme: 'Troldmand', themeIcon: '🧙✨', hat: '🧙' }
+            { id: 'default', name: 'Normal Aksel', emoji: '🐐', hat: '🐐', cost: 0, bonus: 1, theme: 'Normal' },
+            { id: 'space', name: 'Rum Aksel', emoji: '🚀', hat: '👨‍🚀', cost: 500000, bonus: 1.5, theme: 'Rum' },
+            { id: 'cool', name: 'Cool Aksel', emoji: '😎', hat: '🕶️', cost: 800000, bonus: 2, theme: 'Cool' },
+            { id: 'wizard', name: 'Troldmand Aksel', emoji: '🧙', hat: '🧙', cost: 1200000, bonus: 2.2, theme: 'Troldmand' }
         ],
         carl: [
-            { id: 'default', name: 'Normal Carl', emoji: '🐄', cost: 0, bonus: 1, theme: 'Normal', themeIcon: '🐄' },
-            { id: 'king', name: 'Konge Carl', emoji: '👑', cost: 600000, bonus: 1.8, theme: 'Konge', themeIcon: '👑🐄', hat: '👑' },
-            { id: 'viking', name: 'Viking Carl', emoji: '⚔️', cost: 900000, bonus: 2.1, theme: 'Viking', themeIcon: '⚔️🛡️', hat: '🪖' },
-            { id: 'cowboy', name: 'Cowboy Carl', emoji: '🤠', cost: 1100000, bonus: 2.3, theme: 'Cowboy', themeIcon: '🤠🐴', hat: '🤠' }
+            { id: 'default', name: 'Normal Carl', emoji: '🐄', hat: '🐄', cost: 0, bonus: 1, theme: 'Normal' },
+            { id: 'king', name: 'Konge Carl', emoji: '👑', hat: '👑', cost: 600000, bonus: 1.8, theme: 'Konge' },
+            { id: 'viking', name: 'Viking Carl', emoji: '⚔️', hat: '🪖', cost: 900000, bonus: 2.1, theme: 'Viking' },
+            { id: 'cowboy', name: 'Cowboy Carl', emoji: '🤠', hat: '🤠', cost: 1100000, bonus: 2.3, theme: 'Cowboy' }
         ],
         saleh: [
-            { id: 'default', name: 'Normal Saleh', emoji: '🍕', cost: 0, bonus: 1, theme: 'Normal', themeIcon: '🍕' },
-            { id: 'chef', name: 'Chef Saleh', emoji: '👨‍🍳', cost: 400000, bonus: 1.6, theme: 'Chef', themeIcon: '👨‍🍳🍳', hat: '👨‍🍳' },
-            { id: 'pizza_master', name: 'Pizza Mester', emoji: '🍕👑', cost: 700000, bonus: 2, theme: 'Pizza Mester', themeIcon: '🍕👑', hat: '👑' },
-            { id: 'italian', name: 'Italiener Saleh', emoji: '🇮🇹', cost: 1000000, bonus: 2.4, theme: 'Italiensk', themeIcon: '🇮🇹🍝', hat: '🇮🇹' }
+            { id: 'default', name: 'Normal Saleh', emoji: '🍕', hat: '🍕', cost: 0, bonus: 1, theme: 'Normal' },
+            { id: 'chef', name: 'Chef Saleh', emoji: '👨‍🍳', hat: '👨‍🍳', cost: 400000, bonus: 1.6, theme: 'Chef' },
+            { id: 'pizza_master', name: 'Pizza Mester', emoji: '🍕👑', hat: '👑', cost: 700000, bonus: 2, theme: 'Pizza Mester' },
+            { id: 'italian', name: 'Italiener Saleh', emoji: '🇮🇹', hat: '🇮🇹', cost: 1000000, bonus: 2.4, theme: 'Italiensk' }
         ],
         johannes: [
-            { id: 'default', name: 'Normal Johannes', emoji: '👨‍🌾', cost: 0, bonus: 1, theme: 'Normal', themeIcon: '👨‍🌾' },
-            { id: 'knight', name: 'Ridder Johannes', emoji: '⚔️', cost: 700000, bonus: 2.2, theme: 'Ridder', themeIcon: '⚔️🛡️', hat: '🪖' },
-            { id: 'farmer_king', name: 'Landmand Konge', emoji: '👑🌾', cost: 900000, bonus: 2.5, theme: 'Konge', themeIcon: '👑🌾', hat: '👑' },
-            { id: 'santa', name: 'Jule Johannes', emoji: '🎅', cost: 1500000, bonus: 3, theme: 'Julemand', themeIcon: '🎅🎄', hat: '🎅' }
+            { id: 'default', name: 'Normal Johannes', emoji: '👨‍🌾', hat: '👨‍🌾', cost: 0, bonus: 1, theme: 'Normal' },
+            { id: 'knight', name: 'Ridder Johannes', emoji: '⚔️', hat: '🪖', cost: 700000, bonus: 2.2, theme: 'Ridder' },
+            { id: 'farmer_king', name: 'Landmand Konge', emoji: '👑🌾', hat: '👑', cost: 900000, bonus: 2.5, theme: 'Konge' },
+            { id: 'santa', name: 'Jule Johannes', emoji: '🎅', hat: '🎅', cost: 1500000, bonus: 3, theme: 'Julemand' }
         ]
     };
 
-    // ========== BOSS SKINS (EKSKLUSIVE, KUN VED AT DRÆBE RASMUS) ==========
     const BOSS_SKINS = {
-        william: { id: 'sigma_boss', name: 'Sigma Boss William', emoji: '🧔‍♂️💪', bonus: 5, theme: 'Sigma Boss', themeIcon: '🧔‍♂️👑' },
-        aksel: { id: 'sigma_boss', name: 'Sigma Boss Aksel', emoji: '🐐💪', bonus: 5, theme: 'Sigma Boss', themeIcon: '🐐👑' },
-        carl: { id: 'berserker', name: 'Bersærker Carl', emoji: '🪓🔥', bonus: 5, theme: 'Bersærker', themeIcon: '🪓🔥' },
-        saleh: { id: 'pizza_god', name: 'Pizza Gud Saleh', emoji: '🍕✨', bonus: 5, theme: 'Guddommelig', themeIcon: '🍕✨👑' },
-        johannes: { id: 'paladin', name: 'Paladin Johannes', emoji: '⚔️✨', bonus: 5, theme: 'Paladin', themeIcon: '⚔️✨🛡️' }
+        william: { id: 'sigma_boss', name: 'Sigma Boss William', emoji: '🧔‍♂️💪', hat: '🧔‍♂️', bonus: 5, theme: 'Sigma Boss' },
+        aksel: { id: 'sigma_boss', name: 'Sigma Boss Aksel', emoji: '🐐💪', hat: '🧔‍♂️', bonus: 5, theme: 'Sigma Boss' },
+        carl: { id: 'berserker', name: 'Bersærker Carl', emoji: '🪓🔥', hat: '🪓', bonus: 5, theme: 'Bersærker' },
+        saleh: { id: 'pizza_god', name: 'Pizza Gud Saleh', emoji: '🍕✨', hat: '✨', bonus: 5, theme: 'Guddommelig' },
+        johannes: { id: 'paladin', name: 'Paladin Johannes', emoji: '⚔️✨', hat: '⚔️', bonus: 5, theme: 'Paladin' }
     };
 
-    // Hent skin bonus (prioriterer boss skins)
+    // Funktion til at opdatere hatte baseret på aktivt skin
+    function updateHats() {
+        // William hat
+        const williamSkin = NORMAL_SKINS.william.find(s => s.id === activeSkins.william) || NORMAL_SKINS.william[0];
+        const williamBossSkin = BOSS_SKINS.william;
+        const isWilliamBossActive = unlockedBossSkins.some(s => s.character === 'william') && activeSkins.william === williamBossSkin.id;
+        document.getElementById('williamHat').innerHTML = isWilliamBossActive ? williamBossSkin.hat : williamSkin.hat;
+        
+        // Aksel hat
+        const akselSkin = NORMAL_SKINS.aksel.find(s => s.id === activeSkins.aksel) || NORMAL_SKINS.aksel[0];
+        const akselBossSkin = BOSS_SKINS.aksel;
+        const isAkselBossActive = unlockedBossSkins.some(s => s.character === 'aksel') && activeSkins.aksel === akselBossSkin.id;
+        document.getElementById('akselHat').innerHTML = isAkselBossActive ? akselBossSkin.hat : akselSkin.hat;
+        
+        // Carl hat
+        const carlSkin = NORMAL_SKINS.carl.find(s => s.id === activeSkins.carl) || NORMAL_SKINS.carl[0];
+        const carlBossSkin = BOSS_SKINS.carl;
+        const isCarlBossActive = unlockedBossSkins.some(s => s.character === 'carl') && activeSkins.carl === carlBossSkin.id;
+        document.getElementById('carlHat').innerHTML = isCarlBossActive ? carlBossSkin.hat : carlSkin.hat;
+        
+        // Saleh hat
+        const salehSkin = NORMAL_SKINS.saleh.find(s => s.id === activeSkins.saleh) || NORMAL_SKINS.saleh[0];
+        const salehBossSkin = BOSS_SKINS.saleh;
+        const isSalehBossActive = unlockedBossSkins.some(s => s.character === 'saleh') && activeSkins.saleh === salehBossSkin.id;
+        document.getElementById('salehHat').innerHTML = isSalehBossActive ? salehBossSkin.hat : salehSkin.hat;
+        
+        // Johannes hat
+        const johannesSkin = NORMAL_SKINS.johannes.find(s => s.id === activeSkins.johannes) || NORMAL_SKINS.johannes[0];
+        const johannesBossSkin = BOSS_SKINS.johannes;
+        const isJohannesBossActive = unlockedBossSkins.some(s => s.character === 'johannes') && activeSkins.johannes === johannesBossSkin.id;
+        document.getElementById('johannesHat').innerHTML = isJohannesBossActive ? johannesBossSkin.hat : johannesSkin.hat;
+    }
+
     function getSkinBonusMultiplier(character) {
-        // Tjek om boss skin er aktivt
         const activeSkinId = activeSkins[character];
         const bossSkin = BOSS_SKINS[character];
-        if (bossSkin && activeSkinId === bossSkin.id) {
-            const isUnlocked = unlockedBossSkins.some(s => s.character === character && s.skinId === bossSkin.id);
-            if (isUnlocked) return bossSkin.bonus;
+        if (bossSkin && activeSkinId === bossSkin.id && unlockedBossSkins.some(s => s.character === character)) {
+            return bossSkin.bonus;
         }
-        
-        // Tjek normale skins
         const normalSkins = NORMAL_SKINS[character];
         if (normalSkins) {
             const skin = normalSkins.find(s => s.id === activeSkinId);
@@ -429,83 +642,19 @@
         return 1;
     }
 
-    // Vis skin unlock popup
-    function showSkinUnlockPopup(character, skin, isBossSkin = true) {
-        const popup = document.createElement('div');
-        popup.className = 'skin-unlock-popup';
-        
-        popup.innerHTML = `
-            <div class="skin-icon">${skin.emoji}</div>
-            <div class="skin-title">${isBossSkin ? '🎉 BOSS BELØNNING! 🎉' : '✨ NYT SKIN LÅST! ✨'}</div>
-            <div class="skin-name">${skin.name}</div>
-            <div class="skin-desc" style="color:#aaa; margin-top:5px;">${skin.theme} TEMA</div>
-            <div class="skin-bonus">✨ +${skin.bonus}x point bonus! ✨</div>
-            <div style="font-size:0.8rem; color:#ffd700; margin-top:10px;">${skin.themeIcon}</div>
-        `;
-        document.body.appendChild(popup);
-        
-        setTimeout(() => {
-            if (popup && popup.remove) popup.remove();
-        }, 3500);
-    }
-
-    // Lås et boss skin (kun ved at dræbe Rasmus)
-    function unlockBossSkin(character, skin) {
-        const alreadyUnlocked = unlockedBossSkins.some(s => s.character === character && s.skinId === skin.id);
-        if (alreadyUnlocked) return false;
-        
-        unlockedBossSkins.push({ character, skinId: skin.id, skinName: skin.name, bonus: skin.bonus });
-        localStorage.setItem('unlockedBossSkins', JSON.stringify(unlockedBossSkins));
-        
-        // Auto-equip skinnet
-        activeSkins[character] = skin.id;
-        localStorage.setItem('skins', JSON.stringify(activeSkins));
-        
-        showSkinUnlockPopup(character, skin, true);
-        updateUI();
-        renderSkins();
-        return true;
-    }
-
-    // Køb normalt skin
-    function buyNormalSkin(character, skin) {
-        const key = skin.id + '_' + character;
-        if (boughtSkins.includes(key)) {
-            // Allerede ejet - aktiver
-            activeSkins[character] = skin.id;
-            localStorage.setItem('skins', JSON.stringify(activeSkins));
-            renderSkins();
-            updateUI();
-            showToast(`✨ ${skin.name} aktiveret! +${skin.bonus}x bonus!`);
-        } else if (infiniteMoney || points >= skin.cost) {
-            if (!infiniteMoney) points -= skin.cost;
-            boughtSkins.push(key);
-            localStorage.setItem('boughtSkins', JSON.stringify(boughtSkins));
-            activeSkins[character] = skin.id;
-            localStorage.setItem('skins', JSON.stringify(activeSkins));
-            renderSkins();
-            saveGame();
-            updateUI();
-            showToast(`🎨 ${skin.name} købt og aktiveret! +${skin.bonus}x bonus!`);
-            showSkinUnlockPopup(character, skin, false);
-        } else {
-            showToast(`💰 Du mangler ${(skin.cost - points).toLocaleString()} point til ${skin.name}!`);
-        }
-    }
-
     // Combo system
     const comboLevels = [
-        { min: 0, multiplier: 1, colorClass: "", name: "Normal", ringClass: "", glowClass: "", fireClass: "" },
-        { min: 10, multiplier: 1.5, colorClass: "combo-bronze", name: "Bronze", ringClass: "combo-bronze", glowClass: "bronze", fireClass: "bronze" },
-        { min: 25, multiplier: 2, colorClass: "combo-silver", name: "Sølv", ringClass: "combo-silver", glowClass: "silver", fireClass: "silver" },
-        { min: 50, multiplier: 2.5, colorClass: "combo-gold", name: "Guld", ringClass: "combo-gold", glowClass: "gold", fireClass: "gold" },
-        { min: 75, multiplier: 3, colorClass: "combo-platinum", name: "Platin", ringClass: "combo-platinum", glowClass: "platinum", fireClass: "platinum" },
-        { min: 100, multiplier: 4, colorClass: "combo-diamond", name: "Diamant", ringClass: "combo-diamond", glowClass: "diamond", fireClass: "diamond" },
-        { min: 150, multiplier: 5, colorClass: "combo-master", name: "Master", ringClass: "combo-master", glowClass: "master", fireClass: "master" },
-        { min: 200, multiplier: 6, colorClass: "combo-legendary", name: "Legendarisk", ringClass: "combo-legendary", glowClass: "legendary", fireClass: "legendary" },
-        { min: 300, multiplier: 8, colorClass: "combo-godly", name: "Guddommelig", ringClass: "combo-godly", glowClass: "godly", fireClass: "godly" },
-        { min: 500, multiplier: 10, colorClass: "combo-godly", name: "Guddommelig+", ringClass: "combo-godly", glowClass: "godly", fireClass: "godly" },
-        { min: 1000, multiplier: 15, colorClass: "combo-godly", name: "🔥 UOVERSTIGELIG 🔥", ringClass: "combo-godly", glowClass: "godly", fireClass: "godly" }
+        { min: 0, multiplier: 1, colorClass: "", flameClass: "", glowClass: "" },
+        { min: 10, multiplier: 1.5, colorClass: "combo-bronze", flameClass: "bronze", glowClass: "bronze" },
+        { min: 25, multiplier: 2, colorClass: "combo-silver", flameClass: "silver", glowClass: "silver" },
+        { min: 50, multiplier: 2.5, colorClass: "combo-gold", flameClass: "gold", glowClass: "gold" },
+        { min: 75, multiplier: 3, colorClass: "combo-platinum", flameClass: "platinum", glowClass: "platinum" },
+        { min: 100, multiplier: 4, colorClass: "combo-diamond", flameClass: "diamond", glowClass: "diamond" },
+        { min: 150, multiplier: 5, colorClass: "combo-master", flameClass: "master", glowClass: "master" },
+        { min: 200, multiplier: 6, colorClass: "combo-legendary", flameClass: "legendary", glowClass: "legendary" },
+        { min: 300, multiplier: 8, colorClass: "combo-godly", flameClass: "godly", glowClass: "godly" },
+        { min: 500, multiplier: 10, colorClass: "combo-godly", flameClass: "godly", glowClass: "godly" },
+        { min: 1000, multiplier: 15, colorClass: "combo-godly", flameClass: "godly", glowClass: "godly" }
     ];
     
     function getCurrentComboLevel() {
@@ -521,20 +670,20 @@
         const level = getCurrentComboLevel();
         const comboEl = document.getElementById('comboCounter');
         const williamImg = document.querySelector('.william-img');
-        const williamGlow = document.getElementById('williamGlow');
-        const fireParticles = document.querySelectorAll('.fire-particle');
+        const megaFlame = document.getElementById('megaFlame');
+        const megaFlameGlow = document.getElementById('megaFlameGlow');
         
         if (comboCount >= 5) {
             comboEl.style.opacity = '1';
-            comboEl.innerHTML = `🔥 ${comboCount}x COMBO! (${level.name} ${level.multiplier}x) 🔥`;
+            comboEl.innerHTML = `🔥 ${comboCount}x COMBO! (${level.multiplier}x) 🔥`;
             comboEl.className = level.colorClass;
         } else {
             comboEl.style.opacity = '0';
         }
         
-        williamImg.className = 'william-img ' + level.ringClass;
-        williamGlow.className = 'william-glow ' + level.glowClass;
-        fireParticles.forEach(particle => { particle.className = 'fire-particle ' + level.fireClass; });
+        williamImg.className = 'william-img ' + level.colorClass;
+        megaFlame.className = 'mega-flame ' + level.flameClass;
+        megaFlameGlow.className = 'mega-flame-glow ' + level.glowClass;
         
         document.getElementById('comboCountDisplay').innerText = comboCount;
         document.getElementById('comboBonusDisplay').innerText = level.multiplier;
@@ -664,12 +813,12 @@
     function saveGame() {
         if (!infiniteMoney) {
             const data = { points, totalClicks, clickMultiplier, hasGoat, hasCarl, hasSaleh, hasJohannes, hasMarcus, hasAdvisor, autoPowerBuyEnabled, autoClickBuyEnabled, prestigeLevel, prestigeMultiplier, marcusBankBalance, marcusBankReturnTime, bankReturnAmount, comboCount, lastClickTime, unlockedBossSkins, activeSkins, boughtSkins };
-            localStorage.setItem('williamClickerSaveV7', JSON.stringify(data));
+            localStorage.setItem('williamClickerSaveV9', JSON.stringify(data));
         }
     }
 
     function loadGame() {
-        const saved = localStorage.getItem('williamClickerSaveV7');
+        const saved = localStorage.getItem('williamClickerSaveV9');
         if (saved) {
             const data = JSON.parse(saved);
             points = data.points || 0;
@@ -700,6 +849,7 @@
         if (hasCarl) startCarlInterval();
         if (hasSaleh) startSalehInterval();
         if (hasJohannes) startJohannesInterval();
+        updateHats();
         updateComboVisuals();
         updateUI();
     }
@@ -934,7 +1084,7 @@
         goldenTimeout = setTimeout(spawnGoldenWilliam, 20000 + Math.random() * 25000);
     }
 
-    // BOSS FIGHT - med DOUBLE POINTS og RANDOM SKIN belønning!
+    // BOSS FIGHT
     function startBossFight() {
         if (bossActive) return;
         bossActive = true;
@@ -958,6 +1108,33 @@
         document.getElementById('bossHealthText').innerText = `❤️ ${Math.floor(bossHealth).toLocaleString()} / ${bossMaxHealth.toLocaleString()}`;
     }
     
+    function showSkinUnlockPopup(character, skin) {
+        const popup = document.createElement('div');
+        popup.className = 'skin-unlock-popup';
+        popup.innerHTML = `
+            <div class="skin-icon">${skin.emoji}</div>
+            <div class="skin-title">🎉 BOSS BELØNNING! 🎉</div>
+            <div class="skin-name">${skin.name}</div>
+            <div class="skin-desc" style="color:#aaa; margin-top:5px;">${skin.theme} TEMA</div>
+            <div class="skin-bonus">✨ +${skin.bonus}x point bonus! ✨</div>
+            <div style="font-size:1.2rem; margin-top:5px;">Hat: ${skin.hat}</div>
+        `;
+        document.body.appendChild(popup);
+        setTimeout(() => { if (popup && popup.remove) popup.remove(); }, 3500);
+    }
+
+    function unlockBossSkin(character, skin) {
+        if (unlockedBossSkins.some(s => s.character === character)) return false;
+        unlockedBossSkins.push({ character, skinId: skin.id, skinName: skin.name });
+        localStorage.setItem('unlockedBossSkins', JSON.stringify(unlockedBossSkins));
+        activeSkins[character] = skin.id;
+        localStorage.setItem('skins', JSON.stringify(activeSkins));
+        updateHats();
+        showSkinUnlockPopup(character, skin);
+        updateUI();
+        return true;
+    }
+
     function defeatBoss(won = true) {
         bossActive = false;
         clearInterval(bossTimerInterval);
@@ -965,21 +1142,17 @@
         document.getElementById('bossContainer').classList.remove('active');
         
         if (won) {
-            // ★★★ FORDOBLER ALLE NUVÆRENDE POINTS ★★★
             const oldPoints = points;
             points = points * 2;
             showToast(`🏆 DU BESEJREDE RASMUS! +${oldPoints.toLocaleString()} point! (Points fordoblet!)`);
             
-            // Giv et random eksklusivt boss skin!
             const characters = ['william', 'aksel', 'carl', 'saleh', 'johannes'];
             const randomChar = characters[Math.floor(Math.random() * characters.length)];
             const skin = BOSS_SKINS[randomChar];
             
-            const alreadyUnlocked = unlockedBossSkins.some(s => s.character === randomChar && s.skinId === skin.id);
-            if (!alreadyUnlocked) {
+            if (!unlockedBossSkins.some(s => s.character === randomChar)) {
                 unlockBossSkin(randomChar, skin);
             } else {
-                // Hvis man allerede har skinnet, giv ekstra points i stedet
                 const extraBonus = 50000;
                 points += extraBonus;
                 showToast(`🎁 Du har allerede ${skin.name}! +${extraBonus.toLocaleString()} ekstra point!`);
@@ -1108,84 +1281,91 @@
         });
     });
 
-    // ========== RENDER SKINS (VISUALISERING AF ALLE SKINS) ==========
+    // Render skins
     function renderSkins() {
         const list = document.getElementById('skinsList');
         if (!list) return;
         
         let html = '';
         
-        // Normale skins (købbare)
         for (const [char, skins] of Object.entries(NORMAL_SKINS)) {
-            html += `<div style="margin-bottom:25px;"><h3 style="color:#ffb347; border-bottom:2px solid #ffb347; padding-bottom:10px;">${char.toUpperCase()} - NORMALE SKINS 🛒</h3><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px;">`;
-            
+            html += `<div style="margin-bottom:25px;"><h3 style="color:#ffb347; border-bottom:2px solid #ffb347; padding-bottom:10px;">${char.toUpperCase()} - SKINS 🛒</h3><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px;">`;
             skins.forEach(skin => {
                 const owned = boughtSkins.includes(skin.id + '_' + char) || skin.id === 'default';
                 const active = activeSkins[char] === skin.id;
-                const canBuy = infiniteMoney || points >= skin.cost;
-                
-                html += `
-                    <div class="skin-card" data-character="${char}" data-skin-id="${skin.id}" style="background:rgba(255,107,157,0.1); border:2px solid ${active ? '#ffd700' : (owned ? '#00ff00' : '#ff6b9d')}; border-radius:15px; padding:12px; text-align:center; cursor:pointer; transition:all 0.2s;">
-                        <div style="font-size:2.5rem;">${skin.emoji}</div>
-                        <div style="color:#ffcf7a; font-weight:bold; margin-top:5px;">${skin.name}</div>
-                        <div style="color:#aaa; font-size:0.7rem;">${skin.theme} TEMA</div>
-                        <div style="color:#00ff88; font-size:0.9rem;">${skin.bonus}x bonus</div>
-                        <div style="color:#ffd700; font-size:0.8rem; margin-top:5px;">${skin.themeIcon}</div>
-                        <div style="color:#ffd700; font-size:0.8rem;">${skin.id === 'default' ? 'GRATIS' : skin.cost.toLocaleString()} point</div>
-                        <div style="color:${active ? '#00ff00' : (owned ? '#ffaa00' : '#ff6b9d')}; margin-top:5px; font-weight:bold;">${active ? '✓ AKTIV' : (owned ? 'EJET - KLIK FOR AT AKTIVERE' : 'KØB')}</div>
-                    </div>
-                `;
+                html += `<div class="skin-card" data-character="${char}" data-skin-id="${skin.id}" style="background:rgba(255,107,157,0.1); border:2px solid ${active ? '#ffd700' : (owned ? '#00ff00' : '#ff6b9d')}; border-radius:15px; padding:12px; text-align:center; cursor:pointer;">
+                            <div style="font-size:2.5rem;">${skin.emoji}</div>
+                            <div style="color:#ffcf7a; font-weight:bold;">${skin.name}</div>
+                            <div style="font-size:1.2rem;">🎩 ${skin.hat}</div>
+                            <div style="color:#00ff88;">${skin.bonus}x bonus</div>
+                            <div style="color:#ffd700;">${skin.id === 'default' ? 'GRATIS' : skin.cost.toLocaleString()} point</div>
+                            <div style="color:${active ? '#00ff00' : (owned ? '#ffaa00' : '#ff6b9d')};">${active ? '✓ AKTIV' : (owned ? 'EJET' : 'KØB')}</div>
+                        </div>`;
             });
             html += '</div></div>';
         }
         
-        // Boss skins (eksklusive)
         html += `<div style="margin-top:25px;"><h3 style="color:#ff00ff; border-bottom:2px solid #ff00ff; padding-bottom:10px;">⭐ BOSS SKINS (EKSKLUSIVE) ⭐</h3><div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px;">`;
-        
         for (const [char, skin] of Object.entries(BOSS_SKINS)) {
-            const unlocked = unlockedBossSkins.some(s => s.character === char && s.skinId === skin.id);
+            const unlocked = unlockedBossSkins.some(s => s.character === char);
             const active = activeSkins[char] === skin.id;
-            
-            html += `
-                <div class="boss-skin-card" data-character="${char}" data-skin-id="${skin.id}" style="background:rgba(255,0,255,0.15); border:2px solid ${active ? '#ffd700' : (unlocked ? '#00ff00' : '#ff00ff')}; border-radius:15px; padding:12px; text-align:center; ${!unlocked ? 'filter: grayscale(0.3);' : 'cursor:pointer;'}">
-                    <div style="font-size:2.5rem;">${skin.emoji}</div>
-                    <div style="color:#ffcf7a; font-weight:bold; margin-top:5px;">${skin.name}</div>
-                    <div style="color:#ff00ff; font-size:0.7rem;">${skin.theme} TEMA</div>
-                    <div style="color:#00ff88; font-size:0.9rem;">${skin.bonus}x bonus!</div>
-                    <div style="color:#ffd700; font-size:0.8rem; margin-top:5px;">${skin.themeIcon}</div>
-                    <div style="color:${active ? '#00ff00' : (unlocked ? '#ffaa00' : '#ff00ff')}; margin-top:5px; font-weight:bold;">${active ? '✓ AKTIV' : (unlocked ? 'EJET - KLIK FOR AT AKTIVERE' : '🔒 DRÆB RASMUS FOR AT LÅSE 🔒')}</div>
-                </div>
-            `;
+            html += `<div class="boss-skin-card" data-character="${char}" data-skin-id="${skin.id}" style="background:rgba(255,0,255,0.15); border:2px solid ${active ? '#ffd700' : (unlocked ? '#00ff00' : '#ff00ff')}; border-radius:15px; padding:12px; text-align:center; ${!unlocked ? 'filter: grayscale(0.3);' : 'cursor:pointer;'}">
+                        <div style="font-size:2.5rem;">${skin.emoji}</div>
+                        <div style="color:#ffcf7a; font-weight:bold;">${skin.name}</div>
+                        <div style="font-size:1.2rem;">🎩 ${skin.hat}</div>
+                        <div style="color:#00ff88;">${skin.bonus}x bonus!</div>
+                        <div style="color:${active ? '#00ff00' : (unlocked ? '#ffaa00' : '#ff00ff')};">${active ? '✓ AKTIV' : (unlocked ? 'EJET' : '🔒 DRÆB RASMUS')}</div>
+                    </div>`;
         }
         html += '</div></div>';
         
         list.innerHTML = html;
         
-        // Tilføj click events til normale skins
         document.querySelectorAll('.skin-card').forEach(card => {
             card.addEventListener('click', () => {
                 const character = card.dataset.character;
                 const skinId = card.dataset.skinId;
                 const skin = NORMAL_SKINS[character].find(s => s.id === skinId);
                 if (skin) {
-                    buyNormalSkin(character, skin);
+                    const key = skin.id + '_' + character;
+                    if (boughtSkins.includes(key) || skin.id === 'default') {
+                        activeSkins[character] = skin.id;
+                        localStorage.setItem('skins', JSON.stringify(activeSkins));
+                        updateHats();
+                        renderSkins();
+                        updateUI();
+                        showToast(`✨ ${skin.name} aktiveret! +${skin.bonus}x bonus! Hat: ${skin.hat}`);
+                    } else if (infiniteMoney || points >= skin.cost) {
+                        if (!infiniteMoney) points -= skin.cost;
+                        boughtSkins.push(key);
+                        localStorage.setItem('boughtSkins', JSON.stringify(boughtSkins));
+                        activeSkins[character] = skin.id;
+                        localStorage.setItem('skins', JSON.stringify(activeSkins));
+                        updateHats();
+                        renderSkins();
+                        saveGame();
+                        updateUI();
+                        showToast(`🎨 ${skin.name} købt! +${skin.bonus}x bonus! Hat: ${skin.hat}`);
+                    } else {
+                        showToast(`💰 Du mangler ${(skin.cost - points).toLocaleString()} point!`);
+                    }
                 }
             });
         });
         
-        // Tilføj click events til boss skins (kun hvis låst)
         document.querySelectorAll('.boss-skin-card').forEach(card => {
-            if (!card.innerHTML.includes('🔒 DRÆB RASMUS FOR AT LÅSE 🔒')) {
+            if (!card.innerHTML.includes('🔒 DRÆB RASMUS')) {
                 card.addEventListener('click', () => {
                     const character = card.dataset.character;
                     const skinId = card.dataset.skinId;
                     const skin = BOSS_SKINS[character];
-                    if (skin && unlockedBossSkins.some(s => s.character === character && s.skinId === skinId)) {
+                    if (skin && unlockedBossSkins.some(s => s.character === character)) {
                         activeSkins[character] = skinId;
                         localStorage.setItem('skins', JSON.stringify(activeSkins));
+                        updateHats();
                         renderSkins();
                         updateUI();
-                        showToast(`✨ ${skin.name} aktiveret! +${skin.bonus}x bonus!`);
+                        showToast(`✨ ${skin.name} aktiveret! +${skin.bonus}x bonus! Hat: ${skin.hat}`);
                     }
                 });
             }
@@ -1203,7 +1383,6 @@
         setTimeout(() => easterEggClicks = 0, 1000);
     });
 
-    // Reset
     document.getElementById('resetBtn').addEventListener('click', () => {
         if (confirm('Nulstil ALT? Spillet vil starte forfra!')) {
             localStorage.clear();
@@ -1235,7 +1414,7 @@
         showToast('👑 PRESTIGE ' + prestigeLevel + '! +' + (prestigeLevel * 5) + '% bonus!');
     });
 
-    // Menu og modals
+    // Menu
     const burgerBtn = document.getElementById('burgerMenuBtn');
     const sideMenu = document.getElementById('sideMenu');
     const sideMenuOverlay = document.getElementById('sideMenuOverlay');
@@ -1243,9 +1422,9 @@
     sideMenuOverlay.onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); };
     
     document.getElementById('menuLeaderboard').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('leaderboardModal').classList.add('active'); loadLeaderboard(); };
-    document.getElementById('menuAchievements').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('achievementsModal').classList.add('active'); renderAchievements(); };
-    document.getElementById('menuChallenges').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('challengesModal').classList.add('active'); renderChallenges(); };
-    document.getElementById('menuPrestigeUpgrades').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('prestigeUpgradesModal').classList.add('active'); renderPrestigeUpgrades(); };
+    document.getElementById('menuAchievements').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('achievementsModal').classList.add('active'); };
+    document.getElementById('menuChallenges').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('challengesModal').classList.add('active'); };
+    document.getElementById('menuPrestigeUpgrades').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('prestigeUpgradesModal').classList.add('active'); };
     document.getElementById('menuSkins').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); document.getElementById('skinsModal').classList.add('active'); renderSkins(); };
     document.getElementById('menuBank').onclick = () => { sideMenu.classList.remove('active'); sideMenuOverlay.classList.remove('active'); if (hasMarcus) { document.getElementById('bankModal').classList.add('active'); updateBankDisplay(); } else { showToast('🏦 Køb Marcus Bankier først!'); } };
     
@@ -1253,7 +1432,7 @@
         btn.onclick = () => { btn.closest('.modal').classList.remove('active'); };
     });
 
-    // Bank funktioner
+    // Bank
     function updateBankDisplay() {
         document.getElementById('bankBalance').innerText = marcusBankBalance.toLocaleString();
         if (marcusBankReturnTime && Date.now() < marcusBankReturnTime) {
@@ -1301,22 +1480,6 @@
         }
     });
 
-    // Achievements (forenklet)
-    function renderAchievements() {
-        const achievementsList = document.getElementById('achievementsList');
-        achievementsList.innerHTML = '<p>Achievements kommer snart!</p>';
-    }
-    
-    function renderChallenges() {
-        const challengesList = document.getElementById('challengesList');
-        challengesList.innerHTML = '<p>Challenges kommer snart!</p>';
-    }
-    
-    function renderPrestigeUpgrades() {
-        const upgradesList = document.getElementById('upgradesList');
-        upgradesList.innerHTML = '<p>Prestige upgrades kommer snart!</p>';
-    }
-
     // Leaderboard
     function loadLeaderboard() {
         db.ref('scores/money').orderByChild('score').limitToLast(10).once('value', (snapshot) => {
@@ -1333,7 +1496,7 @@
     });
     loadLeaderboard();
 
-    // Start spil
+    // Start
     loadGame();
     scheduleGolden();
     renderSkins();
