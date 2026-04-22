@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>William Clicker ⚡ Aksel · Carl Kal · Johannes · Pizza Saleh</title>
+    <title>William Clicker ⚡ Combo Streak System!</title>
     
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -133,6 +133,22 @@
             border-radius: 50%;
             box-shadow: 0 15px 25px black, 0 0 0 5px #f9b23f, 0 0 0 9px #d95b00;
             background: #2c2e3e;
+            transition: box-shadow 0.3s ease;
+        }
+
+        /* Combo farver på William's ring */
+        .william-img.combo-bronze { box-shadow: 0 15px 25px black, 0 0 0 5px #cd7f32, 0 0 0 9px #8B4513; }
+        .william-img.combo-silver { box-shadow: 0 15px 25px black, 0 0 0 5px #c0c0c0, 0 0 0 9px #808080; }
+        .william-img.combo-gold { box-shadow: 0 15px 25px black, 0 0 0 5px #ffd700, 0 0 0 9px #daa520; }
+        .william-img.combo-platinum { box-shadow: 0 15px 25px black, 0 0 0 5px #e5e4e2, 0 0 0 9px #b0c4de; }
+        .william-img.combo-diamond { box-shadow: 0 15px 25px black, 0 0 0 5px #b9f2ff, 0 0 0 9px #00ffff; }
+        .william-img.combo-master { box-shadow: 0 15px 25px black, 0 0 0 5px #ff00ff, 0 0 0 9px #8a2be2; }
+        .william-img.combo-legendary { box-shadow: 0 15px 25px black, 0 0 0 5px #ff4500, 0 0 0 9px #ff0000, 0 0 20px #ff4500; }
+        .william-img.combo-godly { box-shadow: 0 15px 25px black, 0 0 0 5px #ffd700, 0 0 0 9px #ff6347, 0 0 30px #ffd700; animation: godlyPulse 0.5s infinite alternate; }
+
+        @keyframes godlyPulse {
+            from { box-shadow: 0 15px 25px black, 0 0 0 5px #ffd700, 0 0 0 9px #ff6347, 0 0 20px #ffd700; }
+            to { box-shadow: 0 15px 25px black, 0 0 0 5px #ff6347, 0 0 0 9px #ffd700, 0 0 40px #ff4500; }
         }
 
         .saleh-position {
@@ -462,19 +478,6 @@
             width: 100%;
         }
 
-        .buy-all-btn {
-            background: linear-gradient(135deg, #ff6b6b, #ff8787);
-            border: none;
-            color: white;
-            padding: 12px;
-            border-radius: 40px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-bottom: 15px;
-            width: 100%;
-            font-size: 1rem;
-        }
-
         .golden-william {
             position: fixed;
             cursor: pointer;
@@ -655,6 +658,52 @@
             border-radius: 30px;
             cursor: pointer;
         }
+
+        /* Combo Counter Styling */
+        #comboCounter {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.8rem;
+            z-index: 100;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            pointer-events: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            font-family: monospace;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Combo farver */
+        #comboCounter.combo-bronze { background: linear-gradient(135deg, #cd7f32, #8B4513); color: #fff; box-shadow: 0 0 30px #cd7f32; }
+        #comboCounter.combo-silver { background: linear-gradient(135deg, #c0c0c0, #808080); color: #1a1a1a; box-shadow: 0 0 30px #c0c0c0; }
+        #comboCounter.combo-gold { background: linear-gradient(135deg, #ffd700, #daa520); color: #1a1a1a; box-shadow: 0 0 30px #ffd700; }
+        #comboCounter.combo-platinum { background: linear-gradient(135deg, #e5e4e2, #b0c4de); color: #1a1a1a; box-shadow: 0 0 30px #e5e4e2; }
+        #comboCounter.combo-diamond { background: linear-gradient(135deg, #b9f2ff, #00ffff); color: #00008b; box-shadow: 0 0 40px #00ffff; }
+        #comboCounter.combo-master { background: linear-gradient(135deg, #ff00ff, #8a2be2); color: #fff; box-shadow: 0 0 40px #ff00ff; animation: masterPulse 0.5s infinite alternate; }
+        #comboCounter.combo-legendary { background: linear-gradient(135deg, #ff4500, #ff0000); color: #fff; box-shadow: 0 0 50px #ff4500; animation: legendaryPulse 0.3s infinite alternate; }
+        #comboCounter.combo-godly { background: linear-gradient(135deg, #ffd700, #ff6347, #ff00ff); color: #fff; box-shadow: 0 0 60px #ffd700; animation: godlyPulseText 0.2s infinite alternate; background-size: 200% 200%; animation: gradientShift 0.5s ease infinite, godlyPulseText 0.2s infinite alternate; }
+
+        @keyframes masterPulse {
+            from { box-shadow: 0 0 30px #ff00ff; transform: translateX(-50%) scale(1); }
+            to { box-shadow: 0 0 60px #8a2be2; transform: translateX(-50%) scale(1.05); }
+        }
+        @keyframes legendaryPulse {
+            from { box-shadow: 0 0 40px #ff4500; transform: translateX(-50%) scale(1); }
+            to { box-shadow: 0 0 80px #ff0000; transform: translateX(-50%) scale(1.1); }
+        }
+        @keyframes godlyPulseText {
+            from { transform: translateX(-50%) scale(1); text-shadow: 0 0 10px #fff; }
+            to { transform: translateX(-50%) scale(1.15); text-shadow: 0 0 30px #ffd700; }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
     </style>
 </head>
 <body>
@@ -684,6 +733,8 @@
                 <span>💪 Klikkraft: <strong id="clickPowerSpan">1</strong></span>
                 <span>⚡ Point/sek: <strong id="totalPtsPerSec">0</strong></span>
                 <span>🖱️ Klik: <strong id="totalClicks">0</strong></span>
+                <span>🔥 Combo: <strong id="comboCountDisplay">0</strong>x</span>
+                <span>✨ Combo Bonus: <strong id="comboBonusDisplay">1</strong>x</span>
             </div>
         </div>
 
@@ -725,7 +776,7 @@
             </div>
             <div style="text-align:center; font-size:0.7rem; color:#a5d6a7;">🌾 Rider på gris – giver 10.000/sek 🌾</div>
         </div>
-        <footer>👇 Klik på William! 👉</footer>
+        <footer>👇 Klik på William! 👉 Hold streak for kæmpe bonus!</footer>
     </div>
     
     <div class="upgrade-panel">
@@ -802,9 +853,6 @@
                 </label>
             </div>
             
-            <!-- KØB ALLE POWER-UPS KNAP - KUN ÉN, ØVERST -->
-            <button class="buy-all-btn" id="buyAllPowerupsBtn">⚡ KØB ALLE POWER-UPS ⚡</button>
-            
             <div class="upgrade-card">
                 <div class="upgrade-info">
                     <div class="upgrade-name">💪 2x Klik Kraft <span id="doubleActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div>
@@ -866,7 +914,9 @@
     </div>
 </div>
 
-<!-- Modals -->
+<div id="comboCounter">🔥 0x COMBO! 🔥</div>
+
+<!-- Modals (samme som før) -->
 <div class="modal" id="leaderboardModal"><div class="modal-content"><h2>🏆 LEADERBOARD</h2><div id="leaderboardList"><p>Indlæser...</p></div><button class="close-modal close-leaderboard">LUK</button></div></div>
 <div class="modal" id="achievementsModal"><div class="modal-content"><h2>🎖️ ACHIEVEMENTS</h2><div id="achievementsList"></div><button class="close-modal">LUK</button></div></div>
 <div class="modal" id="challengesModal"><div class="modal-content"><h2>🎯 CHALLENGES</h2><div id="challengesList"></div><button class="close-modal">LUK</button></div></div>
@@ -930,24 +980,121 @@
     let moneyRainActive = false, moneyRainEnd = 0;
     let powerupsUsed = 0;
     
-    // Combo
-    let comboCount = 0, lastClickTime = 0, comboTimeout = null;
-    const COMBO_TIMEOUT = 1500;
+    // Combo System
+    let comboCount = 0;
+    let lastClickTime = 0;
+    let comboTimeout = null;
+    const COMBO_TIMEOUT = 2000; // 2 sekunder til at miste streak
     
-    // Boss
-    let bossActive = false, bossHealth = 100000, bossMaxHealth = 100000, bossTimer = 180;
-    let bossAttackInterval = null, bossTimerInterval = null;
-    let nextBossSpawn = Date.now() + 600000;
+    // Combo niveauer: [minimum streak, multiplikator, farveklasse, navn]
+    const comboLevels = [
+        { min: 0, multiplier: 1, colorClass: "", name: "Normal", ringClass: "" },
+        { min: 10, multiplier: 1.5, colorClass: "combo-bronze", name: "Bronze", ringClass: "combo-bronze" },
+        { min: 25, multiplier: 2, colorClass: "combo-silver", name: "Sølv", ringClass: "combo-silver" },
+        { min: 50, multiplier: 2.5, colorClass: "combo-gold", name: "Guld", ringClass: "combo-gold" },
+        { min: 75, multiplier: 3, colorClass: "combo-platinum", name: "Platin", ringClass: "combo-platinum" },
+        { min: 100, multiplier: 4, colorClass: "combo-diamond", name: "Diamant", ringClass: "combo-diamond" },
+        { min: 150, multiplier: 5, colorClass: "combo-master", name: "Master", ringClass: "combo-master" },
+        { min: 200, multiplier: 6, colorClass: "combo-legendary", name: "Legendarisk", ringClass: "combo-legendary" },
+        { min: 300, multiplier: 8, colorClass: "combo-godly", name: "Guddommelig", ringClass: "combo-godly" },
+        { min: 500, multiplier: 10, colorClass: "combo-godly", name: "Guddommelig+", ringClass: "combo-godly" },
+        { min: 1000, multiplier: 15, colorClass: "combo-godly", name: "🔥 UOVERSTIGELIG 🔥", ringClass: "combo-godly" }
+    ];
     
-    // Intervals
-    let goldenTimeout, goatInterval, carlInterval, salehInterval, johannesInterval, autoClickInterval;
+    function getComboMultiplier() {
+        let currentMultiplier = 1;
+        for (let i = comboLevels.length - 1; i >= 0; i--) {
+            if (comboCount >= comboLevels[i].min) {
+                currentMultiplier = comboLevels[i].multiplier;
+                break;
+            }
+        }
+        return currentMultiplier;
+    }
     
-    // Achievements
-    let unlockedAchievements = JSON.parse(localStorage.getItem('achievements')) || [];
-    let completedChallenges = JSON.parse(localStorage.getItem('challenges')) || {};
-    let boughtUpgrades = JSON.parse(localStorage.getItem('upgrades')) || [];
-    let activeSkins = JSON.parse(localStorage.getItem('skins')) || { william: 'default', aksel: 'default', carl: 'default', saleh: 'default', johannes: 'default' };
-    let boughtSkins = JSON.parse(localStorage.getItem('boughtSkins')) || [];
+    function getComboColorClass() {
+        for (let i = comboLevels.length - 1; i >= 0; i--) {
+            if (comboCount >= comboLevels[i].min) {
+                return comboLevels[i].colorClass;
+            }
+        }
+        return "";
+    }
+    
+    function getComboRingClass() {
+        for (let i = comboLevels.length - 1; i >= 0; i--) {
+            if (comboCount >= comboLevels[i].min) {
+                return comboLevels[i].ringClass;
+            }
+        }
+        return "";
+    }
+    
+    function getComboName() {
+        for (let i = comboLevels.length - 1; i >= 0; i--) {
+            if (comboCount >= comboLevels[i].min) {
+                return comboLevels[i].name;
+            }
+        }
+        return "Normal";
+    }
+    
+    function updateComboDisplay() {
+        const comboEl = document.getElementById('comboCounter');
+        const comboMulti = getComboMultiplier();
+        const comboName = getComboName();
+        const colorClass = getComboColorClass();
+        
+        if (comboCount >= 5) {
+            comboEl.style.opacity = '1';
+            comboEl.innerHTML = `🔥 ${comboCount}x COMBO! (${comboName} ${comboMulti}x) 🔥`;
+            comboEl.className = colorClass;
+            
+            // Opdater William's ring farve
+            const williamImg = document.querySelector('.william-img');
+            const ringClass = getComboRingClass();
+            williamImg.className = 'william-img ' + ringClass;
+            
+            // Opdater display i stats
+            document.getElementById('comboCountDisplay').innerText = comboCount;
+            document.getElementById('comboBonusDisplay').innerText = comboMulti;
+        } else {
+            comboEl.style.opacity = '0';
+            document.getElementById('comboCountDisplay').innerText = comboCount;
+            document.getElementById('comboBonusDisplay').innerText = '1';
+            
+            // Reset William's ring
+            const williamImg = document.querySelector('.william-img');
+            williamImg.className = 'william-img';
+        }
+    }
+    
+    function updateCombo() {
+        const now = Date.now();
+        
+        if (comboFreezeActive && now < comboFreezeEnd) {
+            comboCount++;
+            lastClickTime = now;
+            updateComboDisplay();
+            return;
+        }
+        
+        if (now - lastClickTime > COMBO_TIMEOUT) {
+            comboCount = 1;
+        } else {
+            comboCount++;
+        }
+        lastClickTime = now;
+        updateComboDisplay();
+        
+        clearTimeout(comboTimeout);
+        comboTimeout = setTimeout(() => {
+            if (!comboFreezeActive || (comboFreezeActive && now >= comboFreezeEnd)) {
+                comboCount = 0;
+                updateComboDisplay();
+            }
+        }, COMBO_TIMEOUT);
+    }
 
     // DOM elements
     const scoreDisplay = document.getElementById('scoreDisplay');
@@ -957,7 +1104,6 @@
     const totalClicksSpan = document.getElementById('totalClicks');
     const williamArea = document.getElementById('williamClicker');
 
-    // Funktion til at opdatere infinity symbol
     function updateInfinitySymbol() {
         let scoreElement = document.querySelector('.score-value');
         if (infiniteMoney) {
@@ -1052,13 +1198,13 @@
 
     function saveGame() {
         if (!infiniteMoney) {
-            const data = { points, totalClicks, clickMultiplier, hasGoat, hasCarl, hasSaleh, hasJohannes, hasMarcus, hasAdvisor, autoPowerBuyEnabled, autoClickBuyEnabled, prestigeLevel, prestigeMultiplier, marcusBankBalance, marcusBankReturnTime, bankReturnAmount };
-            localStorage.setItem('williamClickerSaveV3', JSON.stringify(data));
+            const data = { points, totalClicks, clickMultiplier, hasGoat, hasCarl, hasSaleh, hasJohannes, hasMarcus, hasAdvisor, autoPowerBuyEnabled, autoClickBuyEnabled, prestigeLevel, prestigeMultiplier, marcusBankBalance, marcusBankReturnTime, bankReturnAmount, comboCount, lastClickTime };
+            localStorage.setItem('williamClickerSaveV4', JSON.stringify(data));
         }
     }
 
     function loadGame() {
-        const saved = localStorage.getItem('williamClickerSaveV3');
+        const saved = localStorage.getItem('williamClickerSaveV4');
         if (saved) {
             const data = JSON.parse(saved);
             points = data.points || 0;
@@ -1077,6 +1223,8 @@
             marcusBankBalance = data.marcusBankBalance || 0;
             marcusBankReturnTime = data.marcusBankReturnTime || 0;
             bankReturnAmount = data.bankReturnAmount || 0;
+            comboCount = data.comboCount || 0;
+            lastClickTime = data.lastClickTime || 0;
         }
         document.getElementById('autoPowerToggle').checked = autoPowerBuyEnabled && hasAdvisor;
         document.getElementById('autoClickToggle').checked = autoClickBuyEnabled && hasAdvisor;
@@ -1084,6 +1232,7 @@
         if (hasCarl) startCarlInterval();
         if (hasSaleh) startSalehInterval();
         if (hasJohannes) startJohannesInterval();
+        updateComboDisplay();
         updateUI();
     }
 
@@ -1092,10 +1241,17 @@
     function startSalehInterval() { if (salehInterval) clearInterval(salehInterval); salehInterval = setInterval(() => { if (hasSaleh) addPoints(1500); }, 1000); }
     function startJohannesInterval() { if (johannesInterval) clearInterval(johannesInterval); johannesInterval = setInterval(() => { if (hasJohannes) addPoints(15000); }, 1000); }
 
-    // Klik på William
+    // Klik på William - med combo bonus!
     williamArea.addEventListener('click', (e) => {
+        updateCombo();
+        
         let clickValue = clickMultiplier;
         if (doubleClickActive && Date.now() < doubleClickEnd) clickValue *= 2;
+        
+        // Anvend combo multiplier
+        const comboMulti = getComboMultiplier();
+        clickValue = Math.floor(clickValue * comboMulti);
+        
         addPoints(clickValue);
         totalClicks++;
         updateUI();
@@ -1107,7 +1263,7 @@
         }
     });
 
-    // Upgrade knapper
+    // Upgrade knapper (samme som før)
     document.getElementById('buyClickBtn').addEventListener('click', () => {
         const cost = 8 + (clickMultiplier - 1) * 5;
         if (infiniteMoney || points >= cost) {
@@ -1172,7 +1328,7 @@
         }
     });
 
-    // Funktion til at aktivere en power-up
+    // Power-ups (samme som før)
     function activatePowerup(type, cost, duration, callback) {
         if ((infiniteMoney || points >= cost)) {
             if (!infiniteMoney) points -= cost;
@@ -1185,7 +1341,6 @@
         return false;
     }
 
-    // Power-ups
     document.getElementById('powerupDoubleBtn').addEventListener('click', () => {
         if (!doubleClickActive || Date.now() >= doubleClickEnd) {
             activatePowerup('double', 3000, 30000, () => {
@@ -1208,6 +1363,8 @@
                     if (autoClickActive && Date.now() < autoClickEnd) {
                         let cv = clickMultiplier;
                         if (doubleClickActive && Date.now() < doubleClickEnd) cv *= 2;
+                        const comboMulti = getComboMultiplier();
+                        cv = Math.floor(cv * comboMulti);
                         addPoints(cv);
                         totalClicks++;
                         updateUI();
@@ -1269,82 +1426,6 @@
             });
         }
     });
-    
-    // KØB ALLE POWER-UPS KNAP - KØBER ALLE 6 POWER-UPS
-    document.getElementById('buyAllPowerupsBtn').addEventListener('click', () => {
-        const totalCost = 3000 + 12000 + 30000 + 25000 + 20000 + 28000;
-        if (infiniteMoney || points >= totalCost) {
-            if (!infiniteMoney) points -= totalCost;
-            const now = Date.now();
-            
-            // 2x Klik Kraft
-            if (!doubleClickActive || now >= doubleClickEnd) {
-                doubleClickActive = true;
-                doubleClickEnd = now + 30000;
-                setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000);
-            }
-            
-            // Auto-Klikker
-            if (!autoClickActive || now >= autoClickEnd) {
-                autoClickActive = true;
-                autoClickEnd = now + 60000;
-                if (autoClickInterval) clearInterval(autoClickInterval);
-                autoClickInterval = setInterval(() => {
-                    if (autoClickActive && Date.now() < autoClickEnd) {
-                        let cv = clickMultiplier;
-                        if (doubleClickActive && Date.now() < doubleClickEnd) cv *= 2;
-                        addPoints(cv);
-                        totalClicks++;
-                        updateUI();
-                    } else {
-                        clearInterval(autoClickInterval);
-                        autoClickActive = false;
-                        updateUI();
-                    }
-                }, 100);
-                setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000);
-            }
-            
-            // 3x Point
-            if (!multiPointsActive || now >= multiPointsEnd) {
-                multiPointsActive = true;
-                multiPointsEnd = now + 45000;
-                setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000);
-            }
-            
-            // Boost
-            if (!boostActive || now >= boostEnd) {
-                boostActive = true;
-                boostEnd = now + 30000;
-                setTimeout(() => { boostActive = false; updateUI(); }, 30000);
-            }
-            
-            // Combo Freeze
-            if (!comboFreezeActive || now >= comboFreezeEnd) {
-                comboFreezeActive = true;
-                comboFreezeEnd = now + 60000;
-                setTimeout(() => { comboFreezeActive = false; updateUI(); }, 60000);
-            }
-            
-            // Money Rain
-            if (!moneyRainActive || now >= moneyRainEnd) {
-                moneyRainActive = true;
-                moneyRainEnd = now + 30000;
-                const rainInterval = setInterval(() => {
-                    if (moneyRainActive && Date.now() < moneyRainEnd) spawnGoldenWilliam();
-                    else clearInterval(rainInterval);
-                }, 5000);
-                setTimeout(() => { moneyRainActive = false; updateUI(); }, 30000);
-            }
-            
-            powerupsUsed += 6;
-            updateUI();
-            saveGame();
-            showToast('⚡ Alle 6 power-ups aktiveret!');
-        } else {
-            showToast(`💰 Du mangler ${(totalCost - points).toLocaleString()} point!`);
-        }
-    });
 
     // Golden William
     function spawnGoldenWilliam() {
@@ -1378,7 +1459,7 @@
         goldenTimeout = setTimeout(spawnGoldenWilliam, 20000 + Math.random() * 25000);
     }
 
-    // Cheat kode: Klik på UPGRADES titlen 5 gange - VISER ∞ SYMBOL
+    // Cheat kode
     document.getElementById('easterEggTitle').addEventListener('click', () => {
         easterEggClicks++;
         if (easterEggClicks >= 5 && !infiniteMoney) {
@@ -1532,6 +1613,8 @@
         if (!bossActive) return;
         let damage = clickMultiplier;
         if (doubleClickActive && Date.now() < doubleClickEnd) damage *= 2;
+        const comboMulti = getComboMultiplier();
+        damage = Math.floor(damage * comboMulti);
         bossHealth -= damage;
         updateBossUI();
         if (bossHealth <= 0) defeatBoss(true);
@@ -1546,7 +1629,6 @@
     document.getElementById('autoClickToggle').addEventListener('change', e => { autoClickBuyEnabled = e.target.checked; saveGame(); });
     
     setInterval(() => {
-        // Auto-køb Stærkere Klik
         if (autoClickBuyEnabled && hasAdvisor) {
             const cost = 8 + (clickMultiplier - 1) * 5;
             while ((infiniteMoney || points >= cost) && clickMultiplier < 100) {
@@ -1556,14 +1638,13 @@
             updateUI();
         }
         
-        // Auto-køb Power-ups
         if (autoPowerBuyEnabled && hasAdvisor) {
             const now = Date.now();
-            if ((!multiPointsActive || now >= multiPointsEnd) && (infiniteMoney || points >= 30000)) {
-                if (!infiniteMoney) points -= 30000;
-                multiPointsActive = true;
-                multiPointsEnd = now + 45000;
-                setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000);
+            if ((!doubleClickActive || now >= doubleClickEnd) && (infiniteMoney || points >= 3000)) {
+                if (!infiniteMoney) points -= 3000;
+                doubleClickActive = true;
+                doubleClickEnd = now + 30000;
+                setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000);
                 updateUI();
             }
             if ((!autoClickActive || now >= autoClickEnd) && (infiniteMoney || points >= 12000)) {
@@ -1575,6 +1656,8 @@
                     if (autoClickActive && Date.now() < autoClickEnd) {
                         let cv = clickMultiplier;
                         if (doubleClickActive && Date.now() < doubleClickEnd) cv *= 2;
+                        const comboMulti = getComboMultiplier();
+                        cv = Math.floor(cv * comboMulti);
                         addPoints(cv);
                         totalClicks++;
                         updateUI();
@@ -1587,11 +1670,36 @@
                 setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000);
                 updateUI();
             }
-            if ((!doubleClickActive || now >= doubleClickEnd) && (infiniteMoney || points >= 3000)) {
-                if (!infiniteMoney) points -= 3000;
-                doubleClickActive = true;
-                doubleClickEnd = now + 30000;
-                setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000);
+            if ((!multiPointsActive || now >= multiPointsEnd) && (infiniteMoney || points >= 30000)) {
+                if (!infiniteMoney) points -= 30000;
+                multiPointsActive = true;
+                multiPointsEnd = now + 45000;
+                setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000);
+                updateUI();
+            }
+            if ((!boostActive || now >= boostEnd) && (infiniteMoney || points >= 25000)) {
+                if (!infiniteMoney) points -= 25000;
+                boostActive = true;
+                boostEnd = now + 30000;
+                setTimeout(() => { boostActive = false; updateUI(); }, 30000);
+                updateUI();
+            }
+            if ((!comboFreezeActive || now >= comboFreezeEnd) && (infiniteMoney || points >= 20000)) {
+                if (!infiniteMoney) points -= 20000;
+                comboFreezeActive = true;
+                comboFreezeEnd = now + 60000;
+                setTimeout(() => { comboFreezeActive = false; updateUI(); }, 60000);
+                updateUI();
+            }
+            if ((!moneyRainActive || now >= moneyRainEnd) && (infiniteMoney || points >= 28000)) {
+                if (!infiniteMoney) points -= 28000;
+                moneyRainActive = true;
+                moneyRainEnd = now + 30000;
+                const rainInterval = setInterval(() => {
+                    if (moneyRainActive && Date.now() < moneyRainEnd) spawnGoldenWilliam();
+                    else clearInterval(rainInterval);
+                }, 5000);
+                setTimeout(() => { moneyRainActive = false; updateUI(); }, 30000);
                 updateUI();
             }
         }
@@ -1608,7 +1716,7 @@
         });
     });
 
-    // Leaderboard (forenklet)
+    // Leaderboard
     function loadLeaderboard() {
         db.ref('scores/money').orderByChild('score').limitToLast(10).once('value', (snapshot) => {
             let scores = [];
