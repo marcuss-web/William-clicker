@@ -10,23 +10,23 @@
     
     <style>
         * { user-select: none; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
-        body { background: linear-gradient(145deg, #2d1b0e, #1a0f07); min-height: 100vh; font-family: 'Segoe UI', 'Quicksand', 'Poppins', system-ui, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; overflow-x: hidden; }
+        body { background: linear-gradient(145deg, #2d1b0e, #1a0f07); min-height: 100vh; font-family: 'Segoe UI', 'Quicksand', 'Poppins', system-ui, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; overflow-x: hidden; overflow-y: auto; }
         .game-layout { max-width: 1400px; width: 100%; display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; }
-        .game-left { flex: 2; min-width: 300px; background: rgba(10,14,23,0.6); backdrop-filter: blur(5px); border-radius: 70px; padding: 25px 20px 35px; box-shadow: 0 20px 35px rgba(0,0,0,0.4); border: 1px solid #ffb34766; }
+        .game-left { flex: 2; min-width: 300px; background: rgba(10,14,23,0.6); backdrop-filter: blur(5px); border-radius: 70px; padding: 25px 20px 35px; box-shadow: 0 20px 35px rgba(0,0,0,0.4); border: 1px solid #ffb34766; overflow-y: auto; max-height: 90vh; }
         .upgrade-panel { flex: 1.2; min-width: 280px; max-height: 85vh; overflow-y: auto; background: #0b0e16cc; backdrop-filter: blur(8px); border-radius: 60px; padding: 20px 18px; border: 1px solid #f3aa4a88; box-shadow: 0 10px 25px black; }
         .score-panel { background: #03050ce6; border-radius: 100px; padding: 12px 20px; margin-bottom: 25px; text-align: center; }
         .score-value { font-size: 4rem; font-weight: 800; background: linear-gradient(135deg, #ffdd99, #ffaa33); background-clip: text; -webkit-background-clip: text; color: transparent; line-height: 1; display: inline-block; position: relative; }
         .infinity-symbol { font-size: 2rem; color: #ffd700; margin-left: 10px; display: inline-block; animation: pulse 1s infinite; }
         @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.1); } }
         .per-second-stats { background: #00000066; border-radius: 40px; padding: 12px; margin: 15px 0; font-size: 0.9rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; color: #e8d5a8; }
-        .central-area { position: relative; display: flex; justify-content: center; align-items: center; min-height: 450px; margin: 20px 0; }
+        .central-area { position: relative; display: flex; justify-content: center; align-items: center; min-height: 400px; margin: 20px 0; }
         
-        .mega-flame { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; border-radius: 50%; pointer-events: none; z-index: 0; }
-        .mega-flame::before { content: "🔥"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 18rem; filter: drop-shadow(0 0 30px currentColor); animation: flameFlicker 0.3s infinite alternate; }
+        .mega-flame { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; border-radius: 50%; pointer-events: none; z-index: 0; }
+        .mega-flame::before { content: "🔥"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 15rem; filter: drop-shadow(0 0 30px currentColor); animation: flameFlicker 0.3s infinite alternate; }
         @keyframes flameFlicker { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; } }
-        .mega-flame-glow { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 380px; height: 380px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, rgba(255,100,0,0.3) 0%, rgba(255,0,0,0) 70%); }
+        .mega-flame-glow { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 330px; height: 330px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, rgba(255,100,0,0.3) 0%, rgba(255,0,0,0) 70%); }
         
-        /* CORVETTE KASPER - med cirkel billede */
+        /* CORVETTE KASPER */
         .corvette-car { position: fixed; z-index: 1000; width: 100px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
         .corvette-car img { width: 100%; border-radius: 50%; border: 3px solid #ffd700; object-fit: cover; background: #2c2e3e; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
         .corvette-car .car-label { font-size: 0.7rem; background: #000000aa; padding: 2px 8px; border-radius: 20px; margin-top: 5px; color: #ffd700; }
@@ -53,12 +53,12 @@
         .pizza-throw { position: absolute; right: 5px; top: -10px; font-size: 2rem; animation: throwPizza 1.5s ease-in-out infinite; pointer-events: none; }
         @keyframes throwPizza { 0% { transform: translate(0, 0) rotate(0deg); opacity: 1; } 100% { transform: translate(-100px, -25px) rotate(360deg); opacity: 0; } }
         
-        .farmer-pig-area { margin-top: 25px; padding: 15px; background: linear-gradient(180deg, #5d8c48, #3d6b2e); border-radius: 50px; border: 2px solid #c9a87b; display: none; }
-        .pig-field { background: #8b5e3c; border-radius: 30px; padding: 10px; position: relative; height: 90px; }
+        .farmer-pig-area { margin-top: 15px; padding: 15px; background: linear-gradient(180deg, #5d8c48, #3d6b2e); border-radius: 50px; border: 2px solid #c9a87b; display: none; }
+        .pig-field { background: #8b5e3c; border-radius: 30px; padding: 10px; position: relative; height: 80px; }
         .pig-walk { position: absolute; bottom: 10px; left: 0; animation: walkOnPigField 7s linear infinite; display: flex; flex-direction: column; align-items: center; }
         @keyframes walkOnPigField { 0% { left: -70px; transform: scaleX(1); } 45% { left: calc(100% - 70px); transform: scaleX(1); } 50% { left: calc(100% - 70px); transform: scaleX(-1); } 95% { left: -70px; transform: scaleX(-1); } 100% { left: -70px; transform: scaleX(1); } }
-        .johannes-img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid #ffd966; object-fit: cover; }
-        .pig-emoji { font-size: 2.2rem; margin-top: -8px; }
+        .johannes-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #ffd966; object-fit: cover; }
+        .pig-emoji { font-size: 1.8rem; margin-top: -8px; }
         
         .burger-menu-btn { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; background: #8B6914; border: 3px solid #ffd700; border-radius: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; cursor: pointer; z-index: 3000; }
         .burger-line { width: 25px; height: 3px; background: #ffd700; border-radius: 3px; }
@@ -114,13 +114,24 @@
         .prestige-confirm { flex: 1; background: #c71585; border: none; color: white; padding: 12px; border-radius: 30px; cursor: pointer; }
         .prestige-cancel { flex: 1; background: #3e2a24; border: none; color: #ffbe89; padding: 12px; border-radius: 30px; cursor: pointer; }
         
-        #comboCounter { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 15px 30px; border-radius: 50px; font-weight: bold; font-size: 1.8rem; z-index: 100; box-shadow: 0 0 20px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap; font-family: monospace; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); transition: all 0.2s; }
+        /* STREAK BANNER - MINDRE */
+        #comboCounter { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 8px 20px; border-radius: 40px; font-weight: bold; font-size: 1.2rem; z-index: 100; box-shadow: 0 0 15px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap; font-family: monospace; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); transition: all 0.2s; background: #333; color: white; }
         
         .skin-card, .boss-skin-card { transition: all 0.2s; cursor: pointer; }
         .skin-card:hover, .boss-skin-card:hover { transform: scale(1.02); }
         
         .leaderboard-entry { padding: 8px; border-bottom: 1px solid #555; display: flex; justify-content: space-between; }
         .achievement-card, .challenge-card { background: rgba(38,43,63,0.8); border-radius: 15px; padding: 12px; margin-bottom: 10px; text-align: left; }
+        
+        /* AUTO-BUY SECTIONS - SYNLIGE */
+        .auto-section { background: #1a1208; border-radius: 30px; padding: 10px; margin-bottom: 15px; }
+        .auto-section label { color: #ffcf7a; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        
+        /* KASPER POPUP */
+        .kasper-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #1a0f2e, #2d1b4e); border: 4px solid #ff0000; border-radius: 30px; padding: 25px; z-index: 10000; text-align: center; box-shadow: 0 0 100px rgba(255,0,0,0.5); max-width: 400px; width: 90%; }
+        .kasper-popup button { padding: 10px 20px; margin: 10px; border-radius: 30px; font-weight: bold; cursor: pointer; border: none; font-size: 1rem; }
+        .kasper-popup .forgive-btn { background: #4CAF50; color: white; }
+        .kasper-popup .shoot-btn { background: #ff4444; color: white; }
     </style>
 </head>
 <body>
@@ -178,7 +189,7 @@
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🏎️ Corvette Kasper</div><div class="upgrade-desc">⭐ Kører henover skærmen! Giver +500.000/sek. Pas på - han stjæler dine penge!</div></div><div class="upgrade-cost" id="kasperCostSpan">2500000</div><button class="buy-btn" id="buyKasperBtn">KØB</button></div>
         </div>
         <div id="powerupsTab" class="tab-content">
-            <div id="autoPowerSection" style="background:#1a1208; border-radius:30px; padding:10px; margin-bottom:15px; display:none;"><label style="color:#ffcf7a; display:flex; align-items:center; gap:8px;"><input type="checkbox" id="autoPowerToggle"> 🤖 Auto-køb Power-ups</label></div>
+            <div class="auto-section" id="autoPowerSection" style="display:none;"><label style="color:#ffcf7a; display:flex; align-items:center; gap:8px;"><input type="checkbox" id="autoPowerToggle"> 🤖 Auto-køb Power-ups</label></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">💪 2x Klik Kraft <span id="doubleActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div><div class="upgrade-desc">Dobbelt klik i 30 sek</div></div><div class="upgrade-cost">3.000</div><button class="buy-btn" id="powerupDoubleBtn">AKTIVER</button></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🤖 Auto-Klikker <span id="autoActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div><div class="upgrade-desc">10 klik/sek i 60 sek</div></div><div class="upgrade-cost">12.000</div><button class="buy-btn" id="powerupAutoBtn">AKTIVER</button></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">✨ 3x Point <span id="multiActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div><div class="upgrade-desc">3x point i 45 sek</div></div><div class="upgrade-cost">30.000</div><button class="buy-btn" id="powerupMultiBtn">AKTIVER</button></div>
@@ -186,7 +197,7 @@
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🔥 Combo Freeze <span id="freezeActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div><div class="upgrade-desc">Fryser combo 60 sek</div></div><div class="upgrade-cost">20.000</div><button class="buy-btn" id="powerupComboBtn">AKTIVER</button></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">💰 Money Rain <span id="rainActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div><div class="upgrade-desc">Regn af Guld William (max 4)</div></div><div class="upgrade-cost">28.000</div><button class="buy-btn" id="powerupRainBtn">AKTIVER</button></div>
         </div>
-        <div id="autoBuySection" style="background:#1a1208; border-radius:30px; padding:10px; margin-bottom:15px; display:none;"><label style="color:#ffcf7a; display:flex; align-items:center; gap:8px;"><input type="checkbox" id="autoClickToggle"> 🔄 Auto-køb Stærkere Klik</label></div>
+        <div class="auto-section" id="autoBuySection" style="display:none;"><label style="color:#ffcf7a; display:flex; align-items:center; gap:8px;"><input type="checkbox" id="autoClickToggle"> 🔄 Auto-køb Stærkere Klik</label></div>
         <button class="reset-btn" id="resetBtn">🔄 Nulstil spil</button>
         <button class="prestige-btn" id="prestigeToggle">👑 PRESTIGE 👑</button>
     </div>
@@ -246,7 +257,7 @@
     let unlockedBossSkins = [], activeSkins = { william: 'default', aksel: 'default', carl: 'default', saleh: 'default', johannes: 'default', kasper: 'default' };
     let boughtSkins = [];
     
-    // NORMALE SKINS (sorteret billigst til dyrest)
+    // NORMALE SKINS
     const NORMAL_SKINS = {
         william: [
             { id: 'default', name: 'Normal William', hat: '👨', cost: 0, bonus: 1 },
@@ -285,7 +296,7 @@
         ]
     };
     
-    // BOSS SKINS (inklusive - kan ses i menuen)
+    // BOSS SKINS
     const BOSS_SKINS_DATA = {
         william: [{ rarity: "Almindelig", bonus: 1.5, name: "Almindelig Rasmus William" }, { rarity: "Sjælden", bonus: 2, name: "Sjælden Rasmus William" }, { rarity: "Episk", bonus: 3, name: "Episk Rasmus William" }, { rarity: "Legendarisk", bonus: 4, name: "Legendarisk Rasmus William" }, { rarity: "Admin", bonus: 8, name: "Admin Rasmus William" }, { rarity: "Guddommelig", bonus: 15, name: "Guddommelig Rasmus William" }],
         aksel: [{ rarity: "Almindelig", bonus: 1.5, name: "Almindelig Rasmus Aksel" }, { rarity: "Sjælden", bonus: 2, name: "Sjælden Rasmus Aksel" }, { rarity: "Episk", bonus: 3, name: "Episk Rasmus Aksel" }, { rarity: "Legendarisk", bonus: 4, name: "Legendarisk Rasmus Aksel" }, { rarity: "Admin", bonus: 8, name: "Admin Rasmus Aksel" }, { rarity: "Guddommelig", bonus: 15, name: "Guddommelig Rasmus Aksel" }],
@@ -307,19 +318,39 @@
         return 1;
     }
     
-    // KASPER POPUP MED RØD EFFEKT
+    // KASPER POPUP - MED FUNGERENDE KNAPPER
     function showKasperPopup() {
         let popup = document.createElement('div');
         popup.className = 'kasper-popup';
-        popup.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#1a0f2e,#2d1b4e);border:4px solid #ff0000;border-radius:30px;padding:25px;z-index:10000;text-align:center;box-shadow:0 0 100px rgba(255,0,0,0.5);max-width:400px;width:90%;';
-        popup.innerHTML = `<img id="kasperPopupImg" src="${CORVETTE_URL}" style="width:120px;height:120px;border-radius:50%;border:3px solid #ff0000;object-fit:cover;margin-bottom:15px;"><h2 style="color:#ff4444;">⚠️ JØDE KASPER ⚠️</h2><p style="color:#ffcf7a;">Han stjal alle dine penge!</p><p style="color:#ffcf7a;">Du havde: ${Math.floor(points + kasperEarnedSinceLastSteal).toLocaleString()} points</p><p style="color:#ff0000;">💰 0 points tilbage 💰</p><div style="margin-top:20px;"><button id="kasperForgiveBtn" style="background:#4CAF50;color:white;padding:10px 20px;margin:10px;border-radius:30px;border:none;cursor:pointer;">🙏 LAD GÅ 🙏</button><button id="kasperShootBtn" style="background:#ff4444;color:white;padding:10px 20px;margin:10px;border-radius:30px;border:none;cursor:pointer;">🔫 SKYD HAM! 🔫</button></div>`;
+        popup.innerHTML = `
+            <img src="${CORVETTE_URL}" style="width:120px;height:120px;border-radius:50%;border:3px solid #ff0000;object-fit:cover;margin-bottom:15px;">
+            <h2 style="color:#ff4444;">⚠️ JØDE KASPER ⚠️</h2>
+            <p style="color:#ffcf7a;">Han stjal alle dine penge!</p>
+            <p style="color:#ffcf7a;">Du havde: ${Math.floor(points + kasperEarnedSinceLastSteal).toLocaleString()} points</p>
+            <p style="color:#ff0000;">💰 0 points tilbage 💰</p>
+            <div style="margin-top:20px;">
+                <button class="forgive-btn" id="kasperForgiveBtn">🙏 LAD GÅ 🙏</button>
+                <button class="shoot-btn" id="kasperShootBtn">🔫 SKYD HAM! 🔫</button>
+            </div>
+        `;
         document.body.appendChild(popup);
         
-        document.getElementById('kasperForgiveBtn').onclick = () => { popup.remove(); kasperEarnedSinceLastSteal = 0; showToast('🙏 Du lod Kasper gå... Han vil stjæle igen når du tjener 100k mere!'); };
-        document.getElementById('kasperShootBtn').onclick = () => {
-            let img = document.getElementById('kasperPopupImg');
-            if (img) { img.style.filter = 'brightness(2) sepia(1) hue-rotate(0deg) saturate(10)'; img.style.transition = '0.2s'; }
-            setTimeout(() => { popup.remove(); kasperRemoved = true; hasKasper = false; showToast('🔫 Du skød Kasper! Han er væk for altid! 💀'); updateUI(); saveGame(); }, 500);
+        document.getElementById('kasperForgiveBtn').onclick = () => { 
+            popup.remove(); 
+            kasperEarnedSinceLastSteal = 0; 
+            showToast('🙏 Du lod Kasper gå... Han vil stjæle igen når du tjener 100k mere!'); 
+        };
+        document.getElementById('kasperShootBtn').onclick = () => { 
+            let img = popup.querySelector('img');
+            if (img) { img.style.filter = 'brightness(2) sepia(1) saturate(10)'; }
+            setTimeout(() => { 
+                popup.remove(); 
+                kasperRemoved = true; 
+                hasKasper = false; 
+                showToast('🔫 Du skød Kasper! Han er væk for altid! 💀'); 
+                updateUI(); 
+                saveGame(); 
+            }, 300);
         };
     }
     
@@ -374,9 +405,9 @@
         let level = getStreakLevel();
         let comboEl = document.getElementById('comboCounter');
         let williamImg = document.querySelector('.william-img');
-        if (comboCount >= 5) { comboEl.style.opacity = '1'; comboEl.innerHTML = `🔥 ${comboCount}x COMBO! (${level.name} ${level.mult}x) 🔥`; comboEl.style.background = `linear-gradient(135deg, ${level.color}, #333)`; comboEl.style.boxShadow = `0 0 30px ${level.color}`; }
+        if (comboCount >= 5) { comboEl.style.opacity = '1'; comboEl.innerHTML = `🔥 ${comboCount}x COMBO! (${level.name} ${level.mult}x) 🔥`; comboEl.style.background = `linear-gradient(135deg, ${level.color}, #333)`; comboEl.style.boxShadow = `0 0 15px ${level.color}`; }
         else comboEl.style.opacity = '0';
-        williamImg.style.boxShadow = `0 15px 25px black, 0 0 0 5px ${level.color}, 0 0 0 9px #daa520, 0 0 20px ${level.color}`;
+        williamImg.style.boxShadow = `0 15px 25px black, 0 0 0 5px ${level.color}, 0 0 0 9px #daa520, 0 0 15px ${level.color}`;
         document.getElementById('comboCountDisplay').innerText = comboCount;
         document.getElementById('comboBonusDisplay').innerText = level.mult;
     }
@@ -422,7 +453,6 @@
         if (adminMode) total *= 1000;
         document.getElementById('totalPtsPerSec').innerText = Math.floor(total);
         
-        // Opdater power-up badges
         let now = Date.now();
         document.getElementById('doubleActiveBadge').style.display = (doubleClickActive && now < doubleClickEnd) ? 'inline-block' : 'none';
         document.getElementById('autoActiveBadge').style.display = (autoClickActive && now < autoClickEnd) ? 'inline-block' : 'none';
@@ -446,11 +476,11 @@
     }
     
     function saveGame() { 
-        if(!infiniteMoney) localStorage.setItem('williamClickerV18', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
+        if(!infiniteMoney) localStorage.setItem('williamClickerV19', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
     }
     
     function loadGame() { 
-        let s=localStorage.getItem('williamClickerV18'); 
+        let s=localStorage.getItem('williamClickerV19'); 
         if(s){ let d=JSON.parse(s); points=d.points||0; totalClicks=d.totalClicks||0; clickMultiplier=d.clickMultiplier||1; hasGoat=d.hasGoat||false; hasCarl=d.hasCarl||false; hasSaleh=d.hasSaleh||false; hasJohannes=d.hasJohannes||false; hasMarcus=d.hasMarcus||false; hasAdvisor=d.hasAdvisor||false; hasKasper=d.hasKasper||false; kasperRemoved=d.kasperRemoved||false; kasperEarnedSinceLastSteal=d.kasperEarnedSinceLastSteal||0; prestigeLevel=d.prestigeLevel||0; prestigeMultiplier=d.prestigeMultiplier||1; autoPowerBuyEnabled=d.autoPowerBuyEnabled||false; autoClickBuyEnabled=d.autoClickBuyEnabled||false; marcusBankBalance=d.marcusBankBalance||0; marcusBankReturnTime=d.marcusBankReturnTime||0; bankReturnAmount=d.bankReturnAmount||0; comboCount=d.comboCount||0; lastClickTime=d.lastClickTime||0; if(d.unlockedBossSkins) unlockedBossSkins=d.unlockedBossSkins; if(d.activeSkins) activeSkins=d.activeSkins; if(d.boughtSkins) boughtSkins=d.boughtSkins; }
         if(hasGoat) startGoatInterval(); if(hasCarl) startCarlInterval(); if(hasSaleh) startSalehInterval(); if(hasJohannes) startJohannesInterval();
         if(hasKasper && !kasperRemoved) startKasperAnimation();
@@ -485,7 +515,7 @@
     document.getElementById('powerupComboBtn').onclick = () => { if (!comboFreezeActive || Date.now() >= comboFreezeEnd) { activatePowerup(20000, () => { comboFreezeActive = true; comboFreezeEnd = Date.now() + 60000; showToast('🔥 Combo Freeze aktiveret i 60 sekunder!'); setTimeout(() => { comboFreezeActive = false; updateUI(); }, 60000); updateUI(); }); } else { showToast('🔥 Combo Freeze er allerede aktiv!'); } };
     document.getElementById('powerupRainBtn').onclick = () => { if (!moneyRainActive || Date.now() >= moneyRainEnd) { activatePowerup(28000, () => { moneyRainActive = true; moneyRainEnd = Date.now() + 30000; maxGoldenWilliams = 4; showToast('💰 Money Rain aktiveret! Flere Guld William!'); let rainInterval = setInterval(() => { if (moneyRainActive && Date.now() < moneyRainEnd) spawnGoldenWilliam(); else clearInterval(rainInterval); }, 4000); setTimeout(() => { moneyRainActive = false; maxGoldenWilliams = 2; updateUI(); }, 30000); updateUI(); }); } else { showToast('💰 Money Rain er allerede aktiv!'); } };
     
-    // GULD WILLIAM - GIVER RIGTIGT BELØB
+    // GULD WILLIAM
     function spawnGoldenWilliam() { if(activeGoldenWilliams>=maxGoldenWilliams) return; activeGoldenWilliams++; let g=document.createElement('div'); g.className='golden-william'; g.style.left=(10+Math.random()*70)+'%'; g.style.top=(10+Math.random()*70)+'%'; g.innerHTML=`<img class="golden-william-img" src="${WILLIAM_DEFAULT_URL}">`; let t=15,ti=setInterval(()=>{ t--; if(t<=0){ clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); } },1000); g.onclick=()=>{ let bonus = Math.max(1000, Math.floor(points * 0.05)); if(multiPointsActive) bonus*=3; if(hasAdvisor) bonus*=2; points+=bonus; updateUI(); saveGame(); showToast('🥇 GULD WILLIAM! +'+bonus.toLocaleString()+' point!'); clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); }; document.body.appendChild(g); }
     function scheduleGolden(){ if(goldenTimeout) clearTimeout(goldenTimeout); goldenTimeout=setTimeout(spawnGoldenWilliam,20000+Math.random()*25000); }
     
@@ -533,17 +563,15 @@
     document.addEventListener('keydown', (e) => { cheatBuffer += e.key; cheatBuffer = cheatBuffer.slice(-20); if (cheatBuffer.includes('cheats123')) { infiniteMoney = true; showToast('🔓 CHEAT AKTIVERET! UENDELIGE PENGE ∞'); updateUI(); cheatBuffer = ''; } if (cheatBuffer.includes('67admin')) { adminMode = true; document.getElementById('adminMenuBtn').style.display = 'block'; showToast('👑 ADMIN MODE AKTIVERET! 1000x BONUS!'); updateUI(); cheatBuffer = ''; } });
     document.getElementById('adminMenuBtn').onclick = () => { adminMode = !adminMode; showToast(adminMode ? '✨ 1000x MODE AKTIVERET! ✨' : '❌ 1000x MODE DEAKTIVERET! ❌'); updateUI(); };
     
-    // SKINS MENU - ALLE KARAKTERER MED BOSS SKINS SYNLIGE
+    // SKINS MENU
     function renderSkins(){
         let list=document.getElementById('skinsList'); if(!list) return;
         let html = '';
         
-        // William skins (sorteret billigst til dyrest)
         html += '<h3 style="color:#ffd700;">William Skins</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:15px;margin-bottom:25px;">';
         [...NORMAL_SKINS.william].sort((a,b)=>a.cost-b.cost).forEach(s=>{ let owned=boughtSkins.includes(s.id+'_william')||s.id==='default'; let active=activeSkins.william===s.id; let imgUrl = s.id==='bird'?WILLIAM_BIRD_URL:s.id==='devil'?WILLIAM_DEVIL_URL:s.id==='ghost'?WILLIAM_GHOST_URL:WILLIAM_DEFAULT_URL; html+=`<div class="skin-card" data-char="william" data-id="${s.id}" data-url="${imgUrl}" style="background:rgba(255,107,157,0.1); border:2px solid ${active?'#ffd700':(owned?'#00ff00':'#ff6b9d')}; border-radius:15px; padding:12px; text-align:center; cursor:pointer;"><div style="font-size:2rem;">${s.hat}</div><div style="color:#ffcf7a;">${s.name}</div><div style="color:#00ff88;">${s.bonus}x</div><div style="color:#ffd700;">${s.cost>0?s.cost.toLocaleString():'GRATIS'}</div><div style="color:${active?'#00ff00':(owned?'#ffaa00':'#ff6b9d')};">${active?'✓ AKTIV':(owned?'EJET':'KØB')}</div></div>`; });
         html+='</div>';
         
-        // Andre karakterers skins
         for (let [char, skins] of Object.entries(NORMAL_SKINS)) {
             if (char === 'william') continue;
             html += `<h3 style="color:#ffd700;">${char.charAt(0).toUpperCase() + char.slice(1)} Skins</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:15px;margin-bottom:25px;">`;
@@ -551,7 +579,6 @@
             html+='</div>';
         }
         
-        // Boss skins (inklusive - altid synlige)
         html += '<h3 style="color:#ff00ff;">⭐ INKLUSIVE BOSS SKINS (kun fra Rasmus) ⭐</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:15px;">';
         let chars = ['william', 'aksel', 'carl', 'saleh', 'johannes', 'kasper'];
         chars.forEach(char=>{
@@ -566,7 +593,6 @@
         
         list.innerHTML = html;
         
-        // Click handlers for normale skins
         document.querySelectorAll('.skin-card').forEach(card=>{
             card.onclick=()=>{
                 let char=card.dataset.char, id=card.dataset.id, url=card.dataset.url;
@@ -595,7 +621,6 @@
             };
         });
         
-        // Click handlers for boss skins (kun hvis låst)
         document.querySelectorAll('.boss-skin-card').forEach(card=>{
             if(!card.innerHTML.includes('🔒 DRÆB RASMUS')){
                 card.onclick=()=>{
@@ -632,7 +657,6 @@
     burger.onclick=()=>{ side.classList.add('active'); overlay.classList.add('active'); };
     overlay.onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); };
     
-    // Burger menu knapper
     document.getElementById('menuLeaderboard').onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); document.getElementById('leaderboardModal').classList.add('active'); loadLeaderboard(); };
     document.getElementById('menuAchievements').onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); document.getElementById('achievementsModal').classList.add('active'); renderAchievements(); };
     document.getElementById('menuChallenges').onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); document.getElementById('challengesModal').classList.add('active'); renderChallenges(); };
@@ -642,7 +666,6 @@
     
     document.querySelectorAll('.close-modal').forEach(b=>{ b.onclick=()=>b.closest('.modal').classList.remove('active'); });
     
-    // ACHIEVEMENTS, CHALLENGES, PRESTIGE UPGRADES (simple visninger)
     function renderAchievements() { document.getElementById('achievementsList').innerHTML = '<div class="achievement-card">🏆 Kommende achievements</div>'; }
     function renderChallenges() { document.getElementById('challengesList').innerHTML = '<div class="challenge-card">🎯 Kommende challenges</div>'; }
     function renderPrestigeUpgrades() { document.getElementById('upgradesList').innerHTML = '<div class="achievement-card">✨ Kommende prestige upgrades</div>'; }
