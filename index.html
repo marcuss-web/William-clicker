@@ -232,8 +232,8 @@
     const WILLIAM_BIRD_URL = "https://i.imgur.com/6BNwHp3.png";
     const WILLIAM_DEVIL_URL = "https://i.imgur.com/9rnywi6.jpg";
     const WILLIAM_GHOST_URL = "https://i.imgur.com/ZQsFg2Q.jpg";
-    // KASPER BRUGER CORVETTE BILLEDET (ÉT BILLEDE)
-    const KASPER_CORVETTE_URL = "https://i.postimg.cc/vTSDs3rc/download-(4).jpg";
+    const KASPER_IMG_URL = "https://i.postimg.cc/502x28Nt/9085981-400x400.jpg";
+    const CORVETTE_URL = "https://i.postimg.cc/vTSDs3rc/download-(4).jpg";
     const AKSEL_IMG_URL = "https://i.imgur.com/OmHtfXO.png";
     const CARL_IMG_URL = "https://i.imgur.com/KOC0f86.png";
     const SALEH_IMG_URL = "https://i.imgur.com/JsdtT0Q.png";
@@ -307,36 +307,21 @@
         document.getElementById('johannesChar').classList.toggle('not-owned', !hasJohannes);
     }
     
-    // KASPER POPUP - KNAPPER VIRKER!
+    // KASPER POPUP
     function showKasperPopup() {
         let popup = document.createElement('div');
         popup.className = 'kasper-popup';
-        popup.innerHTML = `<img src="${KASPER_CORVETTE_URL}"><h2>⚠️ JØDE KASPER ⚠️</h2><p>Han stjal alle dine penge!</p><p>Du havde: ${Math.floor(points + kasperEarnedSinceLastSteal).toLocaleString()} points</p><p style="color:#ff0000;">💰 0 points tilbage 💰</p><div><button class="forgive-btn" id="kasperForgiveBtn">🙏 LAD GÅ 🙏</button><button class="shoot-btn" id="kasperShootBtn">🔫 SKYD HAM! 🔫</button></div>`;
+        popup.innerHTML = `<img src="${KASPER_IMG_URL}" onerror="this.src='${CORVETTE_URL}'"><h2>⚠️ JØDE KASPER ⚠️</h2><p>Han stjal alle dine penge!</p><p>Du havde: ${Math.floor(points + kasperEarnedSinceLastSteal).toLocaleString()} points</p><p style="color:#ff0000;">💰 0 points tilbage 💰</p><div><button class="forgive-btn" id="kasperForgiveBtn">🙏 LAD GÅ 🙏</button><button class="shoot-btn" id="kasperShootBtn">🔫 SKYD HAM! 🔫</button></div>`;
         document.body.appendChild(popup);
-        
-        // LAD GÅ knap
-        document.getElementById('kasperForgiveBtn').onclick = function() {
-            popup.remove();
-            kasperEarnedSinceLastSteal = 0;
-            showToast('🙏 Du lod Kasper gå... Han vil stjæle igen når du tjener 100k mere!');
-        };
-        
-        // SKYD HAM knap
-        document.getElementById('kasperShootBtn').onclick = function() {
+        document.getElementById('kasperForgiveBtn').onclick = () => { popup.remove(); kasperEarnedSinceLastSteal = 0; showToast('🙏 Du lod Kasper gå... Han vil stjæle igen når du tjener 100k mere!'); };
+        document.getElementById('kasperShootBtn').onclick = () => { 
             let img = popup.querySelector('img');
             if (img) img.style.filter = 'brightness(2) sepia(1) saturate(10)';
-            setTimeout(function() {
-                popup.remove();
-                kasperRemoved = true;
-                hasKasper = false;
-                showToast('🔫 Du skød Kasper! Han er væk for altid! 💀');
-                updateUI();
-                saveGame();
-            }, 300);
+            setTimeout(() => { popup.remove(); kasperRemoved = true; hasKasper = false; showToast('🔫 Du skød Kasper! Han er væk for altid! 💀'); updateUI(); saveGame(); }, 300);
         };
     }
     
-    // KASPER ANIMATION - BRUGER CORVETTE BILLEDET
+    // KASPER ANIMATION
     let kasperAnimationInterval = null;
     function startKasperAnimation() {
         if (kasperAnimationInterval) clearInterval(kasperAnimationInterval);
@@ -347,7 +332,7 @@
             car.className = 'corvette-car';
             let randomY = 5 + Math.random() * 85;
             car.style.bottom = randomY + '%';
-            car.innerHTML = `<img src="${KASPER_CORVETTE_URL}">`;
+            car.innerHTML = `<img src="${KASPER_IMG_URL}" onerror="this.src='${CORVETTE_URL}'"><div class="car-label">🏎️ Kasper</div>`;
             if (direction === 'rightToLeft') {
                 car.style.right = '-120px';
                 car.style.transition = 'right 3s linear';
@@ -660,3 +645,4 @@
 </script>
 </body>
 </html>
+
