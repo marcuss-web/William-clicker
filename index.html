@@ -11,125 +11,124 @@
     <style>
         * { user-select: none; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
         body { background: linear-gradient(145deg, #2d1b0e, #1a0f07); min-height: 100vh; font-family: 'Segoe UI', 'Quicksand', 'Poppins', system-ui, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; overflow-x: hidden; overflow-y: auto; }
-        .game-layout { max-width: 1400px; width: 100%; display: flex; flex-wrap: wrap; gap: 25px; justify-content: center; }
-        .game-left { flex: 2; min-width: 300px; background: rgba(10,14,23,0.6); backdrop-filter: blur(5px); border-radius: 70px; padding: 25px 20px 35px; box-shadow: 0 20px 35px rgba(0,0,0,0.4); border: 1px solid #ffb34766; overflow-y: auto; max-height: 90vh; }
-        .upgrade-panel { flex: 1.2; min-width: 280px; max-height: 85vh; overflow-y: auto; background: #0b0e16cc; backdrop-filter: blur(8px); border-radius: 60px; padding: 20px 18px; border: 1px solid #f3aa4a88; box-shadow: 0 10px 25px black; }
-        .score-panel { background: #03050ce6; border-radius: 100px; padding: 12px 20px; margin-bottom: 25px; text-align: center; }
-        .score-value { font-size: 4rem; font-weight: 800; background: linear-gradient(135deg, #ffdd99, #ffaa33); background-clip: text; -webkit-background-clip: text; color: transparent; line-height: 1; display: inline-block; position: relative; }
-        .infinity-symbol { font-size: 2rem; color: #ffd700; margin-left: 10px; display: inline-block; animation: pulse 1s infinite; }
+        .game-layout { max-width: 1300px; width: 100%; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .game-left { flex: 2; min-width: 280px; background: rgba(10,14,23,0.6); backdrop-filter: blur(5px); border-radius: 50px; padding: 15px 15px 25px 15px; box-shadow: 0 20px 35px rgba(0,0,0,0.4); border: 1px solid #ffb34766; }
+        .upgrade-panel { flex: 1.2; min-width: 260px; max-height: 85vh; overflow-y: auto; background: #0b0e16cc; backdrop-filter: blur(8px); border-radius: 50px; padding: 15px 15px; border: 1px solid #f3aa4a88; box-shadow: 0 10px 25px black; }
+        .score-panel { background: #03050ce6; border-radius: 60px; padding: 8px 15px; margin-bottom: 15px; text-align: center; }
+        .score-value { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #ffdd99, #ffaa33); background-clip: text; -webkit-background-clip: text; color: transparent; line-height: 1; display: inline-block; position: relative; }
+        .infinity-symbol { font-size: 1.5rem; color: #ffd700; margin-left: 5px; display: inline-block; animation: pulse 1s infinite; }
         @keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.1); } }
-        .per-second-stats { background: #00000066; border-radius: 40px; padding: 12px; margin: 15px 0; font-size: 0.9rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; color: #e8d5a8; }
-        .central-area { position: relative; display: flex; justify-content: center; align-items: center; min-height: 400px; margin: 20px 0; }
+        .per-second-stats { background: #00000066; border-radius: 30px; padding: 8px; margin: 10px 0; font-size: 0.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; color: #e8d5a8; }
+        .central-area { position: relative; display: flex; justify-content: center; align-items: center; min-height: 280px; margin: 10px 0; }
         
-        .mega-flame { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; border-radius: 50%; pointer-events: none; z-index: 0; }
-        .mega-flame::before { content: "🔥"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 15rem; filter: drop-shadow(0 0 30px currentColor); animation: flameFlicker 0.3s infinite alternate; }
-        @keyframes flameFlicker { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; } }
-        .mega-flame-glow { position: absolute; top: 40%; left: 50%; transform: translate(-50%, -50%); width: 330px; height: 330px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, rgba(255,100,0,0.3) 0%, rgba(255,0,0,0) 70%); }
+        .mega-flame { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px; height: 280px; border-radius: 50%; pointer-events: none; z-index: 0; }
+        .mega-flame::before { content: "🔥"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14rem; filter: drop-shadow(0 0 25px currentColor); animation: flameFlicker 0.3s infinite alternate; }
+        @keyframes flameFlicker { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } }
+        .mega-flame-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, rgba(255,100,0,0.25) 0%, rgba(255,0,0,0) 70%); }
         
-        /* CORVETTE KASPER */
-        .corvette-car { position: fixed; z-index: 1000; width: 100px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
-        .corvette-car img { width: 100%; border-radius: 50%; border: 3px solid #ffd700; object-fit: cover; background: #2c2e3e; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
-        .corvette-car .car-label { font-size: 0.7rem; background: #000000aa; padding: 2px 8px; border-radius: 20px; margin-top: 5px; color: #ffd700; }
+        .corvette-car { position: fixed; z-index: 1000; width: 80px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
+        .corvette-car img { width: 100%; border-radius: 50%; border: 2px solid #ffd700; object-fit: cover; background: #2c2e3e; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .corvette-car .car-label { font-size: 0.6rem; background: #000000aa; padding: 2px 6px; border-radius: 15px; margin-top: 3px; color: #ffd700; }
         
         .william-container { position: relative; display: inline-block; cursor: pointer; z-index: 10; }
         .william-container:active { transform: scale(0.97); }
-        .william-img { width: 210px; height: 210px; object-fit: cover; object-position: center; border-radius: 50%; background: #2c2e3e; transition: all 0.2s ease; display: block; }
-        .hat { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); font-size: 3rem; pointer-events: none; z-index: 15; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3)); }
+        .william-img { width: 150px; height: 150px; object-fit: cover; object-position: center; border-radius: 50%; background: #2c2e3e; transition: all 0.2s ease; display: block; }
+        .hat { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 2.2rem; pointer-events: none; z-index: 15; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3)); }
         
         .aksel-position { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 5; display: none; }
-        .aksel-orbit { position: relative; width: 320px; height: 320px; animation: orbitWilliam 4s linear infinite; }
+        .aksel-orbit { position: relative; width: 260px; height: 260px; animation: orbitWilliam 4s linear infinite; }
         @keyframes orbitWilliam { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .aksel-card { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); background: #231f1acc; border-radius: 50px; padding: 5px 12px; border: 2px solid #ffaa55; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-        .aksel-img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid gold; object-fit: cover; }
+        .aksel-card { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); background: #231f1acc; border-radius: 40px; padding: 4px 10px; border: 2px solid #ffaa55; display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+        .aksel-img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid gold; object-fit: cover; }
         
-        .carl-on-head { position: absolute; top: -30px; left: 50%; transform: translateX(-50%); z-index: 25; pointer-events: none; animation: hopHop 0.45s infinite ease-in-out; display: none; }
-        @keyframes hopHop { 0%,100% { transform: translateX(-50%) translateY(0px); } 50% { transform: translateX(-50%) translateY(-14px); } }
-        .carl-head-img { width: 65px; height: 65px; border-radius: 50%; border: 3px solid #ffc107; object-fit: cover; }
+        .carl-on-head { position: absolute; top: -25px; left: 50%; transform: translateX(-50%); z-index: 25; pointer-events: none; animation: hopHop 0.45s infinite ease-in-out; display: none; }
+        @keyframes hopHop { 0%,100% { transform: translateX(-50%) translateY(0px); } 50% { transform: translateX(-50%) translateY(-10px); } }
+        .carl-head-img { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #ffc107; object-fit: cover; }
         
-        .saleh-position { position: absolute; right: -60px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
-        .saleh-card { background: #231f1acc; border-radius: 50px; padding: 8px 15px; display: flex; align-items: center; gap: 10px; border: 2px solid #ffaa55; animation: salehFloat 2s ease-in-out infinite; }
-        @keyframes salehFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-        .saleh-img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 3px solid #ffaa44; }
-        .pizza-throw { position: absolute; right: 5px; top: -10px; font-size: 2rem; animation: throwPizza 1.5s ease-in-out infinite; pointer-events: none; }
-        @keyframes throwPizza { 0% { transform: translate(0, 0) rotate(0deg); opacity: 1; } 100% { transform: translate(-100px, -25px) rotate(360deg); opacity: 0; } }
+        .saleh-position { position: absolute; right: -50px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
+        .saleh-card { background: #231f1acc; border-radius: 40px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; border: 2px solid #ffaa55; animation: salehFloat 2s ease-in-out infinite; }
+        @keyframes salehFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        .saleh-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 3px solid #ffaa44; }
+        .pizza-throw { position: absolute; right: 5px; top: -8px; font-size: 1.5rem; animation: throwPizza 1.5s ease-in-out infinite; pointer-events: none; }
+        @keyframes throwPizza { 0% { transform: translate(0, 0) rotate(0deg); opacity: 1; } 100% { transform: translate(-80px, -20px) rotate(360deg); opacity: 0; } }
         
-        .farmer-pig-area { margin-top: 15px; padding: 15px; background: linear-gradient(180deg, #5d8c48, #3d6b2e); border-radius: 50px; border: 2px solid #c9a87b; display: none; }
-        .pig-field { background: #8b5e3c; border-radius: 30px; padding: 10px; position: relative; height: 80px; }
-        .pig-walk { position: absolute; bottom: 10px; left: 0; animation: walkOnPigField 7s linear infinite; display: flex; flex-direction: column; align-items: center; }
-        @keyframes walkOnPigField { 0% { left: -70px; transform: scaleX(1); } 45% { left: calc(100% - 70px); transform: scaleX(1); } 50% { left: calc(100% - 70px); transform: scaleX(-1); } 95% { left: -70px; transform: scaleX(-1); } 100% { left: -70px; transform: scaleX(1); } }
-        .johannes-img { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #ffd966; object-fit: cover; }
-        .pig-emoji { font-size: 1.8rem; margin-top: -8px; }
+        .farmer-pig-area { margin-top: 10px; padding: 10px; background: linear-gradient(180deg, #5d8c48, #3d6b2e); border-radius: 40px; border: 2px solid #c9a87b; display: none; }
+        .pig-field { background: #8b5e3c; border-radius: 25px; padding: 8px; position: relative; height: 65px; }
+        .pig-walk { position: absolute; bottom: 8px; left: 0; animation: walkOnPigField 7s linear infinite; display: flex; flex-direction: column; align-items: center; }
+        @keyframes walkOnPigField { 0% { left: -60px; transform: scaleX(1); } 45% { left: calc(100% - 60px); transform: scaleX(1); } 50% { left: calc(100% - 60px); transform: scaleX(-1); } 95% { left: -60px; transform: scaleX(-1); } 100% { left: -60px; transform: scaleX(1); } }
+        .johannes-img { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ffd966; object-fit: cover; }
+        .pig-emoji { font-size: 1.5rem; margin-top: -5px; }
         
-        .burger-menu-btn { position: fixed; top: 20px; right: 20px; width: 50px; height: 50px; background: #8B6914; border: 3px solid #ffd700; border-radius: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; cursor: pointer; z-index: 3000; }
-        .burger-line { width: 25px; height: 3px; background: #ffd700; border-radius: 3px; }
-        .side-menu { position: fixed; top: 0; right: -320px; width: 300px; height: 100vh; background: rgba(10,14,23,0.98); backdrop-filter: blur(10px); border-left: 3px solid #ffd700; z-index: 2500; transition: right 0.3s ease; padding: 80px 15px 20px; overflow-y: auto; }
+        .burger-menu-btn { position: fixed; top: 20px; right: 20px; width: 45px; height: 45px; background: #8B6914; border: 3px solid #ffd700; border-radius: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; cursor: pointer; z-index: 3000; }
+        .burger-line { width: 22px; height: 3px; background: #ffd700; border-radius: 3px; }
+        .side-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: rgba(10,14,23,0.98); backdrop-filter: blur(10px); border-left: 3px solid #ffd700; z-index: 2500; transition: right 0.3s ease; padding: 70px 15px 20px; overflow-y: auto; }
         .side-menu.active { right: 0; }
         .side-menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2400; display: none; }
         .side-menu-overlay.active { display: block; }
-        .side-menu-btn { width: 100%; padding: 15px; margin-bottom: 10px; background: #1a1208; border: 2px solid #8B6914; border-radius: 15px; color: #ffd700; font-weight: bold; font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 10px; }
+        .side-menu-btn { width: 100%; padding: 12px; margin-bottom: 8px; background: #1a1208; border: 2px solid #8B6914; border-radius: 15px; color: #ffd700; font-weight: bold; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         
-        .upgrade-card { background: linear-gradient(115deg, #262b3f, #191e2f); border-radius: 50px; padding: 12px 18px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #f6b55766; }
+        .upgrade-card { background: linear-gradient(115deg, #262b3f, #191e2f); border-radius: 40px; padding: 8px 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #f6b55766; }
         .upgrade-info { flex: 2; }
-        .upgrade-name { font-weight: bold; color: #ffe1ae; }
-        .upgrade-desc { font-size: 0.7rem; color: #cfbc8f; }
-        .upgrade-cost { font-weight: bold; background: #1a1208; padding: 5px 14px; border-radius: 50px; color: #ffcf7a; margin-right: 12px; }
-        button.buy-btn { background: #e48f2b; border: none; font-weight: bold; padding: 6px 16px; border-radius: 40px; cursor: pointer; box-shadow: 0 3px 0 #784a1a; }
+        .upgrade-name { font-weight: bold; color: #ffe1ae; font-size: 0.85rem; }
+        .upgrade-desc { font-size: 0.65rem; color: #cfbc8f; }
+        .upgrade-cost { font-weight: bold; background: #1a1208; padding: 3px 10px; border-radius: 40px; color: #ffcf7a; margin-right: 8px; font-size: 0.8rem; }
+        button.buy-btn { background: #e48f2b; border: none; font-weight: bold; padding: 4px 12px; border-radius: 30px; cursor: pointer; box-shadow: 0 2px 0 #784a1a; font-size: 0.8rem; }
         button.buy-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-        .tab-container { display: flex; gap: 5px; margin-bottom: 15px; }
-        .tab-btn { flex: 1; background: #1a1208; border: 2px solid #8B6914; color: #c8a86e; padding: 8px; border-radius: 30px; cursor: pointer; font-weight: bold; text-align: center; }
+        .tab-container { display: flex; gap: 5px; margin-bottom: 12px; }
+        .tab-btn { flex: 1; background: #1a1208; border: 2px solid #8B6914; color: #c8a86e; padding: 6px; border-radius: 30px; cursor: pointer; font-weight: bold; text-align: center; font-size: 0.8rem; }
         .tab-btn.active { background: #8B6914; color: #ffd700; border-color: #ffd700; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        .reset-btn { background: #3e2a24; border: none; color: #ffbe89; padding: 8px 20px; border-radius: 60px; margin-top: 15px; width: 100%; cursor: pointer; }
-        .prestige-btn { background: linear-gradient(135deg, #9b59b6, #c71585); border: none; color: white; padding: 10px 20px; border-radius: 30px; cursor: pointer; margin-top: 15px; width: 100%; }
+        .reset-btn { background: #3e2a24; border: none; color: #ffbe89; padding: 6px 15px; border-radius: 50px; margin-top: 12px; width: 100%; cursor: pointer; font-size: 0.8rem; }
+        .prestige-btn { background: linear-gradient(135deg, #9b59b6, #c71585); border: none; color: white; padding: 8px 15px; border-radius: 30px; cursor: pointer; margin-top: 12px; width: 100%; font-size: 0.8rem; }
         
-        .golden-william { position: fixed; cursor: pointer; z-index: 1000; animation: goldenFloat 0.5s infinite alternate; filter: drop-shadow(0 0 20px gold); }
-        @keyframes goldenFloat { from { transform: translateY(0); } to { transform: translateY(-15px); } }
-        .golden-william-img { width: 80px; height: 80px; border-radius: 50%; border: 4px solid #ffd700; object-fit: cover; box-shadow: 0 0 20px rgba(255,215,0,0.5); }
+        .golden-william { position: fixed; cursor: pointer; z-index: 1000; animation: goldenFloat 0.5s infinite alternate; filter: drop-shadow(0 0 15px gold); width: 60px; }
+        @keyframes goldenFloat { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+        .golden-william-img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid #ffd700; object-fit: cover; }
         
-        .easter-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffd966; color: #2c2c2c; padding: 10px 20px; border-radius: 50px; z-index: 9999; animation: fadeOut 2s forwards; }
+        .easter-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #ffd966; color: #2c2c2c; padding: 8px 16px; border-radius: 40px; z-index: 9999; animation: fadeOut 2s forwards; font-size: 0.8rem; }
         @keyframes fadeOut { 0% { opacity: 1; } 100% { opacity: 0; visibility: hidden; } }
         
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
         .modal.active { display: flex; }
-        .modal-content { background: rgba(10,14,23,0.95); border-radius: 50px; padding: 30px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; border: 2px solid #ffb347; text-align: center; }
-        .modal-content h2 { color: #ffd700; }
-        .close-modal { background: #3e2a24; border: none; color: #ffbe89; padding: 10px 20px; border-radius: 30px; cursor: pointer; margin-top: 15px; width: 100%; }
+        .modal-content { background: rgba(10,14,23,0.95); border-radius: 40px; padding: 20px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; border: 2px solid #ffb347; text-align: center; }
+        .modal-content h2 { color: #ffd700; font-size: 1.5rem; margin-top: 0; }
+        .close-modal { background: #3e2a24; border: none; color: #ffbe89; padding: 8px 15px; border-radius: 30px; cursor: pointer; margin-top: 12px; width: 100%; }
         
-        .boss-container { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #4a0000, #2a0000); border: 5px solid #ff0000; border-radius: 30px; padding: 30px; z-index: 2000; display: none; text-align: center; max-width: 400px; width: 90%; }
+        .boss-container { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #4a0000, #2a0000); border: 4px solid #ff0000; border-radius: 30px; padding: 20px; z-index: 2000; display: none; text-align: center; max-width: 350px; width: 90%; }
         .boss-container.active { display: block; }
-        .boss-img { width: 150px; height: 150px; border-radius: 50%; border: 5px solid #ff0000; object-fit: cover; cursor: pointer; }
-        .boss-health-bar { width: 100%; height: 20px; background: #1a0000; border-radius: 10px; margin: 15px 0; border: 2px solid #ff0000; overflow: hidden; }
+        .boss-img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid #ff0000; object-fit: cover; cursor: pointer; }
+        .boss-health-bar { width: 100%; height: 15px; background: #1a0000; border-radius: 10px; margin: 12px 0; border: 2px solid #ff0000; overflow: hidden; }
         .boss-health-fill { height: 100%; background: linear-gradient(90deg, #ff4444, #ff0000); border-radius: 8px; transition: width 0.1s; }
-        .boss-name { color: #ff4444; font-size: 2rem; font-weight: bold; }
+        .boss-name { color: #ff4444; font-size: 1.5rem; font-weight: bold; }
         
-        .active-power-badge { display: inline-block; background: #00ff00; color: #000; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; margin-left: 10px; }
-        footer { text-align: center; margin-top: 20px; color: #ffcf7a; }
-        .bank-balance-box { background: rgba(255,183,71,0.1); padding: 15px; border-radius: 15px; margin-bottom: 15px; color: #ffd700; }
-        .bank-option-btn { width: 100%; padding: 12px; margin: 5px 0; background: #1a1208; border: 2px solid #8B6914; border-radius: 10px; color: #ffcf7a; cursor: pointer; }
-        .bank-withdraw-btn { width: 100%; padding: 12px; background: #4CAF50; border: none; border-radius: 10px; color: white; cursor: pointer; }
-        .prestige-info { background: rgba(38,20,60,0.8); border-radius: 30px; padding: 20px; margin: 20px 0; border: 2px solid #9b59b6; }
+        .active-power-badge { display: inline-block; background: #00ff00; color: #000; padding: 2px 6px; border-radius: 15px; font-size: 0.6rem; margin-left: 8px; }
+        footer { text-align: center; margin-top: 15px; color: #ffcf7a; font-size: 0.7rem; }
+        .bank-balance-box { background: rgba(255,183,71,0.1); padding: 12px; border-radius: 15px; margin-bottom: 12px; color: #ffd700; }
+        .bank-option-btn { width: 100%; padding: 8px; margin: 4px 0; background: #1a1208; border: 2px solid #8B6914; border-radius: 10px; color: #ffcf7a; cursor: pointer; font-size: 0.8rem; }
+        .bank-withdraw-btn { width: 100%; padding: 8px; background: #4CAF50; border: none; border-radius: 10px; color: white; cursor: pointer; }
+        .prestige-info { background: rgba(38,20,60,0.8); border-radius: 25px; padding: 15px; margin: 15px 0; border: 2px solid #9b59b6; }
         .prestige-bonus { color: #ffd700; font-weight: bold; }
         .prestige-actions { display: flex; gap: 10px; }
-        .prestige-confirm { flex: 1; background: #c71585; border: none; color: white; padding: 12px; border-radius: 30px; cursor: pointer; }
-        .prestige-cancel { flex: 1; background: #3e2a24; border: none; color: #ffbe89; padding: 12px; border-radius: 30px; cursor: pointer; }
+        .prestige-confirm { flex: 1; background: #c71585; border: none; color: white; padding: 8px; border-radius: 30px; cursor: pointer; }
+        .prestige-cancel { flex: 1; background: #3e2a24; border: none; color: #ffbe89; padding: 8px; border-radius: 30px; cursor: pointer; }
         
-        /* STREAK BANNER - MINDRE */
-        #comboCounter { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); padding: 8px 20px; border-radius: 40px; font-weight: bold; font-size: 1.2rem; z-index: 100; box-shadow: 0 0 15px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap; font-family: monospace; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); transition: all 0.2s; background: #333; color: white; }
+        #comboCounter { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); padding: 5px 15px; border-radius: 30px; font-weight: bold; font-size: 0.9rem; z-index: 100; box-shadow: 0 0 10px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap; font-family: monospace; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); transition: all 0.2s; background: #333; color: white; }
         
         .skin-card, .boss-skin-card { transition: all 0.2s; cursor: pointer; }
         .skin-card:hover, .boss-skin-card:hover { transform: scale(1.02); }
         
-        .leaderboard-entry { padding: 8px; border-bottom: 1px solid #555; display: flex; justify-content: space-between; }
-        .achievement-card, .challenge-card { background: rgba(38,43,63,0.8); border-radius: 15px; padding: 12px; margin-bottom: 10px; text-align: left; }
+        .leaderboard-entry { padding: 6px; border-bottom: 1px solid #555; display: flex; justify-content: space-between; font-size: 0.8rem; }
+        .achievement-card, .challenge-card { background: rgba(38,43,63,0.8); border-radius: 12px; padding: 10px; margin-bottom: 8px; text-align: left; font-size: 0.8rem; }
         
-        /* AUTO-BUY SECTIONS - SYNLIGE */
-        .auto-section { background: #1a1208; border-radius: 30px; padding: 10px; margin-bottom: 15px; }
-        .auto-section label { color: #ffcf7a; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .auto-section { background: #1a1208; border-radius: 25px; padding: 8px; margin-bottom: 12px; }
+        .auto-section label { color: #ffcf7a; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.8rem; }
         
-        /* KASPER POPUP */
-        .kasper-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #1a0f2e, #2d1b4e); border: 4px solid #ff0000; border-radius: 30px; padding: 25px; z-index: 10000; text-align: center; box-shadow: 0 0 100px rgba(255,0,0,0.5); max-width: 400px; width: 90%; }
-        .kasper-popup button { padding: 10px 20px; margin: 10px; border-radius: 30px; font-weight: bold; cursor: pointer; border: none; font-size: 1rem; }
+        .kasper-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: linear-gradient(135deg, #1a0f2e, #2d1b4e); border: 4px solid #ff0000; border-radius: 25px; padding: 20px; z-index: 10000; text-align: center; box-shadow: 0 0 80px rgba(255,0,0,0.5); max-width: 350px; width: 90%; }
+        .kasper-popup img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid #ff0000; object-fit: cover; margin-bottom: 10px; }
+        .kasper-popup h2 { color: #ff4444; font-size: 1.3rem; margin: 5px 0; }
+        .kasper-popup p { color: #ffcf7a; margin: 5px 0; font-size: 0.9rem; }
+        .kasper-popup button { padding: 8px 16px; margin: 8px; border-radius: 25px; font-weight: bold; cursor: pointer; border: none; font-size: 0.9rem; }
         .kasper-popup .forgive-btn { background: #4CAF50; color: white; }
         .kasper-popup .shoot-btn { background: #ff4444; color: white; }
     </style>
@@ -139,7 +138,7 @@
 <div class="burger-menu-btn" id="burgerMenuBtn"><div class="burger-line"></div><div class="burger-line"></div><div class="burger-line"></div></div>
 <div class="side-menu-overlay" id="sideMenuOverlay"></div>
 <div class="side-menu" id="sideMenu">
-    <h3 style="color:#ffd700; text-align:center;">📋 MENU</h3>
+    <h3 style="color:#ffd700; text-align:center; font-size:1.2rem;">📋 MENU</h3>
     <button class="side-menu-btn" id="menuLeaderboard">🏆 Scoreboard</button>
     <button class="side-menu-btn" id="menuAchievements">🎖️ Achievements</button>
     <button class="side-menu-btn" id="menuChallenges">🎯 Challenges</button>
@@ -164,32 +163,32 @@
         <div class="central-area">
             <div class="mega-flame-glow" id="megaFlameGlow"></div>
             <div class="mega-flame" id="megaFlame">🔥</div>
-            <div class="aksel-position" id="akselWrapper"><div class="aksel-orbit"><div class="aksel-card"><img class="aksel-img" id="akselImg"><span style="color:#ffd700;">Aksel</span></div></div></div>
-            <div class="saleh-position" id="salehWrapper"><div class="saleh-card"><img class="saleh-img" id="salehImg"><span style="color:#ffd700;">Saleh</span></div><div class="pizza-throw">🍕</div></div>
+            <div class="aksel-position" id="akselWrapper"><div class="aksel-orbit"><div class="aksel-card"><img class="aksel-img" id="akselImg"><span style="color:#ffd700; font-size:0.7rem;">Aksel</span></div></div></div>
+            <div class="saleh-position" id="salehWrapper"><div class="saleh-card"><img class="saleh-img" id="salehImg"><span style="color:#ffd700; font-size:0.7rem;">Saleh</span></div><div class="pizza-throw">🍕</div></div>
             <div class="william-container" id="williamClicker">
                 <img class="william-img" id="williamImg">
                 <div class="hat" id="williamHat"></div>
                 <div id="carlWrapper"><div class="carl-on-head" id="carlOnHead"><img id="carlHeadImg" class="carl-head-img"></div></div>
             </div>
         </div>
-        <div id="johannesArea" class="farmer-pig-area"><div class="pig-field"><div class="pig-walk"><div style="display:flex; flex-direction:column; align-items:center;"><img id="johannesImg" class="johannes-img"><div class="pig-emoji">🐷</div><div style="background:#2c1e0ecc; font-size:0.6rem; padding:2px 8px; border-radius:20px;">Johannes</div></div></div></div><div style="text-align:center; font-size:0.7rem; color:#a5d6a7;">🌾 Rider på gris – giver 10.000/sek 🌾</div></div>
+        <div id="johannesArea" class="farmer-pig-area"><div class="pig-field"><div class="pig-walk"><div style="display:flex; flex-direction:column; align-items:center;"><img id="johannesImg" class="johannes-img"><div class="pig-emoji">🐷</div><div style="background:#2c1e0ecc; font-size:0.5rem; padding:2px 6px; border-radius:15px;">Johannes</div></div></div></div><div style="text-align:center; font-size:0.6rem; color:#a5d6a7;">🌾 Rider på gris – giver 10.000/sek 🌾</div></div>
         <footer>👇 Klik på William! 👉 Hold streak for kæmpe bonus! 🔥</footer>
     </div>
     <div class="upgrade-panel">
-        <h3 style="color:#ffcf7a; margin-top:0;">✨ UPGRADES ✨</h3>
+        <h3 style="color:#ffcf7a; margin-top:0; font-size:1rem;">✨ UPGRADES ✨</h3>
         <div class="tab-container"><div class="tab-btn active" data-tab="upgrades">🏆 Upgrades</div><div class="tab-btn" data-tab="powerups">⚡ Power-ups</div></div>
         <div id="upgradesTab" class="tab-content active">
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">💪 Stærkere Klik</div><div class="upgrade-desc">+1 point pr. klik (nuværende: <span id="clickLevel">1</span>)</div></div><div class="upgrade-cost" id="clickCostSpan">30</div><button class="buy-btn" id="buyClickBtn">KØB</button></div>
-            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🐐 Aksel the GOAT</div><div class="upgrade-desc">Flyver rundt om William – giver +10/sek</div></div><div class="upgrade-cost" id="goatCostSpan">150</div><button class="buy-btn" id="buyGoatBtn">KØB</button></div>
-            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🐄 Carl er en Karl</div><div class="upgrade-desc">Hopper på Williams hoved – giver +100/sek</div></div><div class="upgrade-cost" id="carlCostSpan">3000</div><button class="buy-btn" id="buyCarlBtn">KØB</button></div>
-            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🍕 Pizza Saleh</div><div class="upgrade-desc">Kaster pizzaer – giver +1.000/sek</div></div><div class="upgrade-cost" id="salehCostSpan">30000</div><button class="buy-btn" id="buySalehBtn">KØB</button></div>
-            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">👨‍🌾 Johannes på Gris</div><div class="upgrade-desc">Rider på gris – giver +10.000/sek</div></div><div class="upgrade-cost" id="johannesCostSpan">120000</div><button class="buy-btn" id="buyJohannesBtn">KØB</button></div>
-            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🏦 Marcus Bankier</div><div class="upgrade-desc">Giv point til banken og få renter tilbage</div></div><div class="upgrade-cost" id="marcusCostSpan">150000</div><button class="buy-btn" id="buyMarcusBtn">KØB</button></div>
+            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🐐 Aksel the GOAT</div><div class="upgrade-desc">Flyver rundt – +10/sek</div></div><div class="upgrade-cost" id="goatCostSpan">150</div><button class="buy-btn" id="buyGoatBtn">KØB</button></div>
+            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🐄 Carl er en Karl</div><div class="upgrade-desc">Hopper på hoved – +100/sek</div></div><div class="upgrade-cost" id="carlCostSpan">3000</div><button class="buy-btn" id="buyCarlBtn">KØB</button></div>
+            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🍕 Pizza Saleh</div><div class="upgrade-desc">Kaster pizza – +1.000/sek</div></div><div class="upgrade-cost" id="salehCostSpan">30000</div><button class="buy-btn" id="buySalehBtn">KØB</button></div>
+            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">👨‍🌾 Johannes på Gris</div><div class="upgrade-desc">Rider på gris – +10.000/sek</div></div><div class="upgrade-cost" id="johannesCostSpan">120000</div><button class="buy-btn" id="buyJohannesBtn">KØB</button></div>
+            <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🏦 Marcus Bankier</div><div class="upgrade-desc">Giv point og få renter</div></div><div class="upgrade-cost" id="marcusCostSpan">150000</div><button class="buy-btn" id="buyMarcusBtn">KØB</button></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🤐 Anonym Advisor</div><div class="upgrade-desc">Unlocker Auto-Buy</div></div><div class="upgrade-cost" id="advisorCostSpan">200000</div><button class="buy-btn" id="buyAdvisorBtn">KØB</button></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🏎️ Corvette Kasper</div><div class="upgrade-desc">⭐ Kører henover skærmen! Giver +500.000/sek. Pas på - han stjæler dine penge!</div></div><div class="upgrade-cost" id="kasperCostSpan">2500000</div><button class="buy-btn" id="buyKasperBtn">KØB</button></div>
         </div>
         <div id="powerupsTab" class="tab-content">
-            <div class="auto-section" id="autoPowerSection" style="display:none;"><label style="color:#ffcf7a; display:flex; align-items:center; gap:8px;"><input type="checkbox" id="autoPowerToggle"> 🤖 Auto-køb Power-ups</label></div>
+            <div class="auto-section" id="autoPowerSection" style="display:none;"><label><input type="checkbox" id="autoPowerToggle"> 🤖 Auto-køb Power-ups</label></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">💪 2x Klik Kraft <span id="doubleActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div><div class="upgrade-desc">Dobbelt klik i 30 sek</div></div><div class="upgrade-cost">3.000</div><button class="buy-btn" id="powerupDoubleBtn">AKTIVER</button></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🤖 Auto-Klikker <span id="autoActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div><div class="upgrade-desc">10 klik/sek i 60 sek</div></div><div class="upgrade-cost">12.000</div><button class="buy-btn" id="powerupAutoBtn">AKTIVER</button></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">✨ 3x Point <span id="multiActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div><div class="upgrade-desc">3x point i 45 sek</div></div><div class="upgrade-cost">30.000</div><button class="buy-btn" id="powerupMultiBtn">AKTIVER</button></div>
@@ -197,7 +196,7 @@
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">🔥 Combo Freeze <span id="freezeActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div><div class="upgrade-desc">Fryser combo 60 sek</div></div><div class="upgrade-cost">20.000</div><button class="buy-btn" id="powerupComboBtn">AKTIVER</button></div>
             <div class="upgrade-card"><div class="upgrade-info"><div class="upgrade-name">💰 Money Rain <span id="rainActiveBadge" style="display:none;" class="active-power-badge">AKTIV</span></div><div class="upgrade-desc">Regn af Guld William (max 4)</div></div><div class="upgrade-cost">28.000</div><button class="buy-btn" id="powerupRainBtn">AKTIVER</button></div>
         </div>
-        <div class="auto-section" id="autoBuySection" style="display:none;"><label style="color:#ffcf7a; display:flex; align-items:center; gap:8px;"><input type="checkbox" id="autoClickToggle"> 🔄 Auto-køb Stærkere Klik</label></div>
+        <div class="auto-section" id="autoBuySection" style="display:none;"><label><input type="checkbox" id="autoClickToggle"> 🔄 Auto-køb Stærkere Klik</label></div>
         <button class="reset-btn" id="resetBtn">🔄 Nulstil spil</button>
         <button class="prestige-btn" id="prestigeToggle">👑 PRESTIGE 👑</button>
     </div>
@@ -205,7 +204,7 @@
 <div id="comboCounter">🔥 0x COMBO! 🔥</div>
 
 <!-- Modals -->
-<div class="modal" id="leaderboardModal"><div class="modal-content"><h2>🏆 LEADERBOARD</h2><div id="leaderboardList"><p>Indlæser...</p></div><input type="text" id="playerName" placeholder="Dit navn..." style="margin:10px; padding:8px; border-radius:20px; border:none;"><button id="saveScoreBtn" style="background:#e48f2b; border:none; padding:8px 15px; border-radius:20px; cursor:pointer;">GEM SCORE</button><button class="close-modal" style="margin-top:15px;">LUK</button></div></div>
+<div class="modal" id="leaderboardModal"><div class="modal-content"><h2>🏆 LEADERBOARD</h2><div id="leaderboardList"><p>Indlæser...</p></div><input type="text" id="playerName" placeholder="Dit navn..." style="margin:10px; padding:8px; border-radius:20px; border:none;"><button id="saveScoreBtn" style="background:#e48f2b; border:none; padding:6px 12px; border-radius:20px; cursor:pointer;">GEM SCORE</button><button class="close-modal" style="margin-top:12px;">LUK</button></div></div>
 <div class="modal" id="achievementsModal"><div class="modal-content"><h2>🎖️ ACHIEVEMENTS</h2><div id="achievementsList"></div><button class="close-modal">LUK</button></div></div>
 <div class="modal" id="challengesModal"><div class="modal-content"><h2>🎯 CHALLENGES</h2><div id="challengesList"></div><button class="close-modal">LUK</button></div></div>
 <div class="modal" id="prestigeUpgradesModal"><div class="modal-content"><h2>✨ PRESTIGE UPGRADES</h2><div id="upgradesList"></div><button class="close-modal">LUK</button></div></div>
@@ -215,7 +214,7 @@
 <div class="boss-container" id="bossContainer"><div class="boss-name">👹 RASMUS PRANGE</div><img class="boss-img" id="bossImg"><div class="boss-health-bar"><div class="boss-health-fill" id="bossHealthFill"></div></div><div id="bossHealthText">❤️ 100.000 / 100.000</div><div class="boss-timer" id="bossTimer">⏱️ 3:00</div></div>
 
 <script>
-    // BILLEDER - KORREKTE URL'er
+    // BILLEDER
     const WILLIAM_DEFAULT_URL = "https://i.imgur.com/fVQ99Zm.png";
     const WILLIAM_BIRD_URL = "https://i.imgur.com/6BNwHp3.png";
     const WILLIAM_DEVIL_URL = "https://i.imgur.com/9rnywi6.jpg";
@@ -227,7 +226,6 @@
     const JOHANNES_IMG_URL = "https://i.imgur.com/5TFyXLj.png";
     const RASMUS_IMG_URL = "https://i.imgur.com/NYwkKEV.png";
     
-    // Sæt billeder
     document.getElementById('williamImg').src = WILLIAM_DEFAULT_URL;
     document.getElementById('akselImg').src = AKSEL_IMG_URL;
     document.getElementById('carlHeadImg').src = CARL_IMG_URL;
@@ -296,7 +294,6 @@
         ]
     };
     
-    // BOSS SKINS
     const BOSS_SKINS_DATA = {
         william: [{ rarity: "Almindelig", bonus: 1.5, name: "Almindelig Rasmus William" }, { rarity: "Sjælden", bonus: 2, name: "Sjælden Rasmus William" }, { rarity: "Episk", bonus: 3, name: "Episk Rasmus William" }, { rarity: "Legendarisk", bonus: 4, name: "Legendarisk Rasmus William" }, { rarity: "Admin", bonus: 8, name: "Admin Rasmus William" }, { rarity: "Guddommelig", bonus: 15, name: "Guddommelig Rasmus William" }],
         aksel: [{ rarity: "Almindelig", bonus: 1.5, name: "Almindelig Rasmus Aksel" }, { rarity: "Sjælden", bonus: 2, name: "Sjælden Rasmus Aksel" }, { rarity: "Episk", bonus: 3, name: "Episk Rasmus Aksel" }, { rarity: "Legendarisk", bonus: 4, name: "Legendarisk Rasmus Aksel" }, { rarity: "Admin", bonus: 8, name: "Admin Rasmus Aksel" }, { rarity: "Guddommelig", bonus: 15, name: "Guddommelig Rasmus Aksel" }],
@@ -318,17 +315,17 @@
         return 1;
     }
     
-    // KASPER POPUP - MED FUNGERENDE KNAPPER
+    // KASPER POPUP - MED VIRKENDE KNAPPER
     function showKasperPopup() {
         let popup = document.createElement('div');
         popup.className = 'kasper-popup';
         popup.innerHTML = `
-            <img src="${CORVETTE_URL}" style="width:120px;height:120px;border-radius:50%;border:3px solid #ff0000;object-fit:cover;margin-bottom:15px;">
-            <h2 style="color:#ff4444;">⚠️ JØDE KASPER ⚠️</h2>
-            <p style="color:#ffcf7a;">Han stjal alle dine penge!</p>
-            <p style="color:#ffcf7a;">Du havde: ${Math.floor(points + kasperEarnedSinceLastSteal).toLocaleString()} points</p>
+            <img src="${CORVETTE_URL}">
+            <h2>⚠️ JØDE KASPER ⚠️</h2>
+            <p>Han stjal alle dine penge!</p>
+            <p>Du havde: ${Math.floor(points + kasperEarnedSinceLastSteal).toLocaleString()} points</p>
             <p style="color:#ff0000;">💰 0 points tilbage 💰</p>
-            <div style="margin-top:20px;">
+            <div>
                 <button class="forgive-btn" id="kasperForgiveBtn">🙏 LAD GÅ 🙏</button>
                 <button class="shoot-btn" id="kasperShootBtn">🔫 SKYD HAM! 🔫</button>
             </div>
@@ -365,15 +362,15 @@
             car.className = 'corvette-car';
             let randomY = 5 + Math.random() * 85;
             car.style.bottom = randomY + '%';
-            car.innerHTML = `<img src="${CORVETTE_URL}" alt="Kasper"><div class="car-label">🏎️ Kasper</div>`;
+            car.innerHTML = `<img src="${CORVETTE_URL}"><div class="car-label">🏎️ Kasper</div>`;
             if (direction === 'rightToLeft') {
-                car.style.right = '-150px';
+                car.style.right = '-120px';
                 car.style.transition = 'right 3s linear';
                 document.body.appendChild(car);
                 setTimeout(() => { if(car) car.style.right = '100%'; }, 50);
                 setTimeout(() => { if(car) car.remove(); direction = 'leftToRight'; }, 3000);
             } else {
-                car.style.left = '-150px';
+                car.style.left = '-120px';
                 car.style.transition = 'left 3s linear';
                 document.body.appendChild(car);
                 setTimeout(() => { if(car) car.style.left = '100%'; }, 50);
@@ -405,9 +402,9 @@
         let level = getStreakLevel();
         let comboEl = document.getElementById('comboCounter');
         let williamImg = document.querySelector('.william-img');
-        if (comboCount >= 5) { comboEl.style.opacity = '1'; comboEl.innerHTML = `🔥 ${comboCount}x COMBO! (${level.name} ${level.mult}x) 🔥`; comboEl.style.background = `linear-gradient(135deg, ${level.color}, #333)`; comboEl.style.boxShadow = `0 0 15px ${level.color}`; }
+        if (comboCount >= 5) { comboEl.style.opacity = '1'; comboEl.innerHTML = `🔥 ${comboCount}x COMBO! (${level.name} ${level.mult}x) 🔥`; comboEl.style.background = `linear-gradient(135deg, ${level.color}, #333)`; comboEl.style.boxShadow = `0 0 10px ${level.color}`; }
         else comboEl.style.opacity = '0';
-        williamImg.style.boxShadow = `0 15px 25px black, 0 0 0 5px ${level.color}, 0 0 0 9px #daa520, 0 0 15px ${level.color}`;
+        williamImg.style.boxShadow = `0 10px 20px black, 0 0 0 4px ${level.color}, 0 0 0 7px #daa520, 0 0 10px ${level.color}`;
         document.getElementById('comboCountDisplay').innerText = comboCount;
         document.getElementById('comboBonusDisplay').innerText = level.mult;
     }
@@ -476,11 +473,11 @@
     }
     
     function saveGame() { 
-        if(!infiniteMoney) localStorage.setItem('williamClickerV19', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
+        if(!infiniteMoney) localStorage.setItem('williamClickerV20', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
     }
     
     function loadGame() { 
-        let s=localStorage.getItem('williamClickerV19'); 
+        let s=localStorage.getItem('williamClickerV20'); 
         if(s){ let d=JSON.parse(s); points=d.points||0; totalClicks=d.totalClicks||0; clickMultiplier=d.clickMultiplier||1; hasGoat=d.hasGoat||false; hasCarl=d.hasCarl||false; hasSaleh=d.hasSaleh||false; hasJohannes=d.hasJohannes||false; hasMarcus=d.hasMarcus||false; hasAdvisor=d.hasAdvisor||false; hasKasper=d.hasKasper||false; kasperRemoved=d.kasperRemoved||false; kasperEarnedSinceLastSteal=d.kasperEarnedSinceLastSteal||0; prestigeLevel=d.prestigeLevel||0; prestigeMultiplier=d.prestigeMultiplier||1; autoPowerBuyEnabled=d.autoPowerBuyEnabled||false; autoClickBuyEnabled=d.autoClickBuyEnabled||false; marcusBankBalance=d.marcusBankBalance||0; marcusBankReturnTime=d.marcusBankReturnTime||0; bankReturnAmount=d.bankReturnAmount||0; comboCount=d.comboCount||0; lastClickTime=d.lastClickTime||0; if(d.unlockedBossSkins) unlockedBossSkins=d.unlockedBossSkins; if(d.activeSkins) activeSkins=d.activeSkins; if(d.boughtSkins) boughtSkins=d.boughtSkins; }
         if(hasGoat) startGoatInterval(); if(hasCarl) startCarlInterval(); if(hasSaleh) startSalehInterval(); if(hasJohannes) startJohannesInterval();
         if(hasKasper && !kasperRemoved) startKasperAnimation();
@@ -492,10 +489,8 @@
     function startSalehInterval() { if(salehInterval) clearInterval(salehInterval); salehInterval=setInterval(()=>{ if(hasSaleh) addPoints(1000 * getSkinBonus('saleh')); },1000); }
     function startJohannesInterval() { if(johannesInterval) clearInterval(johannesInterval); johannesInterval=setInterval(()=>{ if(hasJohannes) addPoints(10000 * getSkinBonus('johannes')); },1000); }
     
-    // KLIK PÅ WILLIAM
     document.getElementById('williamClicker').addEventListener('click', () => { updateCombo(); let val=clickMultiplier; if(doubleClickActive && Date.now()<doubleClickEnd) val*=2; val*=getComboMultiplier(); val*=getSkinBonus('william'); addPoints(val); totalClicks++; updateUI(); let img=document.querySelector('.william-img'); if(img){ img.style.transform='scale(0.96)'; setTimeout(()=>{if(img) img.style.transform='';},100); } });
     
-    // UPGRADE KNAPPER
     document.getElementById('buyClickBtn').onclick=()=>{ let cost=30+(clickMultiplier-1)*15; if(infiniteMoney||points>=cost){ if(!infiniteMoney) points-=cost; clickMultiplier++; updateUI(); saveGame(); } };
     document.getElementById('buyGoatBtn').onclick=()=>{ if(!hasGoat && (infiniteMoney||points>=150)){ if(!infiniteMoney) points-=150; hasGoat=true; startGoatInterval(); updateUI(); saveGame(); showToast('🐐 Aksel købt!'); } };
     document.getElementById('buyCarlBtn').onclick=()=>{ if(!hasCarl && (infiniteMoney||points>=3000)){ if(!infiniteMoney) points-=3000; hasCarl=true; startCarlInterval(); updateUI(); saveGame(); showToast('🐄 Carl købt!'); } };
@@ -503,30 +498,97 @@
     document.getElementById('buyJohannesBtn').onclick=()=>{ if(!hasJohannes && (infiniteMoney||points>=120000)){ if(!infiniteMoney) points-=120000; hasJohannes=true; startJohannesInterval(); updateUI(); saveGame(); showToast('👨‍🌾 Johannes købt!'); } };
     document.getElementById('buyMarcusBtn').onclick=()=>{ if(!hasMarcus && (infiniteMoney||points>=150000)){ if(!infiniteMoney) points-=150000; hasMarcus=true; updateUI(); saveGame(); showToast('🏦 Marcus Bankier købt!'); } };
     document.getElementById('buyAdvisorBtn').onclick=()=>{ if(!hasAdvisor && (infiniteMoney||points>=200000)){ if(!infiniteMoney) points-=200000; hasAdvisor=true; updateUI(); saveGame(); showToast('🤐 Anonym Advisor købt!'); } };
-    document.getElementById('buyKasperBtn').onclick=()=>{ if(!hasKasper && !kasperRemoved && (infiniteMoney||points>=2500000)){ if(!infiniteMoney) points-=2500000; hasKasper=true; kasperEarnedSinceLastSteal=0; startKasperAnimation(); updateUI(); saveGame(); showToast('🏎️ Corvette Kasper købt! Han kører henover skærmen... Pas på!'); } };
+    document.getElementById('buyKasperBtn').onclick=()=>{ if(!hasKasper && !kasperRemoved && (infiniteMoney||points>=2500000)){ if(!infiniteMoney) points-=2500000; hasKasper=true; kasperEarnedSinceLastSteal=0; startKasperAnimation(); updateUI(); saveGame(); showToast('🏎️ Corvette Kasper købt! Pas på!'); } };
     
     // POWER-UPS
     function activatePowerup(cost, cb) { if(infiniteMoney || points >= cost) { if(!infiniteMoney) points -= cost; cb(); updateUI(); saveGame(); return true; } else { showToast(`💰 Du mangler ${(cost - points).toLocaleString()} point!`); return false; } }
     
-    document.getElementById('powerupDoubleBtn').onclick = () => { if (!doubleClickActive || Date.now() >= doubleClickEnd) { activatePowerup(3000, () => { doubleClickActive = true; doubleClickEnd = Date.now() + 30000; showToast('💪 2x Klik aktiveret i 30 sekunder!'); setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000); updateUI(); }); } else { showToast('💪 2x Klik er allerede aktivt!'); } };
-    document.getElementById('powerupAutoBtn').onclick = () => { if (!autoClickActive || Date.now() >= autoClickEnd) { activatePowerup(12000, () => { autoClickActive = true; autoClickEnd = Date.now() + 60000; showToast('🤖 Auto-klikker aktiveret i 60 sekunder!'); if (autoClickInterval) clearInterval(autoClickInterval); autoClickInterval = setInterval(() => { if (autoClickActive && Date.now() < autoClickEnd) { let cv = clickMultiplier; if (doubleClickActive && Date.now() < doubleClickEnd) cv *= 2; cv *= getComboMultiplier(); cv *= getSkinBonus('william'); addPoints(cv); totalClicks++; updateUI(); } else { clearInterval(autoClickInterval); autoClickActive = false; updateUI(); } }, 100); setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000); updateUI(); }); } else { showToast('🤖 Auto-klikker er allerede aktiv!'); } };
-    document.getElementById('powerupMultiBtn').onclick = () => { if (!multiPointsActive || Date.now() >= multiPointsEnd) { activatePowerup(30000, () => { multiPointsActive = true; multiPointsEnd = Date.now() + 45000; showToast('✨ 3x Point aktiveret i 45 sekunder!'); setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000); updateUI(); }); } else { showToast('✨ 3x Point er allerede aktiv!'); } };
-    document.getElementById('powerupBoostBtn').onclick = () => { if (!boostActive || Date.now() >= boostEnd) { activatePowerup(25000, () => { boostActive = true; boostEnd = Date.now() + 30000; showToast('🚀 Boost aktiveret! +50% indkomst i 30 sekunder!'); setTimeout(() => { boostActive = false; updateUI(); }, 30000); updateUI(); }); } else { showToast('🚀 Boost er allerede aktiv!'); } };
-    document.getElementById('powerupComboBtn').onclick = () => { if (!comboFreezeActive || Date.now() >= comboFreezeEnd) { activatePowerup(20000, () => { comboFreezeActive = true; comboFreezeEnd = Date.now() + 60000; showToast('🔥 Combo Freeze aktiveret i 60 sekunder!'); setTimeout(() => { comboFreezeActive = false; updateUI(); }, 60000); updateUI(); }); } else { showToast('🔥 Combo Freeze er allerede aktiv!'); } };
+    document.getElementById('powerupDoubleBtn').onclick = () => { if (!doubleClickActive || Date.now() >= doubleClickEnd) { activatePowerup(3000, () => { doubleClickActive = true; doubleClickEnd = Date.now() + 30000; showToast('💪 2x Klik aktiveret i 30 sek!'); setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000); updateUI(); }); } else { showToast('💪 2x Klik er allerede aktivt!'); } };
+    document.getElementById('powerupAutoBtn').onclick = () => { if (!autoClickActive || Date.now() >= autoClickEnd) { activatePowerup(12000, () => { autoClickActive = true; autoClickEnd = Date.now() + 60000; showToast('🤖 Auto-klikker aktiveret i 60 sek!'); if (autoClickInterval) clearInterval(autoClickInterval); autoClickInterval = setInterval(() => { if (autoClickActive && Date.now() < autoClickEnd) { let cv = clickMultiplier; if (doubleClickActive && Date.now() < doubleClickEnd) cv *= 2; cv *= getComboMultiplier(); cv *= getSkinBonus('william'); addPoints(cv); totalClicks++; updateUI(); } else { clearInterval(autoClickInterval); autoClickActive = false; updateUI(); } }, 100); setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000); updateUI(); }); } else { showToast('🤖 Auto-klikker er allerede aktiv!'); } };
+    document.getElementById('powerupMultiBtn').onclick = () => { if (!multiPointsActive || Date.now() >= multiPointsEnd) { activatePowerup(30000, () => { multiPointsActive = true; multiPointsEnd = Date.now() + 45000; showToast('✨ 3x Point aktiveret i 45 sek!'); setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000); updateUI(); }); } else { showToast('✨ 3x Point er allerede aktiv!'); } };
+    document.getElementById('powerupBoostBtn').onclick = () => { if (!boostActive || Date.now() >= boostEnd) { activatePowerup(25000, () => { boostActive = true; boostEnd = Date.now() + 30000; showToast('🚀 Boost aktiveret! +50% indkomst i 30 sek!'); setTimeout(() => { boostActive = false; updateUI(); }, 30000); updateUI(); }); } else { showToast('🚀 Boost er allerede aktiv!'); } };
+    document.getElementById('powerupComboBtn').onclick = () => { if (!comboFreezeActive || Date.now() >= comboFreezeEnd) { activatePowerup(20000, () => { comboFreezeActive = true; comboFreezeEnd = Date.now() + 60000; showToast('🔥 Combo Freeze aktiveret i 60 sek!'); setTimeout(() => { comboFreezeActive = false; updateUI(); }, 60000); updateUI(); }); } else { showToast('🔥 Combo Freeze er allerede aktiv!'); } };
     document.getElementById('powerupRainBtn').onclick = () => { if (!moneyRainActive || Date.now() >= moneyRainEnd) { activatePowerup(28000, () => { moneyRainActive = true; moneyRainEnd = Date.now() + 30000; maxGoldenWilliams = 4; showToast('💰 Money Rain aktiveret! Flere Guld William!'); let rainInterval = setInterval(() => { if (moneyRainActive && Date.now() < moneyRainEnd) spawnGoldenWilliam(); else clearInterval(rainInterval); }, 4000); setTimeout(() => { moneyRainActive = false; maxGoldenWilliams = 2; updateUI(); }, 30000); updateUI(); }); } else { showToast('💰 Money Rain er allerede aktiv!'); } };
     
-    // GULD WILLIAM
     function spawnGoldenWilliam() { if(activeGoldenWilliams>=maxGoldenWilliams) return; activeGoldenWilliams++; let g=document.createElement('div'); g.className='golden-william'; g.style.left=(10+Math.random()*70)+'%'; g.style.top=(10+Math.random()*70)+'%'; g.innerHTML=`<img class="golden-william-img" src="${WILLIAM_DEFAULT_URL}">`; let t=15,ti=setInterval(()=>{ t--; if(t<=0){ clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); } },1000); g.onclick=()=>{ let bonus = Math.max(1000, Math.floor(points * 0.05)); if(multiPointsActive) bonus*=3; if(hasAdvisor) bonus*=2; points+=bonus; updateUI(); saveGame(); showToast('🥇 GULD WILLIAM! +'+bonus.toLocaleString()+' point!'); clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); }; document.body.appendChild(g); }
     function scheduleGolden(){ if(goldenTimeout) clearTimeout(goldenTimeout); goldenTimeout=setTimeout(spawnGoldenWilliam,20000+Math.random()*25000); }
     
-    // AUTO-BUY
+    // AUTO-BUY CLICKS - FIXED!
     document.getElementById('autoClickToggle').addEventListener('change', (e) => { autoClickBuyEnabled = e.target.checked; saveGame(); });
-    setInterval(() => { if (autoClickBuyEnabled && hasAdvisor) { let cost = 30 + (clickMultiplier - 1) * 15; while ((infiniteMoney || points >= cost) && clickMultiplier < 100) { if (!infiniteMoney) points -= cost; clickMultiplier++; cost = 30 + (clickMultiplier - 1) * 15; } updateUI(); } }, 1000);
+    setInterval(() => { if (autoClickBuyEnabled && hasAdvisor) { let cost = 30 + (clickMultiplier - 1) * 15; while ((infiniteMoney || points >= cost) && clickMultiplier < 100) { if (!infiniteMoney) points -= cost; clickMultiplier++; cost = 30 + (clickMultiplier - 1) * 15; } updateUI(); } }, 500);
     
+    // AUTO POWER-UPS - ALLE 6!
     document.getElementById('autoPowerToggle').addEventListener('change', (e) => { autoPowerBuyEnabled = e.target.checked; saveGame(); });
-    setInterval(() => { if (autoPowerBuyEnabled && hasAdvisor) { let now = Date.now(); if ((!doubleClickActive || now >= doubleClickEnd) && (infiniteMoney || points >= 3000)) { if (!infiniteMoney) points -= 3000; doubleClickActive = true; doubleClickEnd = now + 30000; setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000); updateUI(); } if ((!autoClickActive || now >= autoClickEnd) && (infiniteMoney || points >= 12000)) { if (!infiniteMoney) points -= 12000; autoClickActive = true; autoClickEnd = now + 60000; if (autoClickInterval) clearInterval(autoClickInterval); autoClickInterval = setInterval(() => { if (autoClickActive && Date.now() < autoClickEnd) { let cv = clickMultiplier; if (doubleClickActive && Date.now() < doubleClickEnd) cv *= 2; cv *= getComboMultiplier(); cv *= getSkinBonus('william'); addPoints(cv); totalClicks++; updateUI(); } else { clearInterval(autoClickInterval); autoClickActive = false; updateUI(); } }, 100); setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000); updateUI(); } if ((!multiPointsActive || now >= multiPointsEnd) && (infiniteMoney || points >= 30000)) { if (!infiniteMoney) points -= 30000; multiPointsActive = true; multiPointsEnd = now + 45000; setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000); updateUI(); } } }, 3000);
+    setInterval(() => { 
+        if (autoPowerBuyEnabled && hasAdvisor) { 
+            let now = Date.now(); 
+            if ((!doubleClickActive || now >= doubleClickEnd) && (infiniteMoney || points >= 3000)) { 
+                if (!infiniteMoney) points -= 3000; 
+                doubleClickActive = true; 
+                doubleClickEnd = now + 30000; 
+                setTimeout(() => { doubleClickActive = false; updateUI(); }, 30000); 
+                updateUI(); 
+            } 
+            if ((!autoClickActive || now >= autoClickEnd) && (infiniteMoney || points >= 12000)) { 
+                if (!infiniteMoney) points -= 12000; 
+                autoClickActive = true; 
+                autoClickEnd = now + 60000; 
+                if (autoClickInterval) clearInterval(autoClickInterval); 
+                autoClickInterval = setInterval(() => { 
+                    if (autoClickActive && Date.now() < autoClickEnd) { 
+                        let cv = clickMultiplier; 
+                        if (doubleClickActive && Date.now() < doubleClickEnd) cv *= 2; 
+                        cv *= getComboMultiplier(); 
+                        cv *= getSkinBonus('william'); 
+                        addPoints(cv); 
+                        totalClicks++; 
+                        updateUI(); 
+                    } else { 
+                        clearInterval(autoClickInterval); 
+                        autoClickActive = false; 
+                        updateUI(); 
+                    } 
+                }, 100); 
+                setTimeout(() => { autoClickActive = false; clearInterval(autoClickInterval); updateUI(); }, 60000); 
+                updateUI(); 
+            } 
+            if ((!multiPointsActive || now >= multiPointsEnd) && (infiniteMoney || points >= 30000)) { 
+                if (!infiniteMoney) points -= 30000; 
+                multiPointsActive = true; 
+                multiPointsEnd = now + 45000; 
+                setTimeout(() => { multiPointsActive = false; updateUI(); }, 45000); 
+                updateUI(); 
+            } 
+            if ((!boostActive || now >= boostEnd) && (infiniteMoney || points >= 25000)) { 
+                if (!infiniteMoney) points -= 25000; 
+                boostActive = true; 
+                boostEnd = now + 30000; 
+                setTimeout(() => { boostActive = false; updateUI(); }, 30000); 
+                updateUI(); 
+            } 
+            if ((!comboFreezeActive || now >= comboFreezeEnd) && (infiniteMoney || points >= 20000)) { 
+                if (!infiniteMoney) points -= 20000; 
+                comboFreezeActive = true; 
+                comboFreezeEnd = now + 60000; 
+                setTimeout(() => { comboFreezeActive = false; updateUI(); }, 60000); 
+                updateUI(); 
+            } 
+            if ((!moneyRainActive || now >= moneyRainEnd) && (infiniteMoney || points >= 28000)) { 
+                if (!infiniteMoney) points -= 28000; 
+                moneyRainActive = true; 
+                moneyRainEnd = now + 30000; 
+                maxGoldenWilliams = 4; 
+                let rainInterval = setInterval(() => { 
+                    if (moneyRainActive && Date.now() < moneyRainEnd) spawnGoldenWilliam(); 
+                    else clearInterval(rainInterval); 
+                }, 4000); 
+                setTimeout(() => { moneyRainActive = false; maxGoldenWilliams = 2; updateUI(); }, 30000); 
+                updateUI(); 
+            } 
+        } 
+    }, 3000);
     
-    // BOSS KAMP
+    // BOSS
     function startBossFight(){ if(bossActive) return; bossActive=true; bossHealth=bossMaxHealth; bossTimer=180; document.getElementById('bossContainer').classList.add('active'); updateBossUI(); bossTimerInterval=setInterval(()=>{ bossTimer--; document.getElementById('bossTimer').innerText=`⏱️ ${Math.floor(bossTimer/60)}:${(bossTimer%60).toString().padStart(2,'0')}`; if(bossTimer<=0) defeatBoss(false); },1000); bossAttackInterval=setInterval(()=>{ if(bossActive){ let dps=(hasGoat?10:0)+(hasCarl?100:0)+(hasSaleh?1000:0)+(hasJohannes?10000:0)+((hasKasper && !kasperRemoved)?500000:0); if(adminMode) dps*=1000; if(dps>0){ bossHealth-=dps; updateBossUI(); if(bossHealth<=0) defeatBoss(true); } } },1000); showToast('👹 RASMUS PRANGE ER ANKOMMET!'); }
     function updateBossUI(){ let p=Math.max(0,(bossHealth/bossMaxHealth)*100); document.getElementById('bossHealthFill').style.width=p+'%'; document.getElementById('bossHealthText').innerText=`❤️ ${Math.floor(bossHealth).toLocaleString()} / ${bossMaxHealth.toLocaleString()}`; }
     
@@ -567,32 +629,27 @@
     function renderSkins(){
         let list=document.getElementById('skinsList'); if(!list) return;
         let html = '';
-        
-        html += '<h3 style="color:#ffd700;">William Skins</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:15px;margin-bottom:25px;">';
-        [...NORMAL_SKINS.william].sort((a,b)=>a.cost-b.cost).forEach(s=>{ let owned=boughtSkins.includes(s.id+'_william')||s.id==='default'; let active=activeSkins.william===s.id; let imgUrl = s.id==='bird'?WILLIAM_BIRD_URL:s.id==='devil'?WILLIAM_DEVIL_URL:s.id==='ghost'?WILLIAM_GHOST_URL:WILLIAM_DEFAULT_URL; html+=`<div class="skin-card" data-char="william" data-id="${s.id}" data-url="${imgUrl}" style="background:rgba(255,107,157,0.1); border:2px solid ${active?'#ffd700':(owned?'#00ff00':'#ff6b9d')}; border-radius:15px; padding:12px; text-align:center; cursor:pointer;"><div style="font-size:2rem;">${s.hat}</div><div style="color:#ffcf7a;">${s.name}</div><div style="color:#00ff88;">${s.bonus}x</div><div style="color:#ffd700;">${s.cost>0?s.cost.toLocaleString():'GRATIS'}</div><div style="color:${active?'#00ff00':(owned?'#ffaa00':'#ff6b9d')};">${active?'✓ AKTIV':(owned?'EJET':'KØB')}</div></div>`; });
+        html += '<h3 style="color:#ffd700;">William Skins</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:20px;">';
+        [...NORMAL_SKINS.william].sort((a,b)=>a.cost-b.cost).forEach(s=>{ let owned=boughtSkins.includes(s.id+'_william')||s.id==='default'; let active=activeSkins.william===s.id; let imgUrl = s.id==='bird'?WILLIAM_BIRD_URL:s.id==='devil'?WILLIAM_DEVIL_URL:s.id==='ghost'?WILLIAM_GHOST_URL:WILLIAM_DEFAULT_URL; html+=`<div class="skin-card" data-char="william" data-id="${s.id}" data-url="${imgUrl}" style="background:rgba(255,107,157,0.1); border:2px solid ${active?'#ffd700':(owned?'#00ff00':'#ff6b9d')}; border-radius:12px; padding:10px; text-align:center; cursor:pointer;"><div style="font-size:1.8rem;">${s.hat}</div><div style="color:#ffcf7a; font-size:0.7rem;">${s.name}</div><div style="color:#00ff88; font-size:0.7rem;">${s.bonus}x</div><div style="color:#ffd700; font-size:0.7rem;">${s.cost>0?s.cost.toLocaleString():'GRATIS'}</div><div style="color:${active?'#00ff00':(owned?'#ffaa00':'#ff6b9d')}; font-size:0.65rem;">${active?'✓ AKTIV':(owned?'EJET':'KØB')}</div></div>`; });
         html+='</div>';
-        
         for (let [char, skins] of Object.entries(NORMAL_SKINS)) {
             if (char === 'william') continue;
-            html += `<h3 style="color:#ffd700;">${char.charAt(0).toUpperCase() + char.slice(1)} Skins</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:15px;margin-bottom:25px;">`;
-            [...skins].sort((a,b)=>a.cost-b.cost).forEach(s=>{ let owned=boughtSkins.includes(s.id+'_'+char)||s.id==='default'; let active=activeSkins[char]===s.id; html+=`<div class="skin-card" data-char="${char}" data-id="${s.id}" style="background:rgba(255,107,157,0.1); border:2px solid ${active?'#ffd700':(owned?'#00ff00':'#ff6b9d')}; border-radius:15px; padding:12px; text-align:center; cursor:pointer;"><div style="font-size:2rem;">${s.hat}</div><div style="color:#ffcf7a;">${s.name}</div><div style="color:#00ff88;">${s.bonus}x</div><div style="color:#ffd700;">${s.cost>0?s.cost.toLocaleString():'GRATIS'}</div><div style="color:${active?'#00ff00':(owned?'#ffaa00':'#ff6b9d')};">${active?'✓ AKTIV':(owned?'EJET':'KØB')}</div></div>`; });
+            html += `<h3 style="color:#ffd700;">${char.charAt(0).toUpperCase() + char.slice(1)} Skins</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;margin-bottom:20px;">`;
+            [...skins].sort((a,b)=>a.cost-b.cost).forEach(s=>{ let owned=boughtSkins.includes(s.id+'_'+char)||s.id==='default'; let active=activeSkins[char]===s.id; html+=`<div class="skin-card" data-char="${char}" data-id="${s.id}" style="background:rgba(255,107,157,0.1); border:2px solid ${active?'#ffd700':(owned?'#00ff00':'#ff6b9d')}; border-radius:12px; padding:10px; text-align:center; cursor:pointer;"><div style="font-size:1.8rem;">${s.hat}</div><div style="color:#ffcf7a; font-size:0.7rem;">${s.name}</div><div style="color:#00ff88; font-size:0.7rem;">${s.bonus}x</div><div style="color:#ffd700; font-size:0.7rem;">${s.cost>0?s.cost.toLocaleString():'GRATIS'}</div><div style="color:${active?'#00ff00':(owned?'#ffaa00':'#ff6b9d')}; font-size:0.65rem;">${active?'✓ AKTIV':(owned?'EJET':'KØB')}</div></div>`; });
             html+='</div>';
         }
-        
-        html += '<h3 style="color:#ff00ff;">⭐ INKLUSIVE BOSS SKINS (kun fra Rasmus) ⭐</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:15px;">';
+        html += '<h3 style="color:#ff00ff;">⭐ INKLUSIVE BOSS SKINS (kun fra Rasmus) ⭐</h3><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;">';
         let chars = ['william', 'aksel', 'carl', 'saleh', 'johannes', 'kasper'];
         chars.forEach(char=>{
             let skins = BOSS_SKINS_DATA[char];
             skins.forEach(skin=>{
                 let unlocked = unlockedBossSkins.some(s=>s.character===char && s.skinId===`${skin.rarity}_${char}`);
                 let active = activeSkins[char] === `${skin.rarity}_${char}`;
-                html+=`<div class="boss-skin-card" data-char="${char}" data-id="${skin.rarity}_${char}" style="background:rgba(255,0,255,0.15); border:2px solid ${active?'#ffd700':(unlocked?'#00ff00':'#ff00ff')}; border-radius:15px; padding:12px; text-align:center; ${!unlocked ? 'filter: grayscale(0.5);' : 'cursor:pointer;'}"><div style="font-size:2rem;">👑</div><div style="color:#ffcf7a;">${skin.name}</div><div style="color:#00ff88;">${skin.bonus}x bonus</div><div style="color:${active?'#00ff00':(unlocked?'#ffaa00':'#ff8888')};">${active?'✓ AKTIV':(unlocked?'EJET':'🔒 DRÆB RASMUS')}</div></div>`;
+                html+=`<div class="boss-skin-card" data-char="${char}" data-id="${skin.rarity}_${char}" style="background:rgba(255,0,255,0.15); border:2px solid ${active?'#ffd700':(unlocked?'#00ff00':'#ff00ff')}; border-radius:12px; padding:10px; text-align:center; ${!unlocked ? 'filter: grayscale(0.5);' : 'cursor:pointer;'}"><div style="font-size:1.8rem;">👑</div><div style="color:#ffcf7a; font-size:0.7rem;">${skin.name}</div><div style="color:#00ff88; font-size:0.7rem;">${skin.bonus}x bonus</div><div style="color:${active?'#00ff00':(unlocked?'#ffaa00':'#ff8888')}; font-size:0.65rem;">${active?'✓ AKTIV':(unlocked?'EJET':'🔒 DRÆB RASMUS')}</div></div>`;
             });
         });
         html+='</div>';
-        
         list.innerHTML = html;
-        
         document.querySelectorAll('.skin-card').forEach(card=>{
             card.onclick=()=>{
                 let char=card.dataset.char, id=card.dataset.id, url=card.dataset.url;
@@ -620,7 +677,6 @@
                 }
             };
         });
-        
         document.querySelectorAll('.boss-skin-card').forEach(card=>{
             if(!card.innerHTML.includes('🔒 DRÆB RASMUS')){
                 card.onclick=()=>{
@@ -649,10 +705,8 @@
         };
     });
     
-    // RESET
     document.getElementById('resetBtn').onclick=()=>{ if(confirm('Nulstil ALT?')){ localStorage.clear(); location.reload(); } };
     
-    // MENU NAVIGATION
     let burger=document.getElementById('burgerMenuBtn'), side=document.getElementById('sideMenu'), overlay=document.getElementById('sideMenuOverlay');
     burger.onclick=()=>{ side.classList.add('active'); overlay.classList.add('active'); };
     overlay.onclick=()=>{ side.classList.remove('active'); overlay.classList.remove('active'); };
@@ -670,7 +724,6 @@
     function renderChallenges() { document.getElementById('challengesList').innerHTML = '<div class="challenge-card">🎯 Kommende challenges</div>'; }
     function renderPrestigeUpgrades() { document.getElementById('upgradesList').innerHTML = '<div class="achievement-card">✨ Kommende prestige upgrades</div>'; }
     
-    // BANK
     function updateBankDisplay(){
         document.getElementById('bankBalance').innerText = marcusBankBalance.toLocaleString();
         if(marcusBankReturnTime && Date.now()<marcusBankReturnTime){ let r=Math.ceil((marcusBankReturnTime-Date.now())/1000); document.getElementById('bankTimerDisplay').innerHTML=`⏱️ Returnerer om: ${Math.floor(r/60)}:${(r%60).toString().padStart(2,'0')}`; document.getElementById('bankWithdrawBtn').style.display='none'; }
@@ -680,12 +733,10 @@
     document.querySelectorAll('.bank-option-btn').forEach(btn=>{ btn.onclick=()=>{ if(!hasMarcus){ showToast('Køb Marcus Bankier først!'); return; } if(marcusBankReturnTime && Date.now()<marcusBankReturnTime){ showToast('Du har allerede penge i banken!'); return; } let percent=parseInt(btn.dataset.percent); let amount=Math.floor(points*(percent/100)); if(amount<100){ showToast('Ikke nok point!'); return; } points-=amount; marcusBankBalance=amount; let minutes, returnPercent; if(percent===10){ minutes=1; returnPercent=15; } else if(percent===25){ minutes=3; returnPercent=40; } else if(percent===50){ minutes=5; returnPercent=75; } else if(percent===75){ minutes=7; returnPercent=125; } else { minutes=10; returnPercent=200; } bankReturnAmount=Math.floor(amount*(returnPercent/100)); marcusBankReturnTime=Date.now()+(minutes*60*1000); updateUI(); saveGame(); updateBankDisplay(); showToast(`💰 ${amount.toLocaleString()} sat i banken! Får ${bankReturnAmount.toLocaleString()} om ${minutes} min!`); }; });
     document.getElementById('bankWithdrawBtn').onclick=()=>{ if(marcusBankReturnTime && Date.now()>=marcusBankReturnTime){ points+=bankReturnAmount; marcusBankBalance=0; marcusBankReturnTime=0; bankReturnAmount=0; updateUI(); saveGame(); updateBankDisplay(); showToast(`✅ Hævede ${bankReturnAmount.toLocaleString()}!`); } };
     
-    // LEADERBOARD
     function loadLeaderboard(){ db.ref('scores/money').orderByChild('score').limitToLast(10).once('value',(snapshot)=>{ let scores=[]; snapshot.forEach(c=>scores.push(c.val())); scores.sort((a,b)=>b.score-a.score); let html=scores.map((e,i)=>`<div class="leaderboard-entry"><span>${i+1}. ${e.name}</span><span>${e.score.toLocaleString()}</span></div>`).join(''); document.getElementById('leaderboardList').innerHTML=html||'<p>Ingen scores</p>'; }); }
     document.getElementById('saveScoreBtn').onclick=()=>{ let name=document.getElementById('playerName').value.trim(); if(name) db.ref('scores/money').push({name,score:Math.floor(points)}); loadLeaderboard(); showToast('✅ Score gemt!'); };
     loadLeaderboard();
     
-    // START
     loadGame();
     scheduleGolden();
     renderSkins();
