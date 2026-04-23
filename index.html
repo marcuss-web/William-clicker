@@ -18,7 +18,6 @@
         .per-second-stats { background: #00000066; border-radius: 30px; padding: 8px; margin: 10px 0; font-size: 0.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; color: #e8d5a8; }
         .central-area { position: relative; display: flex; justify-content: center; align-items: center; min-height: 280px; margin: 10px 0; }
         
-        /* Ild baggrund - centreret om William */
         .flame-background { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; height: 320px; border-radius: 50%; pointer-events: none; z-index: 0; background: radial-gradient(circle, rgba(255,80,0,0.3) 0%, rgba(255,0,0,0.1) 50%, transparent 70%); animation: flamePulse 1s ease-in-out infinite alternate; }
         @keyframes flamePulse { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; } }
         
@@ -46,9 +45,9 @@
         @keyframes hopHop { 0%,100% { transform: translateX(-50%) translateY(0px); } 50% { transform: translateX(-50%) translateY(-10px); } }
         .carl-head-img { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #ffc107; object-fit: cover; }
         
-        /* Saleh - HELT tæt på William */
-        .saleh-position { position: absolute; right: -35px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
-        .saleh-card { background: #231f1acc; border-radius: 40px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; border: 2px solid #ffaa55; animation: salehFloat 2s ease-in-out infinite; }
+        /* Saleh - HELT tæt på William (næsten oveni) */
+        .saleh-position { position: absolute; right: -50px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
+        .saleh-card { background: #231f1acc; border-radius: 40px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; border: 2px solid #ffaa55; animation: salehFloat 2s ease-in-out infinite; white-space: nowrap; }
         @keyframes salehFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         .saleh-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 3px solid #ffaa44; }
         .pizza-throw { position: absolute; right: 5px; top: -8px; font-size: 1.5rem; animation: throwPizza 1.5s ease-in-out infinite; pointer-events: none; }
@@ -167,7 +166,7 @@
             <div class="flame-background" id="flameBackground"></div>
             <div class="mega-flame" id="megaFlame"></div>
             <div class="aksel-position" id="akselWrapper"><div class="aksel-orbit"><div class="aksel-card"><img class="aksel-img" id="akselImg"><span style="color:#ffd700; font-size:0.7rem;">Aksel</span></div></div></div>
-            <div class="saleh-position" id="salehWrapper"><div class="saleh-card"><img class="saleh-img" id="salehImg"><span style="color:#ffd700; font-size:0.7rem;">Saleh</span></div><div class="pizza-throw">🍕</div></div>
+            <div class="saleh-position" id="salehWrapper"><div class="saleh-card"><img class="saleh-img" id="salehImg"><span style="color:#ffd700; font-size:0.7rem;">Saleh</span><div class="pizza-throw">🍕</div></div></div>
             <div class="william-container" id="williamClicker">
                 <img class="william-img" id="williamImg">
                 <div class="hat" id="williamHat"></div>
@@ -228,13 +227,6 @@
     const SALEH_IMG_URL = "https://i.imgur.com/JsdtT0Q.png";
     const JOHANNES_IMG_URL = "https://i.imgur.com/5TFyXLj.png";
     const RASMUS_IMG_URL = "https://i.imgur.com/NYwkKEV.png";
-    
-    document.getElementById('williamImg').src = WILLIAM_DEFAULT_URL;
-    document.getElementById('akselImg').src = AKSEL_IMG_URL;
-    document.getElementById('carlHeadImg').src = CARL_IMG_URL;
-    document.getElementById('salehImg').src = SALEH_IMG_URL;
-    document.getElementById('johannesImg').src = JOHANNES_IMG_URL;
-    document.getElementById('bossImg').src = RASMUS_IMG_URL;
     
     // SPIL STATE
     let points = 0, totalClicks = 0, clickMultiplier = 1;
@@ -333,9 +325,16 @@
         return 1;
     }
     
-    // KASPER POPUP - med KORREKTE knapper der virker
+    function showToast(msg) { 
+        let t=document.createElement('div'); 
+        t.className='easter-toast'; 
+        t.textContent=msg; 
+        document.body.appendChild(t); 
+        setTimeout(()=>t.remove(),2500); 
+    }
+    
+    // KASPER POPUP - FIXED
     function showKasperPopup(stolenAmount) {
-        // Fjern eventuel eksisterende popup først
         let existingPopup = document.querySelector('.kasper-popup');
         if(existingPopup) existingPopup.remove();
         
@@ -353,7 +352,6 @@
         `;
         document.body.appendChild(popup);
         
-        // Find knapperne i popuppen
         const forgiveBtn = popup.querySelector('#kasperForgiveBtn');
         const shootBtn = popup.querySelector('#kasperShootBtn');
         
@@ -385,7 +383,6 @@
         }
     }
     
-    // KASPER ANIMATION
     let kasperAnimationInterval = null;
     function startKasperAnimation() {
         if (kasperAnimationInterval) clearInterval(kasperAnimationInterval);
@@ -454,8 +451,6 @@
         clearTimeout(comboTimeout); comboTimeout = setTimeout(() => { if (!comboFreezeActive) { comboCount=0; updateComboVisuals(); } }, 2000);
     }
     
-    function showToast(msg) { let t=document.createElement('div'); t.className='easter-toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2500); }
-    
     function updateUI() {
         document.getElementById('scoreDisplay').innerHTML = Math.floor(points).toLocaleString() + (infiniteMoney ? '<span class="infinity-symbol">∞</span>' : '');
         let power = clickMultiplier; if (doubleClickActive && Date.now()<doubleClickEnd) power*=2; if (multiPointsActive && Date.now()<multiPointsEnd) power*=3;
@@ -511,11 +506,11 @@
     }
     
     function saveGame() { 
-        localStorage.setItem('williamClickerV23', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
+        localStorage.setItem('williamClickerV24', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
     }
     
     function loadGame() { 
-        let s=localStorage.getItem('williamClickerV23'); 
+        let s=localStorage.getItem('williamClickerV24'); 
         if(s){ let d=JSON.parse(s); points=d.points||0; totalClicks=d.totalClicks||0; clickMultiplier=d.clickMultiplier||1; hasGoat=d.hasGoat||false; hasCarl=d.hasCarl||false; hasSaleh=d.hasSaleh||false; hasJohannes=d.hasJohannes||false; hasMarcus=d.hasMarcus||false; hasAdvisor=d.hasAdvisor||false; hasKasper=d.hasKasper||false; kasperRemoved=d.kasperRemoved||false; kasperEarnedSinceLastSteal=d.kasperEarnedSinceLastSteal||0; prestigeLevel=d.prestigeLevel||0; prestigeMultiplier=d.prestigeMultiplier||1; autoPowerBuyEnabled=d.autoPowerBuyEnabled||false; autoClickBuyEnabled=d.autoClickBuyEnabled||false; marcusBankBalance=d.marcusBankBalance||0; marcusBankReturnTime=d.marcusBankReturnTime||0; bankReturnAmount=d.bankReturnAmount||0; comboCount=d.comboCount||0; lastClickTime=d.lastClickTime||0; if(d.unlockedBossSkins) unlockedBossSkins=d.unlockedBossSkins; if(d.activeSkins) activeSkins=d.activeSkins; if(d.boughtSkins) boughtSkins=d.boughtSkins; }
         if(hasGoat) startGoatInterval(); if(hasCarl) startCarlInterval(); if(hasSaleh) startSalehInterval(); if(hasJohannes) startJohannesInterval();
         if(hasKasper && !kasperRemoved) startKasperAnimation();
@@ -526,6 +521,14 @@
     function startCarlInterval() { if(carlInterval) clearInterval(carlInterval); carlInterval=setInterval(()=>{ if(hasCarl) addPoints(100 * getSkinBonus('carl')); },1000); }
     function startSalehInterval() { if(salehInterval) clearInterval(salehInterval); salehInterval=setInterval(()=>{ if(hasSaleh) addPoints(1000 * getSkinBonus('saleh')); },1000); }
     function startJohannesInterval() { if(johannesInterval) clearInterval(johannesInterval); johannesInterval=setInterval(()=>{ if(hasJohannes) addPoints(10000 * getSkinBonus('johannes')); },1000); }
+    
+    // BILLEDER - sæt efter DOM er klar
+    document.getElementById('williamImg').src = WILLIAM_DEFAULT_URL;
+    document.getElementById('akselImg').src = AKSEL_IMG_URL;
+    document.getElementById('carlHeadImg').src = CARL_IMG_URL;
+    document.getElementById('salehImg').src = SALEH_IMG_URL;
+    document.getElementById('johannesImg').src = JOHANNES_IMG_URL;
+    document.getElementById('bossImg').src = RASMUS_IMG_URL;
     
     document.getElementById('williamClicker').addEventListener('click', () => { updateCombo(); let val=clickMultiplier; if(doubleClickActive && Date.now()<doubleClickEnd) val*=2; val*=getComboMultiplier(); val*=getSkinBonus('william'); addPoints(val); totalClicks++; updateUI(); let img=document.querySelector('.william-img'); if(img){ img.style.transform='scale(0.96)'; setTimeout(()=>{if(img) img.style.transform='';},100); } });
     
@@ -550,29 +553,26 @@
     function spawnGoldenWilliam() { if(activeGoldenWilliams>=maxGoldenWilliams) return; activeGoldenWilliams++; let g=document.createElement('div'); g.className='golden-william'; g.style.left=(10+Math.random()*70)+'%'; g.style.top=(10+Math.random()*70)+'%'; g.innerHTML=`<img class="golden-william-img" src="${WILLIAM_DEFAULT_URL}">`; let t=15,ti=setInterval(()=>{ t--; if(t<=0){ clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); } },1000); g.onclick=()=>{ let bonus = Math.max(1000, Math.floor(points * 0.05)); if(multiPointsActive) bonus*=3; if(hasAdvisor) bonus*=2; points+=bonus; updateUI(); saveGame(); showToast('🥇 GULD WILLIAM! +'+bonus.toLocaleString()+' point!'); clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); }; document.body.appendChild(g); }
     function scheduleGolden(){ if(goldenTimeout) clearTimeout(goldenTimeout); goldenTimeout=setTimeout(spawnGoldenWilliam,20000+Math.random()*25000); }
     
-    // AUTO-KØB CLICK UPGRADES - FIXET
+    // AUTO-KØB CLICK UPGRADES - FIXED
     document.getElementById('autoClickToggle').addEventListener('change', (e) => { 
         autoClickBuyEnabled = e.target.checked; 
         saveGame(); 
-        if(autoClickBuyEnabled) showToast('🤖 Auto-køb aktiveret!');
-        else showToast('🤖 Auto-køb deaktiveret!');
+        if(autoClickBuyEnabled) showToast('🤖 Auto-køb af klik aktiveret!');
+        else showToast('🤖 Auto-køb af klik deaktiveret!');
     });
     
     setInterval(() => { 
         if (autoClickBuyEnabled && hasAdvisor) { 
             let cost = 30 + (clickMultiplier - 1) * 15; 
-            while ((infiniteMoney || points >= cost) && clickMultiplier < 100) { 
+            if ((infiniteMoney || points >= cost) && clickMultiplier < 100) { 
                 if (!infiniteMoney) points -= cost; 
                 clickMultiplier++; 
-                cost = 30 + (clickMultiplier - 1) * 15; 
                 updateUI();
+                saveGame();
             } 
-            updateUI();
-            saveGame();
         } 
     }, 500);
     
-    // AUTO POWER-UPS
     document.getElementById('autoPowerToggle').addEventListener('change', (e) => { autoPowerBuyEnabled = e.target.checked; saveGame(); });
     setInterval(() => { 
         if (autoPowerBuyEnabled && hasAdvisor) { 
@@ -729,12 +729,12 @@
         showToast(`👑 PRESTIGE NIVEAU ${prestigeLevel}! +${prestigeLevel*5}% bonus på ALT! 🎉`); 
     };
     
-    // NULSTIL SPIL - VIRKER NU
+    // NULSTIL SPIL - VIRKER 100%
     document.getElementById('resetBtn').onclick=()=>{ 
         if(confirm('⚠️ NULSTIL ALT? Alle fremskridt, upgrades, point og Kasper forsvinder!')){ 
             localStorage.clear();
             showToast('🔄 Spillet er nulstillet! Genindlæser...');
-            setTimeout(() => { window.location.reload(); }, 500);
+            setTimeout(() => { window.location.href = window.location.href; }, 500);
         } 
     };
     
