@@ -115,7 +115,8 @@
         .prestige-confirm { flex: 1; background: #c71585; border: none; color: white; padding: 8px; border-radius: 30px; cursor: pointer; font-weight: bold; }
         .prestige-cancel { flex: 1; background: #3e2a24; border: none; color: #ffbe89; padding: 8px; border-radius: 30px; cursor: pointer; font-weight: bold; }
         
-        #comboCounter { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); padding: 5px 15px; border-radius: 30px; font-weight: bold; font-size: 0.9rem; z-index: 100; box-shadow: 0 0 10px rgba(0,0,0,0.5); pointer-events: none; white-space: nowrap; font-family: monospace; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); transition: all 0.2s; background: #333; color: white; }
+        /* NY FORBEDRET COMBO COUNTER - NEDE I BUNDEN */
+        #comboCounter { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; z-index: 100; box-shadow: 0 0 20px rgba(0,0,0,0.5); pointer-events: none; text-align: center; font-family: 'Segoe UI', system-ui, sans-serif; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); transition: all 0.2s; background: #1a1a2e; border: 2px solid #ffaa33; min-width: 220px; white-space: nowrap; }
         
         .skin-card, .boss-skin-card { transition: all 0.2s; cursor: pointer; }
         .skin-card:hover, .boss-skin-card:hover { transform: scale(1.02); }
@@ -605,16 +606,49 @@
     }
     
     const streakLevels = [
-        { min: 100, mult: 2, name: "100 - Sølv", color: "#c0c0c0" }, { min: 200, mult: 3, name: "200 - Guld", color: "#ffd700" }, { min: 300, mult: 4, name: "300 - Platin", color: "#e5e4e2" }, { min: 400, mult: 5, name: "400 - Diamant", color: "#00ffff" }, { min: 500, mult: 6, name: "500 - Rubin", color: "#ff4444" }, { min: 600, mult: 7, name: "600 - Smaragd", color: "#50c878" }, { min: 700, mult: 8, name: "700 - Ametyst", color: "#aa80ff" }, { min: 800, mult: 9, name: "800 - Safir", color: "#0000cd" }, { min: 900, mult: 10, name: "900 - Opal", color: "#b9f2ff" }, { min: 1000, mult: 12, name: "1000 - Legendarisk", color: "#ff8c00" }, { min: 1100, mult: 13, name: "1100 - Mytisk", color: "#ff00ff" }, { min: 1200, mult: 14, name: "1200 - Kosmisk", color: "#6a0dad" }, { min: 1300, mult: 15, name: "1300 - Uendelig", color: "#ff1493" }, { min: 1400, mult: 16, name: "1400 - Evig", color: "#00ff7f" }, { min: 1500, mult: 18, name: "1500 - Guddommelig", color: "#ffd700" }, { min: 1600, mult: 19, name: "1600 - Æterisk", color: "#e0ffff" }, { min: 1700, mult: 20, name: "1700 - Transcendent", color: "#da70d6" }, { min: 1800, mult: 22, name: "1800 - Almægtig", color: "#ff4500" }, { min: 1900, mult: 24, name: "1900 - Ufattelig", color: "#9400d3" }, { min: 2000, mult: 30, name: "2000 - GUDDOMMELIG MAX", color: "#ff00ff" }
+        { min: 0, mult: 1, name: "⭐ NORMAL", emoji: "⚪", color: "#ffffff", bgColor: "#333333" },
+        { min: 100, mult: 2, name: "🥉 BRONZE", emoji: "🥉", color: "#cd7f32", bgColor: "#3d2a1a" },
+        { min: 200, mult: 3, name: "🥈 SØLV", emoji: "🥈", color: "#c0c0c0", bgColor: "#2a2a2a" },
+        { min: 300, mult: 4, name: "🥇 GULD", emoji: "🥇", color: "#ffd700", bgColor: "#3a2e1a" },
+        { min: 400, mult: 5, name: "💎 PLATIN", emoji: "💎", color: "#e5e4e2", bgColor: "#2a2a35" },
+        { min: 500, mult: 6, name: "💠 DIAMANT", emoji: "💠", color: "#00ffff", bgColor: "#1a3a3a" },
+        { min: 600, mult: 7, name: "❤️ RUBIN", emoji: "❤️", color: "#ff4444", bgColor: "#3a1a1a" },
+        { min: 700, mult: 8, name: "💚 SMARAGD", emoji: "💚", color: "#50c878", bgColor: "#1a3a1a" },
+        { min: 800, mult: 9, name: "💙 SAFIR", emoji: "💙", color: "#4169e1", bgColor: "#1a1a3a" },
+        { min: 900, mult: 10, name: "💜 AMETYS", emoji: "💜", color: "#aa80ff", bgColor: "#2a1a3a" },
+        { min: 1000, mult: 12, name: "👑 LEGENDE", emoji: "👑", color: "#ff8c00", bgColor: "#3a2a1a" },
+        { min: 1100, mult: 13, name: "🦄 MYTISK", emoji: "🦄", color: "#ff69b4", bgColor: "#3a1a2a" },
+        { min: 1200, mult: 14, name: "🌌 KOSMISK", emoji: "🌌", color: "#8a2be2", bgColor: "#1a0a3a" },
+        { min: 1300, mult: 15, name: "♾️ UENDELIG", emoji: "♾️", color: "#ff1493", bgColor: "#2a0a2a" },
+        { min: 1400, mult: 16, name: "✨ EVIG", emoji: "✨", color: "#00ff7f", bgColor: "#1a2a1a" },
+        { min: 1500, mult: 18, name: "🙏 GUDDOMMELIG", emoji: "🙏", color: "#ffd700", bgColor: "#2a1a1a", glow: true },
+        { min: 1600, mult: 19, name: "🌠 ÆTERISK", emoji: "🌠", color: "#e0ffff", bgColor: "#1a2a3a" },
+        { min: 1700, mult: 20, name: "🌀 TRANSCENDENT", emoji: "🌀", color: "#da70d6", bgColor: "#2a1a3a" },
+        { min: 1800, mult: 22, name: "⚡ ALMÆGTIG", emoji: "⚡", color: "#ff4500", bgColor: "#3a1a0a" },
+        { min: 1900, mult: 24, name: "🌟 UFATTELIG", emoji: "🌟", color: "#9400d3", bgColor: "#2a0a3a" },
+        { min: 2000, mult: 30, name: "🐉 GUDDOMMELIG MAX", emoji: "🐉", color: "#ff00ff", bgColor: "#3a0a3a", glow: true }
     ];
+    
     function getStreakLevel() { for (let i=streakLevels.length-1; i>=0; i--) if (comboCount >= streakLevels[i].min) return streakLevels[i]; return {mult:1, name:"Normal", color:"#fff"}; }
     function getComboMultiplier() { return getStreakLevel().mult; }
     function updateComboVisuals() {
         let level = getStreakLevel();
         let comboEl = document.getElementById('comboCounter');
         let williamImg = document.querySelector('.william-img');
-        if (comboCount >= 5) { comboEl.style.opacity = '1'; comboEl.innerHTML = `🔥 ${comboCount}x COMBO! (${level.name} ${level.mult}x) 🔥`; comboEl.style.background = `linear-gradient(135deg, ${level.color}, #333)`; comboEl.style.boxShadow = `0 0 10px ${level.color}`; }
-        else comboEl.style.opacity = '0';
+        if (comboCount >= 5) { 
+            comboEl.style.opacity = '1'; 
+            if (comboCount >= 100) {
+                comboEl.innerHTML = `${level.emoji} ${comboCount} ${level.name} ${level.emoji}<br>⚡ ${level.mult}x ⚡`;
+            } else {
+                comboEl.innerHTML = `🔥 ${comboCount} COMBO! 🔥`;
+            }
+            comboEl.style.background = `linear-gradient(135deg, ${level.bgColor}, #0a0a0f)`;
+            comboEl.style.border = `2px solid ${level.color}`;
+            comboEl.style.boxShadow = `0 0 20px ${level.color}`;
+            comboEl.style.color = level.color;
+        } else {
+            comboEl.style.opacity = '0';
+        }
         williamImg.style.boxShadow = `0 10px 20px black, 0 0 0 4px ${level.color}, 0 0 0 7px #daa520, 0 0 10px ${level.color}`;
         document.getElementById('comboCountDisplay').innerText = comboCount;
         document.getElementById('comboBonusDisplay').innerText = level.mult;
