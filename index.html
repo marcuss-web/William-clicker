@@ -46,8 +46,8 @@
         @keyframes hopHop { 0%,100% { transform: translateX(-50%) translateY(0px); } 50% { transform: translateX(-50%) translateY(-10px); } }
         .carl-head-img { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #ffc107; object-fit: cover; }
         
-        /* Saleh - helt tæt på William */
-        .saleh-position { position: absolute; right: -5px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
+        /* Saleh - HELT tæt på William */
+        .saleh-position { position: absolute; right: -35px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
         .saleh-card { background: #231f1acc; border-radius: 40px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; border: 2px solid #ffaa55; animation: salehFloat 2s ease-in-out infinite; }
         @keyframes salehFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         .saleh-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 3px solid #ffaa44; }
@@ -164,7 +164,6 @@
             </div>
         </div>
         <div class="central-area">
-            <!-- Ild baggrund omkring William -->
             <div class="flame-background" id="flameBackground"></div>
             <div class="mega-flame" id="megaFlame"></div>
             <div class="aksel-position" id="akselWrapper"><div class="aksel-orbit"><div class="aksel-card"><img class="aksel-img" id="akselImg"><span style="color:#ffd700; font-size:0.7rem;">Aksel</span></div></div></div>
@@ -334,8 +333,12 @@
         return 1;
     }
     
-    // KASPER POPUP - viser "JØDE KASPER" når han stjæler
+    // KASPER POPUP - med KORREKTE knapper der virker
     function showKasperPopup(stolenAmount) {
+        // Fjern eventuel eksisterende popup først
+        let existingPopup = document.querySelector('.kasper-popup');
+        if(existingPopup) existingPopup.remove();
+        
         let popup = document.createElement('div');
         popup.className = 'kasper-popup';
         popup.innerHTML = `
@@ -350,11 +353,13 @@
         `;
         document.body.appendChild(popup);
         
-        const forgiveBtn = document.getElementById('kasperForgiveBtn');
-        const shootBtn = document.getElementById('kasperShootBtn');
+        // Find knapperne i popuppen
+        const forgiveBtn = popup.querySelector('#kasperForgiveBtn');
+        const shootBtn = popup.querySelector('#kasperShootBtn');
         
         if (forgiveBtn) {
-            forgiveBtn.onclick = () => { 
+            forgiveBtn.onclick = (e) => {
+                e.preventDefault();
                 popup.remove(); 
                 kasperEarnedSinceLastSteal = 0; 
                 showToast('🙏 Du lod Jøde Kasper gå... Han vil stjæle igen når du tjener 100k mere!'); 
@@ -363,7 +368,8 @@
         }
         
         if (shootBtn) {
-            shootBtn.onclick = () => { 
+            shootBtn.onclick = (e) => {
+                e.preventDefault();
                 let img = popup.querySelector('img');
                 if (img) { img.style.filter = 'brightness(2) sepia(1) saturate(10)'; }
                 setTimeout(() => { 
@@ -379,7 +385,7 @@
         }
     }
     
-    // KASPER ANIMATION - viser "Corvette Kasper" på bilen
+    // KASPER ANIMATION
     let kasperAnimationInterval = null;
     function startKasperAnimation() {
         if (kasperAnimationInterval) clearInterval(kasperAnimationInterval);
@@ -505,11 +511,11 @@
     }
     
     function saveGame() { 
-        localStorage.setItem('williamClickerV22', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
+        localStorage.setItem('williamClickerV23', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
     }
     
     function loadGame() { 
-        let s=localStorage.getItem('williamClickerV22'); 
+        let s=localStorage.getItem('williamClickerV23'); 
         if(s){ let d=JSON.parse(s); points=d.points||0; totalClicks=d.totalClicks||0; clickMultiplier=d.clickMultiplier||1; hasGoat=d.hasGoat||false; hasCarl=d.hasCarl||false; hasSaleh=d.hasSaleh||false; hasJohannes=d.hasJohannes||false; hasMarcus=d.hasMarcus||false; hasAdvisor=d.hasAdvisor||false; hasKasper=d.hasKasper||false; kasperRemoved=d.kasperRemoved||false; kasperEarnedSinceLastSteal=d.kasperEarnedSinceLastSteal||0; prestigeLevel=d.prestigeLevel||0; prestigeMultiplier=d.prestigeMultiplier||1; autoPowerBuyEnabled=d.autoPowerBuyEnabled||false; autoClickBuyEnabled=d.autoClickBuyEnabled||false; marcusBankBalance=d.marcusBankBalance||0; marcusBankReturnTime=d.marcusBankReturnTime||0; bankReturnAmount=d.bankReturnAmount||0; comboCount=d.comboCount||0; lastClickTime=d.lastClickTime||0; if(d.unlockedBossSkins) unlockedBossSkins=d.unlockedBossSkins; if(d.activeSkins) activeSkins=d.activeSkins; if(d.boughtSkins) boughtSkins=d.boughtSkins; }
         if(hasGoat) startGoatInterval(); if(hasCarl) startCarlInterval(); if(hasSaleh) startSalehInterval(); if(hasJohannes) startJohannesInterval();
         if(hasKasper && !kasperRemoved) startKasperAnimation();
@@ -544,9 +550,29 @@
     function spawnGoldenWilliam() { if(activeGoldenWilliams>=maxGoldenWilliams) return; activeGoldenWilliams++; let g=document.createElement('div'); g.className='golden-william'; g.style.left=(10+Math.random()*70)+'%'; g.style.top=(10+Math.random()*70)+'%'; g.innerHTML=`<img class="golden-william-img" src="${WILLIAM_DEFAULT_URL}">`; let t=15,ti=setInterval(()=>{ t--; if(t<=0){ clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); } },1000); g.onclick=()=>{ let bonus = Math.max(1000, Math.floor(points * 0.05)); if(multiPointsActive) bonus*=3; if(hasAdvisor) bonus*=2; points+=bonus; updateUI(); saveGame(); showToast('🥇 GULD WILLIAM! +'+bonus.toLocaleString()+' point!'); clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); }; document.body.appendChild(g); }
     function scheduleGolden(){ if(goldenTimeout) clearTimeout(goldenTimeout); goldenTimeout=setTimeout(spawnGoldenWilliam,20000+Math.random()*25000); }
     
-    document.getElementById('autoClickToggle').addEventListener('change', (e) => { autoClickBuyEnabled = e.target.checked; saveGame(); });
-    setInterval(() => { if (autoClickBuyEnabled && hasAdvisor) { let cost = 30 + (clickMultiplier - 1) * 15; while ((infiniteMoney || points >= cost) && clickMultiplier < 100) { if (!infiniteMoney) points -= cost; clickMultiplier++; cost = 30 + (clickMultiplier - 1) * 15; } updateUI(); } }, 500);
+    // AUTO-KØB CLICK UPGRADES - FIXET
+    document.getElementById('autoClickToggle').addEventListener('change', (e) => { 
+        autoClickBuyEnabled = e.target.checked; 
+        saveGame(); 
+        if(autoClickBuyEnabled) showToast('🤖 Auto-køb aktiveret!');
+        else showToast('🤖 Auto-køb deaktiveret!');
+    });
     
+    setInterval(() => { 
+        if (autoClickBuyEnabled && hasAdvisor) { 
+            let cost = 30 + (clickMultiplier - 1) * 15; 
+            while ((infiniteMoney || points >= cost) && clickMultiplier < 100) { 
+                if (!infiniteMoney) points -= cost; 
+                clickMultiplier++; 
+                cost = 30 + (clickMultiplier - 1) * 15; 
+                updateUI();
+            } 
+            updateUI();
+            saveGame();
+        } 
+    }, 500);
+    
+    // AUTO POWER-UPS
     document.getElementById('autoPowerToggle').addEventListener('change', (e) => { autoPowerBuyEnabled = e.target.checked; saveGame(); });
     setInterval(() => { 
         if (autoPowerBuyEnabled && hasAdvisor) { 
@@ -670,11 +696,9 @@
             return;
         }
         
-        // Udfør prestige
         prestigeLevel++; 
         prestigeMultiplier = 1 + (prestigeLevel * 0.05); 
         
-        // Nulstil alt gameplay
         points = 0; 
         totalClicks = 0; 
         clickMultiplier = 1; 
@@ -692,7 +716,6 @@
         bankReturnAmount = 0;
         comboCount = 0;
         
-        // Stop alle intervaller
         if(goatInterval) clearInterval(goatInterval);
         if(carlInterval) clearInterval(carlInterval);
         if(salehInterval) clearInterval(salehInterval);
@@ -706,12 +729,12 @@
         showToast(`👑 PRESTIGE NIVEAU ${prestigeLevel}! +${prestigeLevel*5}% bonus på ALT! 🎉`); 
     };
     
-    // Nulstil spil
+    // NULSTIL SPIL - VIRKER NU
     document.getElementById('resetBtn').onclick=()=>{ 
         if(confirm('⚠️ NULSTIL ALT? Alle fremskridt, upgrades, point og Kasper forsvinder!')){ 
             localStorage.clear();
             showToast('🔄 Spillet er nulstillet! Genindlæser...');
-            setTimeout(() => { location.reload(); }, 500);
+            setTimeout(() => { window.location.reload(); }, 500);
         } 
     };
     
