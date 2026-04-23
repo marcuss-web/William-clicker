@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>William Clicker ⚡ Jøde Kasper · Alle Skins</title>
+    <title>William Clicker ⚡ Corvette Kasper · Alle Skins</title>
     
     <style>
         * { user-select: none; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
         body { background: linear-gradient(145deg, #2d1b0e, #1a0f07); min-height: 100vh; font-family: 'Segoe UI', 'Quicksand', 'Poppins', system-ui, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; overflow-x: hidden; overflow-y: auto; }
         .game-layout { max-width: 1300px; width: 100%; display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
-        .game-left { flex: 2; min-width: 280px; background: rgba(10,14,23,0.6); backdrop-filter: blur(5px); border-radius: 50px; padding: 15px 15px 25px 15px; box-shadow: 0 20px 35px rgba(0,0,0,0.4); border: 1px solid #ffb34766; }
+        .game-left { flex: 2; min-width: 280px; background: rgba(10,14,23,0.6); backdrop-filter: blur(5px); border-radius: 50px; padding: 15px 15px 25px 15px; box-shadow: 0 20px 35px rgba(0,0,0,0.4); border: 1px solid #ffb34766; position: relative; }
         .upgrade-panel { flex: 1.2; min-width: 260px; max-height: 85vh; overflow-y: auto; background: #0b0e16cc; backdrop-filter: blur(8px); border-radius: 50px; padding: 15px 15px; border: 1px solid #f3aa4a88; box-shadow: 0 10px 25px black; }
         .score-panel { background: #03050ce6; border-radius: 60px; padding: 8px 15px; margin-bottom: 15px; text-align: center; }
         .score-value { font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, #ffdd99, #ffaa33); background-clip: text; -webkit-background-clip: text; color: transparent; line-height: 1; display: inline-block; position: relative; }
@@ -18,10 +18,13 @@
         .per-second-stats { background: #00000066; border-radius: 30px; padding: 8px; margin: 10px 0; font-size: 0.75rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 5px; color: #e8d5a8; }
         .central-area { position: relative; display: flex; justify-content: center; align-items: center; min-height: 280px; margin: 10px 0; }
         
+        /* Ild baggrund - centreret om William */
+        .flame-background { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 320px; height: 320px; border-radius: 50%; pointer-events: none; z-index: 0; background: radial-gradient(circle, rgba(255,80,0,0.3) 0%, rgba(255,0,0,0.1) 50%, transparent 70%); animation: flamePulse 1s ease-in-out infinite alternate; }
+        @keyframes flamePulse { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; } 100% { transform: translate(-50%, -50%) scale(1.08); opacity: 1; } }
+        
         .mega-flame { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 280px; height: 280px; border-radius: 50%; pointer-events: none; z-index: 0; }
         .mega-flame::before { content: "🔥"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14rem; filter: drop-shadow(0 0 25px currentColor); animation: flameFlicker 0.3s infinite alternate; }
         @keyframes flameFlicker { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } }
-        .mega-flame-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, rgba(255,100,0,0.25) 0%, rgba(255,0,0,0) 70%); }
         
         .corvette-car { position: fixed; z-index: 1000; width: 110px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
         .corvette-car .car-image { width: 100%; border-radius: 15%; border: 2px solid #ffd700; object-fit: cover; background: #2c2e3e; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
@@ -30,7 +33,7 @@
         
         .william-container { position: relative; display: inline-block; cursor: pointer; z-index: 10; }
         .william-container:active { transform: scale(0.97); }
-        .william-img { width: 150px; height: 150px; object-fit: cover; object-position: center; border-radius: 50%; background: #2c2e3e; transition: all 0.2s ease; display: block; }
+        .william-img { width: 150px; height: 150px; object-fit: cover; object-position: center; border-radius: 50%; background: #2c2e3e; transition: all 0.2s ease; display: block; position: relative; z-index: 2; }
         .hat { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 2.2rem; pointer-events: none; z-index: 15; filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3)); }
         
         .aksel-position { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; z-index: 5; display: none; }
@@ -43,7 +46,8 @@
         @keyframes hopHop { 0%,100% { transform: translateX(-50%) translateY(0px); } 50% { transform: translateX(-50%) translateY(-10px); } }
         .carl-head-img { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #ffc107; object-fit: cover; }
         
-        .saleh-position { position: absolute; right: -15px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
+        /* Saleh - helt tæt på William */
+        .saleh-position { position: absolute; right: -5px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
         .saleh-card { background: #231f1acc; border-radius: 40px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; border: 2px solid #ffaa55; animation: salehFloat 2s ease-in-out infinite; }
         @keyframes salehFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         .saleh-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 3px solid #ffaa44; }
@@ -160,8 +164,9 @@
             </div>
         </div>
         <div class="central-area">
-            <div class="mega-flame-glow" id="megaFlameGlow"></div>
-            <div class="mega-flame" id="megaFlame">🔥</div>
+            <!-- Ild baggrund omkring William -->
+            <div class="flame-background" id="flameBackground"></div>
+            <div class="mega-flame" id="megaFlame"></div>
             <div class="aksel-position" id="akselWrapper"><div class="aksel-orbit"><div class="aksel-card"><img class="aksel-img" id="akselImg"><span style="color:#ffd700; font-size:0.7rem;">Aksel</span></div></div></div>
             <div class="saleh-position" id="salehWrapper"><div class="saleh-card"><img class="saleh-img" id="salehImg"><span style="color:#ffd700; font-size:0.7rem;">Saleh</span></div><div class="pizza-throw">🍕</div></div>
             <div class="william-container" id="williamClicker">
@@ -329,6 +334,7 @@
         return 1;
     }
     
+    // KASPER POPUP - viser "JØDE KASPER" når han stjæler
     function showKasperPopup(stolenAmount) {
         let popup = document.createElement('div');
         popup.className = 'kasper-popup';
@@ -373,6 +379,7 @@
         }
     }
     
+    // KASPER ANIMATION - viser "Corvette Kasper" på bilen
     let kasperAnimationInterval = null;
     function startKasperAnimation() {
         if (kasperAnimationInterval) clearInterval(kasperAnimationInterval);
@@ -386,7 +393,7 @@
             car.innerHTML = `
                 <img class="kasper-on-car" src="${JODE_KASPER_URL}">
                 <img class="car-image" src="${CORVETTE_CAR_URL}">
-                <div class="car-label">🏎️ Jøde Kasper</div>
+                <div class="car-label">🏎️ Corvette Kasper</div>
             `;
             if (direction === 'rightToLeft') {
                 car.style.right = '-140px';
@@ -523,7 +530,7 @@
     document.getElementById('buyJohannesBtn').onclick=()=>{ if(!hasJohannes && (infiniteMoney||points>=120000)){ if(!infiniteMoney) points-=120000; hasJohannes=true; startJohannesInterval(); updateUI(); saveGame(); showToast('👨‍🌾 Johannes købt!'); } };
     document.getElementById('buyMarcusBtn').onclick=()=>{ if(!hasMarcus && (infiniteMoney||points>=150000)){ if(!infiniteMoney) points-=150000; hasMarcus=true; updateUI(); saveGame(); showToast('🏦 Marcus Bankier købt!'); } };
     document.getElementById('buyAdvisorBtn').onclick=()=>{ if(!hasAdvisor && (infiniteMoney||points>=200000)){ if(!infiniteMoney) points-=200000; hasAdvisor=true; updateUI(); saveGame(); showToast('🤐 Anonym Advisor købt!'); } };
-    document.getElementById('buyKasperBtn').onclick=()=>{ if(!hasKasper && !kasperRemoved && (infiniteMoney||points>=2500000)){ if(!infiniteMoney) points-=2500000; hasKasper=true; kasperEarnedSinceLastSteal=0; startKasperAnimation(); updateUI(); saveGame(); showToast('🏎️ Jøde Kasper købt! Pas på - han stjæler!'); } };
+    document.getElementById('buyKasperBtn').onclick=()=>{ if(!hasKasper && !kasperRemoved && (infiniteMoney||points>=2500000)){ if(!infiniteMoney) points-=2500000; hasKasper=true; kasperEarnedSinceLastSteal=0; startKasperAnimation(); updateUI(); saveGame(); showToast('🏎️ Corvette Kasper købt! Pas på - han stjæler!'); } };
     
     function activatePowerup(cost, cb) { if(infiniteMoney || points >= cost) { if(!infiniteMoney) points -= cost; cb(); updateUI(); saveGame(); return true; } else { showToast(`💰 Du mangler ${(cost - points).toLocaleString()} point!`); return false; } }
     
@@ -648,7 +655,6 @@
             <p>💎 <strong>Dine point:</strong> ${Math.floor(points).toLocaleString()}</p>
             <hr style="border-color:#9b59b6;">
             <p>⚠️ <strong>VIGTIGT:</strong> Prestige nulstiller ALT, men du beholder din bonus!</p>
-            <p>🏎️ Jøde Kasper kan købes igen efter prestige.</p>
         `;
         document.getElementById('prestigeConfirm').disabled = points < req;
         document.getElementById('prestigeModal').classList.add('active');
@@ -679,7 +685,7 @@
         hasMarcus = false; 
         hasAdvisor = false; 
         hasKasper = false; 
-        kasperRemoved = false;  // <-- VIGTIGT: Så Kasper kan købes igen
+        kasperRemoved = false;
         kasperEarnedSinceLastSteal = 0;
         marcusBankBalance = 0;
         marcusBankReturnTime = 0;
@@ -700,7 +706,7 @@
         showToast(`👑 PRESTIGE NIVEAU ${prestigeLevel}! +${prestigeLevel*5}% bonus på ALT! 🎉`); 
     };
     
-    // Nulstil spil - VIRKER NU!
+    // Nulstil spil
     document.getElementById('resetBtn').onclick=()=>{ 
         if(confirm('⚠️ NULSTIL ALT? Alle fremskridt, upgrades, point og Kasper forsvinder!')){ 
             localStorage.clear();
