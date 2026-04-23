@@ -119,14 +119,14 @@
         .prestige-confirm { flex: 1; background: #c71585; border: none; color: white; padding: 8px; border-radius: 30px; cursor: pointer; font-weight: bold; }
         .prestige-cancel { flex: 1; background: #3e2a24; border: none; color: #ffbe89; padding: 8px; border-radius: 30px; cursor: pointer; font-weight: bold; }
         
-        /* Combo Counter - nu under score-panelet og skrå med William */
+        /* STOR COMBO BADGE - under score-panelet med hop animation */
         .combo-wrapper { position: relative; margin-top: 10px; text-align: center; }
-        .combo-badge { display: inline-block; background: linear-gradient(135deg, #ff6600, #ff3300); padding: 8px 20px; border-radius: 50px; font-weight: bold; font-size: 1rem; color: white; text-shadow: 1px 1px 0 #000; box-shadow: 0 0 15px rgba(255,100,0,0.5); animation: comboPulse 0.5s ease infinite alternate; }
-        @keyframes comboPulse { from { transform: scale(1); } to { transform: scale(1.05); } }
+        .combo-badge { display: inline-block; background: linear-gradient(135deg, #ff6600, #ff3300); padding: 12px 35px; border-radius: 60px; font-weight: bold; font-size: 1.3rem; color: white; text-shadow: 2px 2px 0 #000; box-shadow: 0 5px 15px rgba(255,100,0,0.4); transition: all 0.05s ease; }
+        .combo-badge.bounce { animation: comboBounce 0.2s ease-in-out; }
+        @keyframes comboBounce { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
         
-        /* Skrå combo streak ved William's højre side */
-        .floating-combo { position: absolute; right: -100px; top: -30px; background: linear-gradient(135deg, #ffaa00, #ff6600); padding: 5px 12px; border-radius: 30px; font-size: 0.9rem; font-weight: bold; color: white; white-space: nowrap; box-shadow: 0 0 10px rgba(255,100,0,0.5); transform: rotate(15deg); z-index: 20; pointer-events: none; transition: all 0.1s ease; }
-        .floating-combo span { font-size: 1.2rem; margin-right: 3px; }
+        /* Lille skrå combo ved William - forbliver statisk */
+        .floating-combo { position: absolute; right: -100px; top: -30px; background: linear-gradient(135deg, #ffaa00, #ff6600); padding: 4px 10px; border-radius: 25px; font-size: 0.75rem; font-weight: bold; color: white; white-space: nowrap; box-shadow: 0 0 8px rgba(255,100,0,0.5); transform: rotate(15deg); z-index: 20; pointer-events: none; }
         
         .skin-card, .boss-skin-card { transition: all 0.2s; cursor: pointer; }
         .skin-card:hover, .boss-skin-card:hover { transform: scale(1.02); }
@@ -175,7 +175,7 @@
             </div>
         </div>
         
-        <!-- Combo vises her UNDER score-panelet -->
+        <!-- STOR COMBO BADGE - her under score-panelet (hopper når man klikker) -->
         <div class="combo-wrapper">
             <div class="combo-badge" id="comboBadge">🔥 0x COMBO! (1x bonus)</div>
         </div>
@@ -189,7 +189,7 @@
                 <img class="william-img" id="williamImg">
                 <div class="hat" id="williamHat"></div>
                 <div id="carlWrapper"><div class="carl-on-head" id="carlOnHead"><img id="carlHeadImg" class="carl-head-img"></div></div>
-                <!-- Skrå combo streak ved William's højre side -->
+                <!-- LILLE SKRÅ COMBO - ved William's højre side (statisk) -->
                 <div class="floating-combo" id="floatingCombo">🔥 0x</div>
             </div>
         </div>
@@ -264,7 +264,7 @@
     let unlockedBossSkins = [], activeSkins = { william: 'default', aksel: 'default', carl: 'default', saleh: 'default', johannes: 'default', kasper: 'default' };
     let boughtSkins = [];
     
-    // ACHIEVEMENTS & CHALLENGES (samme som før - forkortet for plads)
+    // ACHIEVEMENTS & CHALLENGES
     let achievements = {
         click100: { name: "🖱️ Første klik", desc: "Klik 100 gange", current: 0, target: 100, completed: false, reward: 1000 },
         click1000: { name: "🖱️ Klikmester", desc: "Klik 1000 gange", current: 0, target: 1000, completed: false, reward: 10000 },
@@ -308,14 +308,25 @@
         setTimeout(() => popup.remove(), 800);
     }
     
-    // Opdater combo visning (både under score og skrå ved William)
+    // HOP ANIMATION på den STORE combo badge (kun når man klikker)
+    function animateComboBadge() {
+        let badge = document.getElementById('comboBadge');
+        badge.classList.remove('bounce');
+        void badge.offsetWidth; // Force reflow
+        badge.classList.add('bounce');
+        setTimeout(() => {
+            badge.classList.remove('bounce');
+        }, 200);
+    }
+    
+    // Opdater combo visning (både stor badge og lille skrå)
     function updateComboVisuals() {
         let level = getStreakLevel();
         let comboText = `🔥 ${comboCount}x COMBO! (${level.mult}x bonus)`;
         document.getElementById('comboBadge').innerHTML = comboText;
         document.getElementById('floatingCombo').innerHTML = `🔥 ${comboCount}x`;
         
-        // Farve baseret på combo niveau
+        // Opdater farver baseret på combo niveau
         let badge = document.getElementById('comboBadge');
         let floating = document.getElementById('floatingCombo');
         badge.style.background = `linear-gradient(135deg, ${level.color}, #ff3300)`;
@@ -343,8 +354,6 @@
     }
     
     // Resten af funktionerne (checkAchievements, checkChallenges, renderAchievements, renderChallenges, etc.)
-    // ... (beholder samme logik som før for at spare plads, men med opdateret auto-click max til 1000)
-    
     function checkAchievements() {
         let changed = false;
         if (!achievements.click100.completed && totalClicks >= 100) { achievements.click100.completed = true; points += achievements.click100.reward; showToast(`🏆 ACHIEVEMENT: ${achievements.click100.name}! +${achievements.click100.reward.toLocaleString()} point!`); changed = true; }
@@ -521,11 +530,11 @@
     
     function saveGame() { 
         let saveData = { points, totalClicks, clickMultiplier, hasGoat, hasCarl, hasSaleh, hasJohannes, hasMarcus, hasAdvisor, hasKasper, kasperRemoved, kasperEarnedSinceLastSteal, prestigeLevel, prestigeMultiplier, autoPowerBuyEnabled, autoClickBuyEnabled, marcusBankBalance, marcusBankReturnTime, bankReturnAmount, comboCount, lastClickTime, unlockedBossSkins, activeSkins, boughtSkins, achievements, challenges, totalUpgradesBought, challengeStartTime };
-        localStorage.setItem('williamClickerV27', JSON.stringify(saveData)); 
+        localStorage.setItem('williamClickerV28', JSON.stringify(saveData)); 
     }
     
     function loadGame() { 
-        let s=localStorage.getItem('williamClickerV27'); 
+        let s=localStorage.getItem('williamClickerV28'); 
         if(s){ let d=JSON.parse(s); points=d.points||0; totalClicks=d.totalClicks||0; clickMultiplier=d.clickMultiplier||1; hasGoat=d.hasGoat||false; hasCarl=d.hasCarl||false; hasSaleh=d.hasSaleh||false; hasJohannes=d.hasJohannes||false; hasMarcus=d.hasMarcus||false; hasAdvisor=d.hasAdvisor||false; hasKasper=d.hasKasper||false; kasperRemoved=d.kasperRemoved||false; kasperEarnedSinceLastSteal=d.kasperEarnedSinceLastSteal||0; prestigeLevel=d.prestigeLevel||0; prestigeMultiplier=d.prestigeMultiplier||1; autoPowerBuyEnabled=d.autoPowerBuyEnabled||false; autoClickBuyEnabled=d.autoClickBuyEnabled||false; marcusBankBalance=d.marcusBankBalance||0; marcusBankReturnTime=d.marcusBankReturnTime||0; bankReturnAmount=d.bankReturnAmount||0; comboCount=d.comboCount||0; lastClickTime=d.lastClickTime||0; if(d.unlockedBossSkins) unlockedBossSkins=d.unlockedBossSkins; if(d.activeSkins) activeSkins=d.activeSkins; if(d.boughtSkins) boughtSkins=d.boughtSkins; if(d.achievements) achievements = d.achievements; if(d.challenges) challenges = d.challenges; if(d.totalUpgradesBought) totalUpgradesBought = d.totalUpgradesBought; if(d.challengeStartTime) challengeStartTime = d.challengeStartTime; }
         if(hasGoat) startGoatInterval(); if(hasCarl) startCarlInterval(); if(hasSaleh) startSalehInterval(); if(hasJohannes) startJohannesInterval();
         if(hasKasper && !kasperRemoved) startKasperAnimation();
@@ -556,11 +565,13 @@
         updateUI(); 
         let img = document.querySelector('.william-img'); 
         if(img){ img.style.transform='scale(0.96)'; setTimeout(()=>{if(img) img.style.transform='';},100); }
-        // Pop-up effekt
+        // Pop-up effekt på klikket
         let rect = e.target.getBoundingClientRect();
         let centerX = rect.left + rect.width / 2;
         let centerY = rect.top + rect.height / 2;
         showClickPopup(val, centerX, centerY);
+        // Hop animation på den STORE combo badge
+        animateComboBadge();
     });
     
     document.getElementById('buyClickBtn').onclick=()=>{ let cost=30+(clickMultiplier-1)*15; if(infiniteMoney||points>=cost){ if(!infiniteMoney) points-=cost; clickMultiplier++; totalUpgradesBought++; updateUI(); saveGame(); } };
@@ -584,7 +595,7 @@
     function spawnGoldenWilliam() { if(activeGoldenWilliams>=maxGoldenWilliams) return; activeGoldenWilliams++; let g=document.createElement('div'); g.className='golden-william'; g.style.left=(10+Math.random()*70)+'%'; g.style.top=(10+Math.random()*70)+'%'; g.innerHTML=`<img class="golden-william-img" src="${WILLIAM_DEFAULT_URL}">`; let t=15,ti=setInterval(()=>{ t--; if(t<=0){ clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); } },1000); g.onclick=()=>{ let bonus = Math.max(1000, Math.floor(points * 0.05)); if(multiPointsActive) bonus*=3; if(hasAdvisor) bonus*=2; points+=bonus; updateUI(); saveGame(); showToast('🥇 GULD WILLIAM! +'+bonus.toLocaleString()+' point!'); clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); }; document.body.appendChild(g); }
     function scheduleGolden(){ if(goldenTimeout) clearTimeout(goldenTimeout); goldenTimeout=setTimeout(spawnGoldenWilliam,20000+Math.random()*25000); }
     
-    // AUTO-KØB CLICK UPGRADES - KØBER SÅ MANGE DEN KAN (max 1000, ikke 100!)
+    // AUTO-KØB CLICK UPGRADES - køber så mange den kan (max 1000)
     document.getElementById('autoClickToggle').addEventListener('change', (e) => { autoClickBuyEnabled = e.target.checked; saveGame(); if(autoClickBuyEnabled) showToast('🤖 Auto-køb af klik aktiveret!'); else showToast('🤖 Auto-køb af klik deaktiveret!'); });
     
     setInterval(() => { 
