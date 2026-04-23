@@ -46,7 +46,7 @@
         .carl-head-img { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #ffc107; object-fit: cover; }
         
         /* Saleh - HELT tæt på William (næsten rører) */
-        .saleh-position { position: absolute; right: -10px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
+        .saleh-position { position: absolute; right: -5px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
         .saleh-card { background: #231f1acc; border-radius: 40px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; border: 2px solid #ffaa55; animation: salehFloat 2s ease-in-out infinite; white-space: nowrap; }
         @keyframes salehFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         .saleh-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 3px solid #ffaa44; background: #8B6914; }
@@ -252,18 +252,18 @@
     let achievements = {
         click100: { name: "🖱️ Første klik", desc: "Klik 100 gange", current: 0, target: 100, completed: false, reward: 1000 },
         click1000: { name: "🖱️ Klikmester", desc: "Klik 1000 gange", current: 0, target: 1000, completed: false, reward: 10000 },
-        points100k: { name: "💰 Millionær", desc: "Tjen 100.000 point", current: 0, target: 100000, completed: false, reward: 50000 },
-        points1m: { name: "💎 Mangemillionær", desc: "Tjen 1.000.000 point", current: 0, target: 1000000, completed: false, reward: 250000 },
+        points100k: { name: "💰 Hundredtusind", desc: "Tjen 100.000 point", current: 0, target: 100000, completed: false, reward: 50000 },
+        points1m: { name: "💎 Millionær", desc: "Tjen 1.000.000 point", current: 0, target: 1000000, completed: false, reward: 250000 },
         upgrade10: { name: "📈 Upgrade-entusiast", desc: "Køb 10 upgrades", current: 0, target: 10, completed: false, reward: 5000 },
         upgrade50: { name: "📊 Upgrade-mester", desc: "Køb 50 upgrades", current: 0, target: 50, completed: false, reward: 50000 },
-        combo50: { name: "⚡ Combo-breaker", desc: "Opnå 50 i combo", current: 0, target: 50, completed: false, reward: 10000 },
+        combo50: { name: "⚡ Combo-begynder", desc: "Opnå 50 i combo", current: 0, target: 50, completed: false, reward: 10000 },
         combo200: { name: "🔥 Combo-legende", desc: "Opnå 200 i combo", current: 0, target: 200, completed: false, reward: 50000 },
         bossKill: { name: "👹 Boss-dræber", desc: "Besejr Rasmus Prange", current: 0, target: 1, completed: false, reward: 100000 },
-        prestige1: { name: "👑 Prestige-begynder", desc: "Gennemfør prestige 1 gang", current: 0, target: 1, completed: false, reward: 0 }
+        prestige1: { name: "👑 Prestige", desc: "Gennemfør prestige 1 gang", current: 0, target: 1, completed: false, reward: 0 }
     };
     
     let challenges = {
-        challenge1: { name: "🎯 Hurtig start", desc: "Tjen 10.000 point på under 5 minutter", completed: false, reward: 25000, timeLimit: 300000 },
+        challenge1: { name: "🎯 Hurtig start", desc: "Tjen 10.000 point på under 5 minutter", completed: false, reward: 25000 },
         challenge2: { name: "🎯 Upgrade-junkie", desc: "Køb alle upgrades (undtagen Kasper)", completed: false, reward: 500000 },
         challenge3: { name: "🎯 Kasper-dræber", desc: "Skyd Jøde Kasper", completed: false, reward: 1000000 },
         challenge4: { name: "🎯 Combo-gud", desc: "Opnå 500 i combo streak", completed: false, reward: 200000 },
@@ -324,6 +324,18 @@
             showToast(`🏆 ACHIEVEMENT: ${achievements.combo200.name}! +${achievements.combo200.reward.toLocaleString()} point!`);
             changed = true;
         }
+        if (!achievements.bossKill.completed && achievements.bossKill.current >= 1) {
+            achievements.bossKill.completed = true;
+            points += achievements.bossKill.reward;
+            showToast(`🏆 ACHIEVEMENT: ${achievements.bossKill.name}! +${achievements.bossKill.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        if (!achievements.prestige1.completed && prestigeLevel >= 1) {
+            achievements.prestige1.completed = true;
+            points += achievements.prestige1.reward;
+            showToast(`🏆 ACHIEVEMENT: ${achievements.prestige1.name}! +${achievements.prestige1.reward.toLocaleString()} point!`);
+            changed = true;
+        }
         
         if (changed) {
             updateUI();
@@ -338,7 +350,7 @@
         if (!challenges.challenge1.completed && points >= 10000 && (Date.now() - challengeStartTime) < 300000) {
             challenges.challenge1.completed = true;
             points += challenges.challenge1.reward;
-            showToast(`🎯 CHALLENGE COMPLETED: ${challenges.challenge1.name}! +${challenges.challenge1.reward.toLocaleString()} point!`);
+            showToast(`🎯 CHALLENGE: ${challenges.challenge1.name}! +${challenges.challenge1.reward.toLocaleString()} point!`);
             changed = true;
         }
         
@@ -346,7 +358,7 @@
         if (!challenges.challenge2.completed && hasGoat && hasCarl && hasSaleh && hasJohannes && hasMarcus && hasAdvisor) {
             challenges.challenge2.completed = true;
             points += challenges.challenge2.reward;
-            showToast(`🎯 CHALLENGE COMPLETED: ${challenges.challenge2.name}! +${challenges.challenge2.reward.toLocaleString()} point!`);
+            showToast(`🎯 CHALLENGE: ${challenges.challenge2.name}! +${challenges.challenge2.reward.toLocaleString()} point!`);
             changed = true;
         }
         
@@ -354,7 +366,7 @@
         if (!challenges.challenge3.completed && kasperRemoved) {
             challenges.challenge3.completed = true;
             points += challenges.challenge3.reward;
-            showToast(`🎯 CHALLENGE COMPLETED: ${challenges.challenge3.name}! +${challenges.challenge3.reward.toLocaleString()} point!`);
+            showToast(`🎯 CHALLENGE: ${challenges.challenge3.name}! +${challenges.challenge3.reward.toLocaleString()} point!`);
             changed = true;
         }
         
@@ -362,7 +374,15 @@
         if (!challenges.challenge4.completed && comboCount >= 500) {
             challenges.challenge4.completed = true;
             points += challenges.challenge4.reward;
-            showToast(`🎯 CHALLENGE COMPLETED: ${challenges.challenge4.name}! +${challenges.challenge4.reward.toLocaleString()} point!`);
+            showToast(`🎯 CHALLENGE: ${challenges.challenge4.name}! +${challenges.challenge4.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        
+        // Challenge 5: Sæt 1.000.000 i banken
+        if (!challenges.challenge5.completed && marcusBankBalance >= 1000000) {
+            challenges.challenge5.completed = true;
+            points += challenges.challenge5.reward;
+            showToast(`🎯 CHALLENGE: ${challenges.challenge5.name}! +${challenges.challenge5.reward.toLocaleString()} point!`);
             changed = true;
         }
         
@@ -599,7 +619,6 @@
         document.getElementById('comboCountDisplay').innerText = comboCount;
         document.getElementById('comboBonusDisplay').innerText = level.mult;
         
-        // Opdater achievements
         achievements.combo50.current = comboCount;
         achievements.combo200.current = comboCount;
         checkAchievements();
@@ -653,11 +672,12 @@
         document.getElementById('freezeActiveBadge').style.display = (comboFreezeActive && now < comboFreezeEnd) ? 'inline-block' : 'none';
         document.getElementById('rainActiveBadge').style.display = (moneyRainActive && now < moneyRainEnd) ? 'inline-block' : 'none';
         
-        // Opdater achievements
         achievements.click100.current = totalClicks;
         achievements.click1000.current = totalClicks;
         achievements.points100k.current = points;
         achievements.points1m.current = points;
+        achievements.upgrade10.current = totalUpgradesBought;
+        achievements.upgrade50.current = totalUpgradesBought;
         checkAchievements();
         checkChallenges();
     }
@@ -687,11 +707,11 @@
             unlockedBossSkins, activeSkins, boughtSkins,
             achievements, challenges, totalUpgradesBought, challengeStartTime
         };
-        localStorage.setItem('williamClickerV25', JSON.stringify(saveData)); 
+        localStorage.setItem('williamClickerV26', JSON.stringify(saveData)); 
     }
     
     function loadGame() { 
-        let s=localStorage.getItem('williamClickerV25'); 
+        let s=localStorage.getItem('williamClickerV26'); 
         if(s){ 
             let d=JSON.parse(s); 
             points=d.points||0; totalClicks=d.totalClicks||0; clickMultiplier=d.clickMultiplier||1; 
@@ -944,7 +964,7 @@
         showToast(`👑 PRESTIGE NIVEAU ${prestigeLevel}! +${prestigeLevel*5}% bonus på ALT! 🎉`); 
     };
     
-    // NULSTIL SPIL - VIRKER 100%
+    // NULSTIL SPIL - VIRKER 100%!
     document.getElementById('resetBtn').onclick=()=>{ 
         if(confirm('⚠️ NULSTIL ALT? Alle fremskridt, upgrades, point og Kasper forsvinder!')){ 
             localStorage.clear();
@@ -1056,7 +1076,7 @@
         else if(marcusBankReturnTime && Date.now()>=marcusBankReturnTime){ document.getElementById('bankTimerDisplay').innerHTML=''; document.getElementById('bankWithdrawBtn').style.display='block'; }
         else { document.getElementById('bankTimerDisplay').innerHTML=''; document.getElementById('bankWithdrawBtn').style.display='none'; }
     }
-    document.querySelectorAll('.bank-option-btn').forEach(btn=>{ btn.onclick=()=>{ if(!hasMarcus){ showToast('Køb Marcus Bankier først!'); return; } if(marcusBankReturnTime && Date.now()<marcusBankReturnTime){ showToast('Du har allerede penge i banken!'); return; } let percent=parseInt(btn.dataset.percent); let amount=Math.floor(points*(percent/100)); if(amount<100){ showToast('Ikke nok point!'); return; } points-=amount; marcusBankBalance=amount; let minutes, returnPercent; if(percent===10){ minutes=1; returnPercent=15; } else if(percent===25){ minutes=3; returnPercent=40; } else if(percent===50){ minutes=5; returnPercent=75; } else if(percent===75){ minutes=7; returnPercent=125; } else { minutes=10; returnPercent=200; } bankReturnAmount=Math.floor(amount*(returnPercent/100)); marcusBankReturnTime=Date.now()+(minutes*60*1000); updateUI(); saveGame(); updateBankDisplay(); showToast(`💰 ${amount.toLocaleString()} sat i banken! Får ${bankReturnAmount.toLocaleString()} om ${minutes} min!`); }; });
+    document.querySelectorAll('.bank-option-btn').forEach(btn=>{ btn.onclick=()=>{ if(!hasMarcus){ showToast('Køb Marcus Bankier først!'); return; } if(marcusBankReturnTime && Date.now()<marcusBankReturnTime){ showToast('Du har allerede penge i banken!'); return; } let percent=parseInt(btn.dataset.percent); let amount=Math.floor(points*(percent/100)); if(amount<100){ showToast('Ikke nok point!'); return; } points-=amount; marcusBankBalance=amount; let minutes, returnPercent; if(percent===10){ minutes=1; returnPercent=15; } else if(percent===25){ minutes=3; returnPercent=40; } else if(percent===50){ minutes=5; returnPercent=75; } else if(percent===75){ minutes=7; returnPercent=125; } else { minutes=10; returnPercent=200; } bankReturnAmount=Math.floor(amount*(returnPercent/100)); marcusBankReturnTime=Date.now()+(minutes*60*1000); updateUI(); saveGame(); updateBankDisplay(); showToast(`💰 ${amount.toLocaleString()} sat i banken! Får ${bankReturnAmount.toLocaleString()} om ${minutes} min!`); checkChallenges(); }; });
     document.getElementById('bankWithdrawBtn').onclick=()=>{ if(marcusBankReturnTime && Date.now()>=marcusBankReturnTime){ points+=bankReturnAmount; marcusBankBalance=0; marcusBankReturnTime=0; bankReturnAmount=0; updateUI(); saveGame(); updateBankDisplay(); showToast(`✅ Hævede ${bankReturnAmount.toLocaleString()}!`); } };
     
     document.getElementById('saveScoreBtn').onclick=()=>{ let name=document.getElementById('playerName').value.trim(); if(name) { addLocalScore(name, points); loadLeaderboard(); showToast('✅ Score gemt lokalt!'); } else { showToast('Indtast et navn først!'); } };
