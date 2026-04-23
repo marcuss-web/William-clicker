@@ -45,11 +45,11 @@
         @keyframes hopHop { 0%,100% { transform: translateX(-50%) translateY(0px); } 50% { transform: translateX(-50%) translateY(-10px); } }
         .carl-head-img { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #ffc107; object-fit: cover; }
         
-        /* Saleh - HELT tæt på William (næsten oveni) */
-        .saleh-position { position: absolute; right: -50px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
+        /* Saleh - HELT tæt på William (næsten rører) */
+        .saleh-position { position: absolute; right: -10px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
         .saleh-card { background: #231f1acc; border-radius: 40px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; border: 2px solid #ffaa55; animation: salehFloat 2s ease-in-out infinite; white-space: nowrap; }
         @keyframes salehFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-        .saleh-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 3px solid #ffaa44; }
+        .saleh-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 3px solid #ffaa44; background: #8B6914; }
         .pizza-throw { position: absolute; right: 5px; top: -8px; font-size: 1.5rem; animation: throwPizza 1.5s ease-in-out infinite; pointer-events: none; }
         @keyframes throwPizza { 0% { transform: translate(0, 0) rotate(0deg); opacity: 1; } 100% { transform: translate(-80px, -20px) rotate(360deg); opacity: 0; } }
         
@@ -121,7 +121,10 @@
         .skin-card:hover, .boss-skin-card:hover { transform: scale(1.02); }
         
         .leaderboard-entry { padding: 6px; border-bottom: 1px solid #555; display: flex; justify-content: space-between; font-size: 0.8rem; }
-        .achievement-card, .challenge-card { background: rgba(38,43,63,0.8); border-radius: 12px; padding: 10px; margin-bottom: 8px; text-align: left; font-size: 0.8rem; }
+        .achievement-card, .challenge-card { background: rgba(38,43,63,0.8); border-radius: 12px; padding: 10px; margin-bottom: 8px; text-align: left; font-size: 0.8rem; border-left: 4px solid #ffd700; }
+        .achievement-card.completed, .challenge-card.completed { border-left-color: #00ff00; background: rgba(0,255,0,0.1); }
+        .achievement-card h4, .challenge-card h4 { margin: 0 0 5px 0; color: #ffd700; }
+        .achievement-card p, .challenge-card p { margin: 0; font-size: 0.7rem; color: #aaa; }
         
         .auto-section { background: #1a1208; border-radius: 25px; padding: 8px; margin-bottom: 12px; }
         .auto-section label { color: #ffcf7a; display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.8rem; }
@@ -245,6 +248,158 @@
     let unlockedBossSkins = [], activeSkins = { william: 'default', aksel: 'default', carl: 'default', saleh: 'default', johannes: 'default', kasper: 'default' };
     let boughtSkins = [];
     
+    // ACHIEVEMENTS & CHALLENGES
+    let achievements = {
+        click100: { name: "🖱️ Første klik", desc: "Klik 100 gange", current: 0, target: 100, completed: false, reward: 1000 },
+        click1000: { name: "🖱️ Klikmester", desc: "Klik 1000 gange", current: 0, target: 1000, completed: false, reward: 10000 },
+        points100k: { name: "💰 Millionær", desc: "Tjen 100.000 point", current: 0, target: 100000, completed: false, reward: 50000 },
+        points1m: { name: "💎 Mangemillionær", desc: "Tjen 1.000.000 point", current: 0, target: 1000000, completed: false, reward: 250000 },
+        upgrade10: { name: "📈 Upgrade-entusiast", desc: "Køb 10 upgrades", current: 0, target: 10, completed: false, reward: 5000 },
+        upgrade50: { name: "📊 Upgrade-mester", desc: "Køb 50 upgrades", current: 0, target: 50, completed: false, reward: 50000 },
+        combo50: { name: "⚡ Combo-breaker", desc: "Opnå 50 i combo", current: 0, target: 50, completed: false, reward: 10000 },
+        combo200: { name: "🔥 Combo-legende", desc: "Opnå 200 i combo", current: 0, target: 200, completed: false, reward: 50000 },
+        bossKill: { name: "👹 Boss-dræber", desc: "Besejr Rasmus Prange", current: 0, target: 1, completed: false, reward: 100000 },
+        prestige1: { name: "👑 Prestige-begynder", desc: "Gennemfør prestige 1 gang", current: 0, target: 1, completed: false, reward: 0 }
+    };
+    
+    let challenges = {
+        challenge1: { name: "🎯 Hurtig start", desc: "Tjen 10.000 point på under 5 minutter", completed: false, reward: 25000, timeLimit: 300000 },
+        challenge2: { name: "🎯 Upgrade-junkie", desc: "Køb alle upgrades (undtagen Kasper)", completed: false, reward: 500000 },
+        challenge3: { name: "🎯 Kasper-dræber", desc: "Skyd Jøde Kasper", completed: false, reward: 1000000 },
+        challenge4: { name: "🎯 Combo-gud", desc: "Opnå 500 i combo streak", completed: false, reward: 200000 },
+        challenge5: { name: "🎯 Bank-mester", desc: "Sæt 1.000.000 point i banken", completed: false, reward: 500000 }
+    };
+    
+    let challengeStartTime = Date.now();
+    let totalUpgradesBought = 0;
+    
+    function checkAchievements() {
+        let changed = false;
+        
+        if (!achievements.click100.completed && totalClicks >= 100) {
+            achievements.click100.completed = true;
+            points += achievements.click100.reward;
+            showToast(`🏆 ACHIEVEMENT: ${achievements.click100.name}! +${achievements.click100.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        if (!achievements.click1000.completed && totalClicks >= 1000) {
+            achievements.click1000.completed = true;
+            points += achievements.click1000.reward;
+            showToast(`🏆 ACHIEVEMENT: ${achievements.click1000.name}! +${achievements.click1000.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        if (!achievements.points100k.completed && points >= 100000) {
+            achievements.points100k.completed = true;
+            points += achievements.points100k.reward;
+            showToast(`🏆 ACHIEVEMENT: ${achievements.points100k.name}! +${achievements.points100k.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        if (!achievements.points1m.completed && points >= 1000000) {
+            achievements.points1m.completed = true;
+            points += achievements.points1m.reward;
+            showToast(`🏆 ACHIEVEMENT: ${achievements.points1m.name}! +${achievements.points1m.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        if (!achievements.upgrade10.completed && totalUpgradesBought >= 10) {
+            achievements.upgrade10.completed = true;
+            points += achievements.upgrade10.reward;
+            showToast(`🏆 ACHIEVEMENT: ${achievements.upgrade10.name}! +${achievements.upgrade10.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        if (!achievements.upgrade50.completed && totalUpgradesBought >= 50) {
+            achievements.upgrade50.completed = true;
+            points += achievements.upgrade50.reward;
+            showToast(`🏆 ACHIEVEMENT: ${achievements.upgrade50.name}! +${achievements.upgrade50.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        if (!achievements.combo50.completed && comboCount >= 50) {
+            achievements.combo50.completed = true;
+            points += achievements.combo50.reward;
+            showToast(`🏆 ACHIEVEMENT: ${achievements.combo50.name}! +${achievements.combo50.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        if (!achievements.combo200.completed && comboCount >= 200) {
+            achievements.combo200.completed = true;
+            points += achievements.combo200.reward;
+            showToast(`🏆 ACHIEVEMENT: ${achievements.combo200.name}! +${achievements.combo200.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        
+        if (changed) {
+            updateUI();
+            saveGame();
+        }
+    }
+    
+    function checkChallenges() {
+        let changed = false;
+        
+        // Challenge 1: 10.000 point på under 5 min
+        if (!challenges.challenge1.completed && points >= 10000 && (Date.now() - challengeStartTime) < 300000) {
+            challenges.challenge1.completed = true;
+            points += challenges.challenge1.reward;
+            showToast(`🎯 CHALLENGE COMPLETED: ${challenges.challenge1.name}! +${challenges.challenge1.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        
+        // Challenge 2: Alle upgrades (undtagen Kasper)
+        if (!challenges.challenge2.completed && hasGoat && hasCarl && hasSaleh && hasJohannes && hasMarcus && hasAdvisor) {
+            challenges.challenge2.completed = true;
+            points += challenges.challenge2.reward;
+            showToast(`🎯 CHALLENGE COMPLETED: ${challenges.challenge2.name}! +${challenges.challenge2.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        
+        // Challenge 3: Skyd Kasper
+        if (!challenges.challenge3.completed && kasperRemoved) {
+            challenges.challenge3.completed = true;
+            points += challenges.challenge3.reward;
+            showToast(`🎯 CHALLENGE COMPLETED: ${challenges.challenge3.name}! +${challenges.challenge3.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        
+        // Challenge 4: Combo 500
+        if (!challenges.challenge4.completed && comboCount >= 500) {
+            challenges.challenge4.completed = true;
+            points += challenges.challenge4.reward;
+            showToast(`🎯 CHALLENGE COMPLETED: ${challenges.challenge4.name}! +${challenges.challenge4.reward.toLocaleString()} point!`);
+            changed = true;
+        }
+        
+        if (changed) {
+            updateUI();
+            saveGame();
+        }
+    }
+    
+    function renderAchievements() {
+        let html = '';
+        for (let key in achievements) {
+            let a = achievements[key];
+            html += `<div class="achievement-card ${a.completed ? 'completed' : ''}">
+                        <h4>${a.name}</h4>
+                        <p>${a.desc} (${Math.min(a.current, a.target)}/${a.target})</p>
+                        <p style="color:#ffd700;">🏆 Belønning: ${a.reward.toLocaleString()} point</p>
+                        ${a.completed ? '<p style="color:#00ff00;">✓ Gennemført!</p>' : ''}
+                    </div>`;
+        }
+        document.getElementById('achievementsList').innerHTML = html || '<p>Ingen achievements endnu</p>';
+    }
+    
+    function renderChallenges() {
+        let html = '';
+        for (let key in challenges) {
+            let c = challenges[key];
+            html += `<div class="challenge-card ${c.completed ? 'completed' : ''}">
+                        <h4>${c.name}</h4>
+                        <p>${c.desc}</p>
+                        <p style="color:#ffd700;">🏆 Belønning: ${c.reward.toLocaleString()} point</p>
+                        ${c.completed ? '<p style="color:#00ff00;">✓ Gennemført!</p>' : '<p style="color:#ff8888;">◯ Ikke gennemført endnu</p>'}
+                    </div>`;
+        }
+        document.getElementById('challengesList').innerHTML = html || '<p>Ingen challenges endnu</p>';
+    }
+    
     // LOKAL LEADERBOARD
     let localScores = [];
     function loadLocalScores() {
@@ -333,7 +488,7 @@
         setTimeout(()=>t.remove(),2500); 
     }
     
-    // KASPER POPUP - FIXED
+    // KASPER POPUP
     function showKasperPopup(stolenAmount) {
         let existingPopup = document.querySelector('.kasper-popup');
         if(existingPopup) existingPopup.remove();
@@ -376,6 +531,7 @@
                     hasKasper = false; 
                     if (kasperAnimationInterval) clearInterval(kasperAnimationInterval);
                     showToast('🔫 Du skød Jøde Kasper! Han er væk for altid! 💀'); 
+                    checkChallenges();
                     updateUI(); 
                     saveGame(); 
                 }, 300);
@@ -442,6 +598,12 @@
         williamImg.style.boxShadow = `0 10px 20px black, 0 0 0 4px ${level.color}, 0 0 0 7px #daa520, 0 0 10px ${level.color}`;
         document.getElementById('comboCountDisplay').innerText = comboCount;
         document.getElementById('comboBonusDisplay').innerText = level.mult;
+        
+        // Opdater achievements
+        achievements.combo50.current = comboCount;
+        achievements.combo200.current = comboCount;
+        checkAchievements();
+        checkChallenges();
     }
     function updateCombo() {
         let now = Date.now();
@@ -490,6 +652,14 @@
         document.getElementById('boostActiveBadge').style.display = (boostActive && now < boostEnd) ? 'inline-block' : 'none';
         document.getElementById('freezeActiveBadge').style.display = (comboFreezeActive && now < comboFreezeEnd) ? 'inline-block' : 'none';
         document.getElementById('rainActiveBadge').style.display = (moneyRainActive && now < moneyRainEnd) ? 'inline-block' : 'none';
+        
+        // Opdater achievements
+        achievements.click100.current = totalClicks;
+        achievements.click1000.current = totalClicks;
+        achievements.points100k.current = points;
+        achievements.points1m.current = points;
+        checkAchievements();
+        checkChallenges();
     }
     
     function addPoints(amt) { 
@@ -506,13 +676,43 @@
     }
     
     function saveGame() { 
-        localStorage.setItem('williamClickerV24', JSON.stringify({points,totalClicks,clickMultiplier,hasGoat,hasCarl,hasSaleh,hasJohannes,hasMarcus,hasAdvisor,hasKasper,kasperRemoved,kasperEarnedSinceLastSteal,prestigeLevel,prestigeMultiplier,autoPowerBuyEnabled,autoClickBuyEnabled,marcusBankBalance,marcusBankReturnTime,bankReturnAmount,comboCount,lastClickTime,unlockedBossSkins,activeSkins,boughtSkins})); 
+        let saveData = {
+            points, totalClicks, clickMultiplier,
+            hasGoat, hasCarl, hasSaleh, hasJohannes, hasMarcus, hasAdvisor, hasKasper,
+            kasperRemoved, kasperEarnedSinceLastSteal,
+            prestigeLevel, prestigeMultiplier,
+            autoPowerBuyEnabled, autoClickBuyEnabled,
+            marcusBankBalance, marcusBankReturnTime, bankReturnAmount,
+            comboCount, lastClickTime,
+            unlockedBossSkins, activeSkins, boughtSkins,
+            achievements, challenges, totalUpgradesBought, challengeStartTime
+        };
+        localStorage.setItem('williamClickerV25', JSON.stringify(saveData)); 
     }
     
     function loadGame() { 
-        let s=localStorage.getItem('williamClickerV24'); 
-        if(s){ let d=JSON.parse(s); points=d.points||0; totalClicks=d.totalClicks||0; clickMultiplier=d.clickMultiplier||1; hasGoat=d.hasGoat||false; hasCarl=d.hasCarl||false; hasSaleh=d.hasSaleh||false; hasJohannes=d.hasJohannes||false; hasMarcus=d.hasMarcus||false; hasAdvisor=d.hasAdvisor||false; hasKasper=d.hasKasper||false; kasperRemoved=d.kasperRemoved||false; kasperEarnedSinceLastSteal=d.kasperEarnedSinceLastSteal||0; prestigeLevel=d.prestigeLevel||0; prestigeMultiplier=d.prestigeMultiplier||1; autoPowerBuyEnabled=d.autoPowerBuyEnabled||false; autoClickBuyEnabled=d.autoClickBuyEnabled||false; marcusBankBalance=d.marcusBankBalance||0; marcusBankReturnTime=d.marcusBankReturnTime||0; bankReturnAmount=d.bankReturnAmount||0; comboCount=d.comboCount||0; lastClickTime=d.lastClickTime||0; if(d.unlockedBossSkins) unlockedBossSkins=d.unlockedBossSkins; if(d.activeSkins) activeSkins=d.activeSkins; if(d.boughtSkins) boughtSkins=d.boughtSkins; }
-        if(hasGoat) startGoatInterval(); if(hasCarl) startCarlInterval(); if(hasSaleh) startSalehInterval(); if(hasJohannes) startJohannesInterval();
+        let s=localStorage.getItem('williamClickerV25'); 
+        if(s){ 
+            let d=JSON.parse(s); 
+            points=d.points||0; totalClicks=d.totalClicks||0; clickMultiplier=d.clickMultiplier||1; 
+            hasGoat=d.hasGoat||false; hasCarl=d.hasCarl||false; hasSaleh=d.hasSaleh||false; 
+            hasJohannes=d.hasJohannes||false; hasMarcus=d.hasMarcus||false; hasAdvisor=d.hasAdvisor||false; 
+            hasKasper=d.hasKasper||false; kasperRemoved=d.kasperRemoved||false; 
+            kasperEarnedSinceLastSteal=d.kasperEarnedSinceLastSteal||0; 
+            prestigeLevel=d.prestigeLevel||0; prestigeMultiplier=d.prestigeMultiplier||1; 
+            autoPowerBuyEnabled=d.autoPowerBuyEnabled||false; autoClickBuyEnabled=d.autoClickBuyEnabled||false; 
+            marcusBankBalance=d.marcusBankBalance||0; marcusBankReturnTime=d.marcusBankReturnTime||0; 
+            bankReturnAmount=d.bankReturnAmount||0; comboCount=d.comboCount||0; lastClickTime=d.lastClickTime||0; 
+            if(d.unlockedBossSkins) unlockedBossSkins=d.unlockedBossSkins; 
+            if(d.activeSkins) activeSkins=d.activeSkins; 
+            if(d.boughtSkins) boughtSkins=d.boughtSkins;
+            if(d.achievements) achievements = d.achievements;
+            if(d.challenges) challenges = d.challenges;
+            if(d.totalUpgradesBought) totalUpgradesBought = d.totalUpgradesBought;
+            if(d.challengeStartTime) challengeStartTime = d.challengeStartTime;
+        }
+        if(hasGoat) startGoatInterval(); if(hasCarl) startCarlInterval(); 
+        if(hasSaleh) startSalehInterval(); if(hasJohannes) startJohannesInterval();
         if(hasKasper && !kasperRemoved) startKasperAnimation();
         updateUI();
     }
@@ -522,7 +722,7 @@
     function startSalehInterval() { if(salehInterval) clearInterval(salehInterval); salehInterval=setInterval(()=>{ if(hasSaleh) addPoints(1000 * getSkinBonus('saleh')); },1000); }
     function startJohannesInterval() { if(johannesInterval) clearInterval(johannesInterval); johannesInterval=setInterval(()=>{ if(hasJohannes) addPoints(10000 * getSkinBonus('johannes')); },1000); }
     
-    // BILLEDER - sæt efter DOM er klar
+    // BILLEDER
     document.getElementById('williamImg').src = WILLIAM_DEFAULT_URL;
     document.getElementById('akselImg').src = AKSEL_IMG_URL;
     document.getElementById('carlHeadImg').src = CARL_IMG_URL;
@@ -532,14 +732,14 @@
     
     document.getElementById('williamClicker').addEventListener('click', () => { updateCombo(); let val=clickMultiplier; if(doubleClickActive && Date.now()<doubleClickEnd) val*=2; val*=getComboMultiplier(); val*=getSkinBonus('william'); addPoints(val); totalClicks++; updateUI(); let img=document.querySelector('.william-img'); if(img){ img.style.transform='scale(0.96)'; setTimeout(()=>{if(img) img.style.transform='';},100); } });
     
-    document.getElementById('buyClickBtn').onclick=()=>{ let cost=30+(clickMultiplier-1)*15; if(infiniteMoney||points>=cost){ if(!infiniteMoney) points-=cost; clickMultiplier++; updateUI(); saveGame(); } };
-    document.getElementById('buyGoatBtn').onclick=()=>{ if(!hasGoat && (infiniteMoney||points>=150)){ if(!infiniteMoney) points-=150; hasGoat=true; startGoatInterval(); updateUI(); saveGame(); showToast('🐐 Aksel købt!'); } };
-    document.getElementById('buyCarlBtn').onclick=()=>{ if(!hasCarl && (infiniteMoney||points>=3000)){ if(!infiniteMoney) points-=3000; hasCarl=true; startCarlInterval(); updateUI(); saveGame(); showToast('🐄 Carl købt!'); } };
-    document.getElementById('buySalehBtn').onclick=()=>{ if(!hasSaleh && (infiniteMoney||points>=30000)){ if(!infiniteMoney) points-=30000; hasSaleh=true; startSalehInterval(); updateUI(); saveGame(); showToast('🍕 Saleh købt!'); } };
-    document.getElementById('buyJohannesBtn').onclick=()=>{ if(!hasJohannes && (infiniteMoney||points>=120000)){ if(!infiniteMoney) points-=120000; hasJohannes=true; startJohannesInterval(); updateUI(); saveGame(); showToast('👨‍🌾 Johannes købt!'); } };
-    document.getElementById('buyMarcusBtn').onclick=()=>{ if(!hasMarcus && (infiniteMoney||points>=150000)){ if(!infiniteMoney) points-=150000; hasMarcus=true; updateUI(); saveGame(); showToast('🏦 Marcus Bankier købt!'); } };
-    document.getElementById('buyAdvisorBtn').onclick=()=>{ if(!hasAdvisor && (infiniteMoney||points>=200000)){ if(!infiniteMoney) points-=200000; hasAdvisor=true; updateUI(); saveGame(); showToast('🤐 Anonym Advisor købt!'); } };
-    document.getElementById('buyKasperBtn').onclick=()=>{ if(!hasKasper && !kasperRemoved && (infiniteMoney||points>=2500000)){ if(!infiniteMoney) points-=2500000; hasKasper=true; kasperEarnedSinceLastSteal=0; startKasperAnimation(); updateUI(); saveGame(); showToast('🏎️ Corvette Kasper købt! Pas på - han stjæler!'); } };
+    document.getElementById('buyClickBtn').onclick=()=>{ let cost=30+(clickMultiplier-1)*15; if(infiniteMoney||points>=cost){ if(!infiniteMoney) points-=cost; clickMultiplier++; totalUpgradesBought++; updateUI(); saveGame(); } };
+    document.getElementById('buyGoatBtn').onclick=()=>{ if(!hasGoat && (infiniteMoney||points>=150)){ if(!infiniteMoney) points-=150; hasGoat=true; totalUpgradesBought++; startGoatInterval(); updateUI(); saveGame(); showToast('🐐 Aksel købt!'); checkChallenges(); } };
+    document.getElementById('buyCarlBtn').onclick=()=>{ if(!hasCarl && (infiniteMoney||points>=3000)){ if(!infiniteMoney) points-=3000; hasCarl=true; totalUpgradesBought++; startCarlInterval(); updateUI(); saveGame(); showToast('🐄 Carl købt!'); checkChallenges(); } };
+    document.getElementById('buySalehBtn').onclick=()=>{ if(!hasSaleh && (infiniteMoney||points>=30000)){ if(!infiniteMoney) points-=30000; hasSaleh=true; totalUpgradesBought++; startSalehInterval(); updateUI(); saveGame(); showToast('🍕 Saleh købt!'); checkChallenges(); } };
+    document.getElementById('buyJohannesBtn').onclick=()=>{ if(!hasJohannes && (infiniteMoney||points>=120000)){ if(!infiniteMoney) points-=120000; hasJohannes=true; totalUpgradesBought++; startJohannesInterval(); updateUI(); saveGame(); showToast('👨‍🌾 Johannes købt!'); checkChallenges(); } };
+    document.getElementById('buyMarcusBtn').onclick=()=>{ if(!hasMarcus && (infiniteMoney||points>=150000)){ if(!infiniteMoney) points-=150000; hasMarcus=true; totalUpgradesBought++; updateUI(); saveGame(); showToast('🏦 Marcus Bankier købt!'); checkChallenges(); } };
+    document.getElementById('buyAdvisorBtn').onclick=()=>{ if(!hasAdvisor && (infiniteMoney||points>=200000)){ if(!infiniteMoney) points-=200000; hasAdvisor=true; totalUpgradesBought++; updateUI(); saveGame(); showToast('🤐 Anonym Advisor købt!'); checkChallenges(); } };
+    document.getElementById('buyKasperBtn').onclick=()=>{ if(!hasKasper && !kasperRemoved && (infiniteMoney||points>=2500000)){ if(!infiniteMoney) points-=2500000; hasKasper=true; totalUpgradesBought++; kasperEarnedSinceLastSteal=0; startKasperAnimation(); updateUI(); saveGame(); showToast('🏎️ Corvette Kasper købt! Pas på - han stjæler!'); } };
     
     function activatePowerup(cost, cb) { if(infiniteMoney || points >= cost) { if(!infiniteMoney) points -= cost; cb(); updateUI(); saveGame(); return true; } else { showToast(`💰 Du mangler ${(cost - points).toLocaleString()} point!`); return false; } }
     
@@ -553,7 +753,7 @@
     function spawnGoldenWilliam() { if(activeGoldenWilliams>=maxGoldenWilliams) return; activeGoldenWilliams++; let g=document.createElement('div'); g.className='golden-william'; g.style.left=(10+Math.random()*70)+'%'; g.style.top=(10+Math.random()*70)+'%'; g.innerHTML=`<img class="golden-william-img" src="${WILLIAM_DEFAULT_URL}">`; let t=15,ti=setInterval(()=>{ t--; if(t<=0){ clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); } },1000); g.onclick=()=>{ let bonus = Math.max(1000, Math.floor(points * 0.05)); if(multiPointsActive) bonus*=3; if(hasAdvisor) bonus*=2; points+=bonus; updateUI(); saveGame(); showToast('🥇 GULD WILLIAM! +'+bonus.toLocaleString()+' point!'); clearInterval(ti); g.remove(); activeGoldenWilliams--; scheduleGolden(); }; document.body.appendChild(g); }
     function scheduleGolden(){ if(goldenTimeout) clearTimeout(goldenTimeout); goldenTimeout=setTimeout(spawnGoldenWilliam,20000+Math.random()*25000); }
     
-    // AUTO-KØB CLICK UPGRADES - FIXED
+    // AUTO-KØB CLICK UPGRADES - KØBER SÅ MANGE DEN KAN!
     document.getElementById('autoClickToggle').addEventListener('change', (e) => { 
         autoClickBuyEnabled = e.target.checked; 
         saveGame(); 
@@ -563,13 +763,23 @@
     
     setInterval(() => { 
         if (autoClickBuyEnabled && hasAdvisor) { 
-            let cost = 30 + (clickMultiplier - 1) * 15; 
-            if ((infiniteMoney || points >= cost) && clickMultiplier < 100) { 
-                if (!infiniteMoney) points -= cost; 
-                clickMultiplier++; 
-                updateUI();
+            let boughtAny = false;
+            while (true) {
+                let cost = 30 + (clickMultiplier - 1) * 15;
+                if ((infiniteMoney || points >= cost) && clickMultiplier < 100) { 
+                    if (!infiniteMoney) points -= cost; 
+                    clickMultiplier++; 
+                    totalUpgradesBought++;
+                    boughtAny = true;
+                    updateUI();
+                } else {
+                    break;
+                }
+            }
+            if (boughtAny) {
                 saveGame();
-            } 
+                updateUI();
+            }
         } 
     }, 500);
     
@@ -652,6 +862,8 @@
         bossActive=false; clearInterval(bossTimerInterval); if(bossAttackInterval) clearInterval(bossAttackInterval); document.getElementById('bossContainer').classList.remove('active'); 
         if(won){ 
             let old=points; points*=2; showToast(`🏆 DU BESEJREDE RASMUS! +${old.toLocaleString()} point! (Points fordoblet!)`); 
+            achievements.bossKill.current = 1;
+            checkAchievements();
             let {character, skin} = getRandomBossSkin(); let skinId = `${skin.rarity}_${character}`; 
             if(!unlockedBossSkins.some(s=>s.character===character && s.skinId===skinId)){ 
                 unlockedBossSkins.push({character:character, skinId:skinId, skinName:skin.name, bonus:skin.bonus}); 
@@ -698,6 +910,8 @@
         
         prestigeLevel++; 
         prestigeMultiplier = 1 + (prestigeLevel * 0.05); 
+        achievements.prestige1.current = prestigeLevel;
+        checkAchievements();
         
         points = 0; 
         totalClicks = 0; 
@@ -715,6 +929,7 @@
         marcusBankReturnTime = 0;
         bankReturnAmount = 0;
         comboCount = 0;
+        challengeStartTime = Date.now();
         
         if(goatInterval) clearInterval(goatInterval);
         if(carlInterval) clearInterval(carlInterval);
@@ -734,7 +949,7 @@
         if(confirm('⚠️ NULSTIL ALT? Alle fremskridt, upgrades, point og Kasper forsvinder!')){ 
             localStorage.clear();
             showToast('🔄 Spillet er nulstillet! Genindlæser...');
-            setTimeout(() => { window.location.href = window.location.href; }, 500);
+            setTimeout(() => { window.location.reload(); }, 500);
         } 
     };
     
@@ -833,8 +1048,6 @@
     
     document.querySelectorAll('.close-modal').forEach(b=>{ b.onclick=()=>b.closest('.modal').classList.remove('active'); });
     
-    function renderAchievements() { document.getElementById('achievementsList').innerHTML = '<div class="achievement-card">🏆 Kommende achievements</div>'; }
-    function renderChallenges() { document.getElementById('challengesList').innerHTML = '<div class="challenge-card">🎯 Kommende challenges</div>'; }
     function renderPrestigeUpgrades() { document.getElementById('upgradesList').innerHTML = '<div class="achievement-card">✨ Kommende prestige upgrades</div>'; }
     
     function updateBankDisplay(){
