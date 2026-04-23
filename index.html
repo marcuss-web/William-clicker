@@ -23,9 +23,10 @@
         @keyframes flameFlicker { 0% { transform: translate(-50%, -50%) scale(1); opacity: 0.9; } 100% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } }
         .mega-flame-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 300px; height: 300px; border-radius: 50%; pointer-events: none; z-index: -1; background: radial-gradient(circle, rgba(255,100,0,0.25) 0%, rgba(255,0,0,0) 70%); }
         
-        /* CORVETTE KASPER - med billede */
-        .corvette-car { position: fixed; z-index: 1000; width: 80px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
-        .corvette-car img { width: 100%; border-radius: 15%; border: 2px solid #ffd700; object-fit: cover; background: #2c2e3e; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        /* CORVETTE KASPER - større bil, Kasper billede oven på */
+        .corvette-car { position: fixed; z-index: 1000; width: 110px; pointer-events: none; display: flex; flex-direction: column; align-items: center; }
+        .corvette-car .car-image { width: 100%; border-radius: 15%; border: 2px solid #ffd700; object-fit: cover; background: #2c2e3e; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        .corvette-car .kasper-on-car { position: absolute; top: -35px; left: 50%; transform: translateX(-50%); width: 60px; height: 60px; border-radius: 50%; border: 3px solid #ff0000; object-fit: cover; background: #1a0f2e; box-shadow: 0 0 10px rgba(255,0,0,0.5); z-index: 1001; }
         .corvette-car .car-label { font-size: 0.6rem; background: #000000aa; padding: 2px 6px; border-radius: 15px; margin-top: 3px; color: #ffd700; }
         
         .william-container { position: relative; display: inline-block; cursor: pointer; z-index: 10; }
@@ -43,8 +44,8 @@
         @keyframes hopHop { 0%,100% { transform: translateX(-50%) translateY(0px); } 50% { transform: translateX(-50%) translateY(-10px); } }
         .carl-head-img { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #ffc107; object-fit: cover; }
         
-        /* Saleh - rykket tættere på William */
-        .saleh-position { position: absolute; right: -30px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
+        /* Saleh - rykket endnu tættere på William */
+        .saleh-position { position: absolute; right: -15px; top: 50%; transform: translateY(-50%); z-index: 5; display: none; }
         .saleh-card { background: #231f1acc; border-radius: 40px; padding: 6px 12px; display: flex; align-items: center; gap: 8px; border: 2px solid #ffaa55; animation: salehFloat 2s ease-in-out infinite; }
         @keyframes salehFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
         .saleh-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 3px solid #ffaa44; }
@@ -252,7 +253,7 @@
     let unlockedBossSkins = [], activeSkins = { william: 'default', aksel: 'default', carl: 'default', saleh: 'default', johannes: 'default', kasper: 'default' };
     let boughtSkins = [];
     
-    // LOKAL LEADERBOARD (i stedet for Firebase)
+    // LOKAL LEADERBOARD
     let localScores = [];
     function loadLocalScores() {
         let saved = localStorage.getItem('williamClickerScores');
@@ -386,23 +387,28 @@
             car.className = 'corvette-car';
             let randomY = 5 + Math.random() * 85;
             car.style.bottom = randomY + '%';
-            car.innerHTML = `<img src="${CORVETTE_CAR_URL}"><div class="car-label">🏎️ Jøde Kasper</div>`;
+            // Bil med Kasper billede oven på (mindre Kasper billede)
+            car.innerHTML = `
+                <img class="kasper-on-car" src="${JODE_KASPER_URL}">
+                <img class="car-image" src="${CORVETTE_CAR_URL}">
+                <div class="car-label">🏎️ Jøde Kasper</div>
+            `;
             if (direction === 'rightToLeft') {
-                car.style.right = '-120px';
-                car.style.transition = 'right 3s linear';
+                car.style.right = '-140px';
+                car.style.transition = 'right 3.5s linear';
                 document.body.appendChild(car);
                 setTimeout(() => { if(car) car.style.right = '100%'; }, 50);
-                setTimeout(() => { if(car) car.remove(); direction = 'leftToRight'; }, 3000);
+                setTimeout(() => { if(car) car.remove(); direction = 'leftToRight'; }, 3500);
             } else {
-                car.style.left = '-120px';
-                car.style.transition = 'left 3s linear';
+                car.style.left = '-140px';
+                car.style.transition = 'left 3.5s linear';
                 document.body.appendChild(car);
                 setTimeout(() => { if(car) car.style.left = '100%'; }, 50);
-                setTimeout(() => { if(car) car.remove(); direction = 'rightToLeft'; }, 3000);
+                setTimeout(() => { if(car) car.remove(); direction = 'rightToLeft'; }, 3500);
             }
         }
         animateCar();
-        kasperAnimationInterval = setInterval(animateCar, 6000);
+        kasperAnimationInterval = setInterval(animateCar, 7000);
     }
     
     function checkKasperSteal() {
