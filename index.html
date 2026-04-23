@@ -387,7 +387,6 @@
             car.className = 'corvette-car';
             let randomY = 5 + Math.random() * 85;
             car.style.bottom = randomY + '%';
-            // Bil med Kasper billede oven på (mindre Kasper billede)
             car.innerHTML = `
                 <img class="kasper-on-car" src="${JODE_KASPER_URL}">
                 <img class="car-image" src="${CORVETTE_CAR_URL}">
@@ -643,7 +642,26 @@
     function getPrestigeReq(){ return 500000 * Math.pow(prestigeLevel+1, 2); }
     document.getElementById('prestigeToggle').onclick=()=>{ let req=getPrestigeReq(); document.getElementById('prestigeInfo').innerHTML=`<p>Level: ${prestigeLevel}</p><p>Bonus: +${prestigeLevel*5}%</p><p>Næste: +${(prestigeLevel+1)*5}%</p><p>Kræver: ${req.toLocaleString()} point</p><p>Dine point: ${Math.floor(points).toLocaleString()}</p>`; document.getElementById('prestigeConfirm').disabled=points<req; document.getElementById('prestigeModal').classList.add('active'); };
     document.querySelector('.prestige-cancel').onclick=()=>document.getElementById('prestigeModal').classList.remove('active');
-    document.getElementById('prestigeConfirm').onclick=()=>{ if(points<getPrestigeReq()) return; prestigeLevel++; prestigeMultiplier=1+(prestigeLevel*0.05); points=0; totalClicks=0; clickMultiplier=1; hasGoat=hasCarl=hasSaleh=hasJohannes=hasMarcus=hasAdvisor=hasKasper=false; kasperRemoved=false; kasperEarnedSinceLastSteal=0; if(goatInterval) clearInterval(goatInterval); if(carlInterval) clearInterval(carlInterval); if(salehInterval) clearInterval(salehInterval); if(johannesInterval) clearInterval(johannesInterval); updateUI(); saveGame(); document.getElementById('prestigeModal').classList.remove('active'); showToast(`👑 PRESTIGE ${prestigeLevel}! +${prestigeLevel*5}% bonus!`); };
+    document.getElementById('prestigeConfirm').onclick=()=>{ 
+        if(points<getPrestigeReq()) return; 
+        prestigeLevel++; 
+        prestigeMultiplier=1+(prestigeLevel*0.05); 
+        points=0; 
+        totalClicks=0; 
+        clickMultiplier=1; 
+        hasGoat=hasCarl=hasSaleh=hasJohannes=hasMarcus=hasAdvisor=hasKasper=false; 
+        kasperRemoved=false; // <-- HER: Nulstil så Kasper kan købes igen
+        kasperEarnedSinceLastSteal=0; 
+        if(goatInterval) clearInterval(goatInterval); 
+        if(carlInterval) clearInterval(carlInterval); 
+        if(salehInterval) clearInterval(salehInterval); 
+        if(johannesInterval) clearInterval(johannesInterval); 
+        if(kasperAnimationInterval) clearInterval(kasperAnimationInterval);
+        updateUI(); 
+        saveGame(); 
+        document.getElementById('prestigeModal').classList.remove('active'); 
+        showToast(`👑 PRESTIGE ${prestigeLevel}! +${prestigeLevel*5}% bonus!`); 
+    };
     
     let cheatBuffer = '';
     document.addEventListener('keydown', (e) => { cheatBuffer += e.key; cheatBuffer = cheatBuffer.slice(-20); if (cheatBuffer.includes('cheats123')) { infiniteMoney = true; showToast('🔓 CHEAT AKTIVERET! UENDELIGE PENGE ∞'); updateUI(); cheatBuffer = ''; } if (cheatBuffer.includes('67admin')) { adminMode = true; document.getElementById('adminMenuBtn').style.display = 'block'; showToast('👑 ADMIN MODE AKTIVERET! 1000x BONUS!'); updateUI(); cheatBuffer = ''; } });
@@ -727,7 +745,12 @@
         };
     });
     
-    document.getElementById('resetBtn').onclick=()=>{ if(confirm('Nulstil ALT?')){ localStorage.clear(); location.reload(); } };
+    document.getElementById('resetBtn').onclick=()=>{ 
+        if(confirm('Nulstil ALT?')){ 
+            localStorage.clear(); 
+            location.reload(); 
+        } 
+    };
     
     let burger=document.getElementById('burgerMenuBtn'), side=document.getElementById('sideMenu'), overlay=document.getElementById('sideMenuOverlay');
     burger.onclick=()=>{ side.classList.add('active'); overlay.classList.add('active'); };
